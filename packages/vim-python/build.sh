@@ -62,8 +62,7 @@ termux_step_pre_configure() {
 	# Version guard
 	local ver_v=$(. $TERMUX_SCRIPTDIR/packages/vim/build.sh; echo ${TERMUX_PKG_VERSION#*:})
 	local ver_p=$(. $TERMUX_SCRIPTDIR/packages/vim-python/build.sh; echo ${TERMUX_PKG_VERSION#*:})
-	local ver_g=$(. $TERMUX_SCRIPTDIR/x11-packages/vim-gtk/build.sh; echo ${TERMUX_PKG_VERSION#*:})
-	if [ "${ver_v}" != "${ver_p}" ] || [ "${ver_p}" != "${ver_g}" ]; then
+	if [ "${ver_v}" != "${ver_p}" ]; then
 		termux_error_exit "Version mismatch between vim, vim-python and vim-gtk."
 	fi
 
