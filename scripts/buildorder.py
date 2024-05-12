@@ -5,6 +5,8 @@ import json, os, re, sys
 
 from itertools import filterfalse
 
+from typing import Set
+
 termux_arch = os.getenv('TERMUX_ARCH') or 'aarch64'
 termux_global_library = os.getenv('TERMUX_GLOBAL_LIBRARY') or 'false'
 termux_pkg_library = os.getenv('TERMUX_PACKAGE_LIBRARY') or 'bionic'
@@ -32,12 +34,16 @@ def die(msg):
     "Exit the process with an error message."
     sys.exit('ERROR: ' + msg)
 
-def parse_build_file_dependencies_with_vars(path, vars):
+def parse_build_file_dependencies_with_vars(path, vars, parent_pkg=None):
     "Extract the dependencies specified in the given variables of a build.sh or *.subpackage.sh file."
     dependencies = []
 
+    subpkg_depend_on_parent = None
+
     with open(path, encoding="utf-8") as build_script:
         for line in build_script:
+            if line.startswith('TERMUX_SUBPKG_DEPEND_ON_PARENT='):
+                subpkg_depend_on_parent = line[len('TERMUX_SUBPKG_DEPEND_ON_PARENT='):].strip()
             if line.startswith(vars):
                 dependencies_string = line.split('DEPENDS=')[1]
                 for char in "\"'\n":
@@ -56,11 +62,26 @@ def parse_build_file_dependencies_with_vars(path, vars):
 
                     dependencies.append(dependency_value)
 
+    is_subpackage = 'subpackage.sh' in path
+    if is_subpackage:
+        if subpkg_depend_on_parent == 'no' or subpkg_depend_on_parent == '"no"':
+            pass
+        elif subpkg_depend_on_parent == 'deps':
+            assert parent_pkg
+            for dep in parent_pkg.deps:
+                if not dep in dependencies:
+                    dependencies.append(dep)
+        else:
+            package_name = os.path.basename(os.path.dirname(path))
+            # print(f"Adding parent {package_name} to " + path)
+            if not package_name in dependencies:
+                dependencies.append(package_name)
+
     return set(dependencies)
 
-def parse_build_file_dependencies(path):
+def parse_build_file_dependencies(path, parent_pkg=None):
     "Extract the dependencies of a build.sh or *.subpackage.sh file."
-    return parse_build_file_dependencies_with_vars(path, ('TERMUX_PKG_DEPENDS', 'TERMUX_PKG_BUILD_DEPENDS', 'TERMUX_SUBPKG_DEPENDS', 'TERMUX_PKG_DEVPACKAGE_DEPENDS'))
+    return parse_build_file_dependencies_with_vars(path, ('TERMUX_PKG_DEPENDS', 'TERMUX_PKG_BUILD_DEPENDS', 'TERMUX_SUBPKG_DEPENDS', 'TERMUX_PKG_DEVPACKAGE_DEPENDS'), parent_pkg=parent_pkg)
 
 def parse_build_file_antidependencies(path):
     "Extract the antidependencies of a build.sh file."
@@ -92,18 +113,15 @@ def parse_build_file_variable_bool(path, var):
 
     return value == 'true'
 
-def add_prefix_glibc_to_pkgname(name):
-	return name.replace("-static", "-glibc-static") if "static" == name.split("-")[-1] else name+"-glibc"
-
 class TermuxPackage(object):
+    deps: Set[str]
+
     "A main package definition represented by a directory with a build.sh file."
     def __init__(self, dir_path, fast_build_mode):
         self.dir = dir_path
         self.fast_build_mode = fast_build_mode
         self.name = os.path.basename(self.dir)
         self.pkgs_cache = []
-        if "gpkg" in self.dir.split("/")[-2].split("-") and "glibc" not in self.name.split("-"):
-            self.name = add_prefix_glibc_to_pkgname(self.name)
 
         # search package build.sh
         build_sh_path = os.path.join(self.dir, 'build.sh')
@@ -113,7 +131,6 @@ class TermuxPackage(object):
         self.deps = parse_build_file_dependencies(build_sh_path)
         self.antideps = parse_build_file_antidependencies(build_sh_path)
         self.excluded_arches = parse_build_file_excluded_arches(build_sh_path)
-        self.only_installing = parse_build_file_variable_bool(build_sh_path, 'TERMUX_PKG_ONLY_INSTALLING')
         self.separate_subdeps = parse_build_file_variable_bool(build_sh_path, 'TERMUX_PKG_SEPARATE_SUB_DEPENDS')
         self.accept_dep_scr = parse_build_file_variable_bool(build_sh_path, 'TERMUX_PKG_ACCEPT_PKG_IN_DEP')
 
@@ -159,13 +176,10 @@ class TermuxPackage(object):
             if not self.fast_build_mode or self.dir == dir_root:
                 self.deps.difference_update([subpkg.name for subpkg in self.subpkgs])
         for dependency_name in sorted(self.deps):
-            if termux_global_library == "true" and termux_pkg_library == "glibc" and "glibc" not in dependency_name.split("-"):
-                mod_dependency_name = add_prefix_glibc_to_pkgname(dependency_name)
-                dependency_name = mod_dependency_name if mod_dependency_name in pkgs_map else dependency_name
             if dependency_name not in self.pkgs_cache:
                 self.pkgs_cache.append(dependency_name)
                 dependency_package = pkgs_map[dependency_name]
-                if dependency_package.dir != dir_root and dependency_package.only_installing and not self.fast_build_mode:
+                if dependency_package.dir != dir_root and not self.fast_build_mode:
                     continue
                 result += dependency_package.recursive_dependencies(pkgs_map, dir_root)
                 if dependency_package.accept_dep_scr or dependency_package.dir != dir_root:
@@ -179,15 +193,12 @@ class TermuxSubPackage:
             raise Exception("SubPackages should have a parent")
 
         self.name = os.path.basename(subpackage_file_path).split('.subpackage.sh')[0]
-        if "gpkg" in subpackage_file_path.split("/")[-3].split("-") and "glibc" not in self.name.split("-"):
-            self.name = add_prefix_glibc_to_pkgname(self.name)
         self.parent = parent
-        self.deps = set([parent.name])
-        self.only_installing = parent.only_installing
+        self.deps = set([parent.name]) if virtual else set()
         self.accept_dep_scr = parent.accept_dep_scr
         self.excluded_arches = set()
         if not virtual:
-            self.deps |= parse_build_file_dependencies(subpackage_file_path)
+            self.deps |= parse_build_file_dependencies(subpackage_file_path, parent_pkg=parent)
             self.excluded_arches |= parse_build_file_excluded_arches(subpackage_file_path)
         self.dir = parent.dir
 
@@ -217,15 +228,17 @@ def read_packages_from_directories(directories, fast_build_mode, full_buildmode)
     Subpackages are mapped to the parent package if fast_build_mode is false."""
     pkgs_map = {}
     all_packages = []
+    subpkg_name_to_parent_package: dict[str, TermuxPackage] = {}
 
     if full_buildmode:
         # Ignore directories and get all folders from repo.json file
         with open ('repo.json') as f:
             data = json.load(f)
         directories = []
-        for d in data.keys():
-            if d != "pkg_format":
-                directories.append(d)
+        # for d in data.keys():
+            # if d != "pkg_format":
+                # directories.append(d)
+        directories.append('packages')
 
     for package_dir in directories:
         for pkgdir_name in sorted(os.listdir(package_dir)):
@@ -245,20 +258,45 @@ def read_packages_from_directories(directories, fast_build_mode, full_buildmode)
                 for subpkg in new_package.subpkgs:
                     if termux_arch in subpkg.excluded_arches:
                         continue
+
                     if subpkg.name in pkgs_map:
                         die('Duplicated package: ' + subpkg.name)
-                    elif fast_build_mode:
-                        pkgs_map[subpkg.name] = subpkg
+
+                    if full_buildmode:
+                        # When determining full build order subpackages are not relevant
+                        # as they cannot be built. Instead add dependencies of subpackages.
+                        subpkg_name_to_parent_package[subpkg.name] = new_package
+                        for dep in subpkg.deps:
+                            if dep != new_package.name:
+                                new_package.deps.add(dep)
                     else:
-                        pkgs_map[subpkg.name] = new_package
-                    all_packages.append(subpkg)
+                        all_packages.append(subpkg)
+                        if fast_build_mode:
+                            pkgs_map[subpkg.name] = subpkg
+                        else:
+                            pkgs_map[subpkg.name] = new_package
+
 
     for pkg in all_packages:
-        for dependency_name in pkg.deps:
-            if dependency_name not in pkgs_map:
-                die('Package %s depends on non-existing package "%s"' % (pkg.name, dependency_name))
-            dep_pkg = pkgs_map[dependency_name]
-            if fast_build_mode or not isinstance(pkg, TermuxSubPackage):
+        for dependency_name in pkg.deps.copy():
+            dep_pkg = None
+            if full_buildmode:
+                dep_parent_package = subpkg_name_to_parent_package.get(dependency_name)
+                if dep_parent_package:
+                    # This is a subpackage - do not depend on it:
+                    pkg.deps.remove(dependency_name)
+                    # Instead depend on parent package (if this is not the current package):
+                    if dep_parent_package != pkg:
+                        pkg.deps.add(dep_parent_package.name)
+                    dep_pkg = dep_parent_package
+
+            if not dep_pkg:
+                if dependency_name not in pkgs_map:
+                    die('Package %s depends on non-existing package "%s"' % (pkg.name, dependency_name))
+
+                dep_pkg = pkgs_map[dependency_name]
+
+            if dep_pkg != pkg:
                 dep_pkg.needed_by.add(pkg)
     return pkgs_map
 
@@ -266,10 +304,43 @@ def generate_full_buildorder(pkgs_map):
     "Generate a build order for building all packages."
     build_order = []
 
+    # Without subpackages removed:
+    full_pkgs_map = pkgs_map.copy()
+
+    # Merge all subpackages into parents - for generating build order
+    # subpackages are not relevant, as they cannot be built in isolation.
+    for _, pkg in full_pkgs_map.items():
+        if isinstance(pkg, TermuxSubPackage):
+            # pkg is readline
+            for needed_by_pkg in pkg.needed_by:
+                # needed_by = cmake-gui (depends on ncurses-ui-libs)
+                # mark ncurses as needed cmake-gui
+                if isinstance(needed_by_pkg, TermuxSubPackage):
+                    pkg.parent.needed_by.add(needed_by_pkg.parent)
+                else:
+                    pkg.parent.needed_by.add(needed_by_pkg)
+                needed_by_pkg.deps.remove(pkg.name)
+                needed_by_pkg.deps.add(pkg.parent.name)
+
+            del pkgs_map[pkg.name]
+            # print("Removing subpackage: " + pkg.name + ", deps = " + str(pkg.deps) + ", parent = " + pkg.parent.name, file=sys.stderr)
+            pkg.parent.deps |= pkg.deps
+            # Avoid parent package depending on itself:
+            if pkg.parent.name in pkg.parent.deps:
+                pkg.parent.deps.remove(pkg.parent.name)
+    # Remove dependencies from parent package to own subpackage:
+    for _, pkg in pkgs_map.items():
+        for dep in pkg.deps.copy():
+            dep_pkg = full_pkgs_map[dep]
+            if isinstance(dep_pkg, TermuxSubPackage) and dep_pkg.parent == dep:
+                del pkg.deps[dep]
+
     # List of all TermuxPackages without dependencies
     leaf_pkgs = [pkg for name, pkg in pkgs_map.items() if not pkg.deps]
 
     if not leaf_pkgs:
+        for pkg in pkgs_map.values():
+            print(pkg.name + " -> " + str(pkg.deps), file=sys.stderr)
         die('No package without dependencies - where to start?')
 
     # Sort alphabetically:
@@ -282,25 +353,27 @@ def generate_full_buildorder(pkgs_map):
     remaining_deps = {}
     for name, pkg in pkgs_map.items():
         remaining_deps[name] = set(pkg.deps)
-        for subpkg in pkg.subpkgs:
-            remaining_deps[subpkg.name] = set(subpkg.deps)
+        if isinstance(pkg, TermuxPackage):
+            for subpkg in pkg.subpkgs:
+                remaining_deps[subpkg.name] = set(subpkg.deps)
 
     while pkg_queue:
         pkg = pkg_queue.pop(0)
         if pkg.name in visited:
             continue
 
-        # print("Processing {}:".format(pkg.name), pkg.needed_by)
         visited.add(pkg.name)
         build_order.append(pkg)
 
         for other_pkg in sorted(pkg.needed_by, key=lambda p: p.name):
             # Remove this pkg from deps
             remaining_deps[other_pkg.name].discard(pkg.name)
-            # ... and all its subpackages
-            remaining_deps[other_pkg.name].difference_update(
-                [subpkg.name for subpkg in pkg.subpkgs]
-            )
+
+            if isinstance(pkg, TermuxPackage):
+                # ... and all its subpackages
+                remaining_deps[other_pkg.name].difference_update(
+                    [subpkg.name for subpkg in pkg.subpkgs]
+                )
 
             if not remaining_deps[other_pkg.name]:  # all deps were already appended?
                 pkg_queue.append(other_pkg)  # should be processed
@@ -350,9 +423,6 @@ def main():
     else:
         full_buildorder = False
 
-    if fast_build_mode and full_buildorder:
-        die('-i mode does not work when building all packages')
-
     if not full_buildorder:
         for path in packages_directories:
             if not os.path.isdir(path):
@@ -374,8 +444,6 @@ def main():
 
     for pkg in build_order:
         pkg_name = pkg.name
-        if termux_global_library == "true" and termux_pkg_library == "glibc" and "glibc" not in pkg_name.split("-"):
-            pkg_name = add_prefix_glibc_to_pkgname(pkgname)
         print("%-30s %s" % (pkg_name, pkg.dir))
 
 if __name__ == '__main__':
