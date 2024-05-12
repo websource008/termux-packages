@@ -12,6 +12,16 @@ termux_download_deb_pac() {
 	elif [ "$TERMUX_REPO_PKG_FORMAT" = "pacman" ]; then
 		PKG_FILE="${PACKAGE}-${VERSION_PACMAN}-${PACKAGE_ARCH}.pkg.tar.xz"
 	fi
+
+	local WANTED_FILE="${TERMUX_COMMON_CACHEDIR}-${PACKAGE_ARCH}/${PKG_FILE}"
+
+	if [ -n "${TERMUX_LOCAL_DEPINSTALL+x}" ]; then
+		local LOCALLY_BUILT="$PWD/output/${PKG_FILE}"
+		echo "Using locally built: $LOCALLY_BUILT <- $WANTED_FILE"
+		ln -s -f "$LOCALLY_BUILT" "$WANTED_FILE"
+		return
+	fi
+
 	PKG_HASH=""
 
 	# Dependencies should be used from repo only if they are built for
@@ -117,7 +127,7 @@ termux_download_deb_pac() {
 	fi
 
 	termux_download "${TERMUX_REPO_URL[${idx}-1]}/${PKG_PATH}" \
-				"${TERMUX_COMMON_CACHEDIR}-${PACKAGE_ARCH}/${PKG_FILE}" \
+				"$WANTED_FILE" \
 				"$PKG_HASH"
 }
 
