@@ -8,6 +8,7 @@ TERMUX_PKG_SRCURL=https://downloads.sourceforge.net/project/vbisam/vbisam2/vbisa
 TERMUX_PKG_SHA256=688b776e0030cce50fd7e44cbe40398ea93431f76510c7100433cc6313eabc4f
 
 termux_step_pre_configure() {
+	CFLAGS+=" -Wno-implicit-int"
 	cp $TERMUX_PKG_BUILDER_DIR/efgcvt_r-template.c $TERMUX_PKG_SRCDIR/libvbisam/
 	cp $TERMUX_PKG_BUILDER_DIR/efgcvt-dbl-macros.h $TERMUX_PKG_SRCDIR/libvbisam/
 	autoreconf -fi
