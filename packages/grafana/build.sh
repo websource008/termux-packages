@@ -5,7 +5,6 @@ TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION=8.5.27
 TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=git+https://github.com/grafana/grafana
-TERMUX_PKG_BUILD_DEPENDS="yarn"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_EXTRA_MAKE_ARGS="SPEC_TARGET= MERGED_SPEC_TARGET="
 
@@ -25,14 +24,13 @@ termux_step_pre_configure() {
 		EOF
 	chmod 0755 $goexec
 
-	local yarn=$bin/yarn
-	cat > $yarn <<-EOF
-		#!$(command -v sh)
-		exec sh $TERMUX_PREFIX/bin/yarn "\$@"
-		EOF
-	chmod 0755 $yarn
-
-	export PATH=$bin:$PATH
+	local _YARN_VERSION=1.22.19
+	local _YARN_URL=https://yarnpkg.com/downloads/${_YARN_VERSION}/yarn-v${_YARN_VERSION}.tar.gz
+	termux_download $_YARN_URL "$TERMUX_PKG_CACHEDIR"/yarn-v${_YARN_VERSION}.tar.gz 732620bac8b1690d507274f025f3c6cfdc3627a84d9642e38a07452cc00e0f2e
+	cd "$TERMUX_PKG_TMPDIR"
+	tar xf "$TERMUX_PKG_CACHEDIR"/yarn-v${_YARN_VERSION}.tar.gz
+	PATH=$PWD/yarn-v$_YARN_VERSION/bin:$PATH
+	cd -
 
 	export NODE_OPTIONS=--max-old-space-size=6000
 	NODE_OPTIONS+=" --openssl-legacy-provider"
