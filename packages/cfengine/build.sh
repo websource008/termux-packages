@@ -47,7 +47,7 @@ termux_step_post_get_source() {
 
 termux_step_pre_configure() {
 	export EXPLICIT_VERSION=${TERMUX_PKG_VERSION#*:}
-	export 	NO_CONFIGURE=1 ./autogen.sh
+	NO_CONFIGURE=1 ./autogen.sh
 }
 
 termux_step_post_make_install() {
