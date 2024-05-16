@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION=3.0.9
 TERMUX_PKG_REVISION=2
 TERMUX_PKG_SRCURL=https://mirrors.kernel.org/gnu/guile/guile-$TERMUX_PKG_VERSION.tar.gz
 TERMUX_PKG_SHA256=18525079ad29a0d46d15c76581b5d91c8702301bfd821666d2e1d13726162811
-TERMUX_PKG_DEPENDS="libandroid-spawn, libandroid-support, libffi, libgc, libgmp, libiconv, libunistring, ncurses, readline"
+TERMUX_PKG_DEPENDS="libffi, libgc, libgmp, libiconv, libunistring, ncurses, readline"
 TERMUX_PKG_BUILD_DEPENDS="libtool"
 TERMUX_PKG_BREAKS="guile-dev"
 TERMUX_PKG_REPLACES="guile-dev"
@@ -18,7 +18,6 @@ TERMUX_PKG_BUILD_IN_SRC=true
 # https://github.com/termux/termux-packages/issues/14806
 TERMUX_PKG_NO_STRIP=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS+="
-LIBS=-landroid-spawn
 ac_cv_func_posix_spawn=yes
 ac_cv_func_posix_spawnp=yes
 gl_cv_func_posix_spawn_works=yes

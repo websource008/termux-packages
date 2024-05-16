@@ -9,7 +9,7 @@ TERMUX_PKG_SHA256=91b56c40b93eee9bda27ec63e95a6316d848e3ee047b5880ed71e5e8e60f61
 TERMUX_PKG_DEPENDS="ncurses"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-threads
-ac_cv_header_spawn_h=no
+ac_cv_func_posix_spawn=yes
 "
 
 termux_step_pre_configure() {

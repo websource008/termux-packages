@@ -8,9 +8,8 @@ TERMUX_PKG_VERSION=3.11.9
 TERMUX_PKG_SRCURL=https://www.python.org/ftp/python/${TERMUX_PKG_VERSION}/Python-${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=9b1e896523fc510691126c864406d9360a3d1e986acbda59cda57b5abda45b87
 TERMUX_PKG_AUTO_UPDATE=false
-TERMUX_PKG_DEPENDS="gdbm, libandroid-posix-semaphore, libandroid-support, libbz2, libcrypt, libexpat, libffi, liblzma, libsqlite, ncurses, ncurses-ui-libs, openssl, readline, zlib"
+TERMUX_PKG_DEPENDS="gdbm, libandroid-posix-semaphore,libbz2, libcrypt, libexpat, libffi, liblzma, libsqlite, ncurses, ncurses-ui-libs, openssl, readline, zlib"
 TERMUX_PKG_RECOMMENDS="python-ensurepip-wheels, python-pip"
-TERMUX_PKG_SUGGESTS="python-tkinter"
 TERMUX_PKG_BREAKS="python2 (<= 2.7.15), python-dev"
 TERMUX_PKG_REPLACES="python-dev"
 # Let "python3" will be alias to this package.
@@ -89,7 +88,7 @@ termux_step_post_make_install() {
 
 termux_step_post_massage() {
 	# Verify that desired modules have been included:
-	for module in _bz2 _curses _lzma _sqlite3 _ssl _tkinter zlib; do
+	for module in _bz2 _curses _lzma _sqlite3 _ssl zlib; do
 		if [ ! -f "${TERMUX_PREFIX}/lib/python${_MAJOR_VERSION}/lib-dynload/${module}".*.so ]; then
 			termux_error_exit "Python module library $module not built"
 		fi

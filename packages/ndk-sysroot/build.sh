@@ -4,15 +4,10 @@ TERMUX_PKG_LICENSE="NCSA"
 TERMUX_PKG_MAINTAINER="@termux"
 # Version should be equal to TERMUX_NDK_{VERSION_NUM,REVISION} in
 # scripts/properties.sh
-TERMUX_PKG_VERSION=26b
-TERMUX_PKG_REVISION=3
+TERMUX_PKG_VERSION=26c
 TERMUX_PKG_SRCURL=https://dl.google.com/android/repository/android-ndk-r${TERMUX_PKG_VERSION}-linux.zip
-TERMUX_PKG_SHA256=ad73c0370f0b0a87d1671ed2fd5a9ac9acfd1eb5c43a7fbfbd330f85d19dd632
+TERMUX_PKG_SHA256=6d6e659834d28bb24ba7ae66148ad05115ebbad7dabed1af9b3265674774fcf6
 TERMUX_PKG_AUTO_UPDATE=false
-# This package has taken over <pty.h> from the previous libutil-dev
-# and iconv.h from libandroid-support-dev:
-TERMUX_PKG_CONFLICTS="libutil-dev, libgcc, libandroid-support-dev"
-TERMUX_PKG_REPLACES="libutil-dev, libgcc, libandroid-support-dev, ndk-stl"
 TERMUX_PKG_NO_STATICSPLIT=true
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_RM_AFTER_INSTALL="
@@ -22,9 +17,7 @@ include/GLES2
 include/GLES3
 include/KHR/khrplatform.h
 include/execinfo.h
-include/glob.h
 include/iconv.h
-include/spawn.h
 include/sys/capability.h
 include/sys/sem.h
 include/sys/shm.h

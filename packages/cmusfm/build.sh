@@ -7,9 +7,8 @@ TERMUX_PKG_SRCURL=https://github.com/Arkq/cmusfm/archive/refs/tags/v${TERMUX_PKG
 TERMUX_PKG_SHA256=17aae8fc805e79b367053ad170854edceee5f4c51a9880200d193db9862d8363
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_UPDATE_TAG_TYPE="newest-tag"
-TERMUX_PKG_DEPENDS="libandroid-spawn, libcurl, openssl"
+TERMUX_PKG_DEPENDS="libcurl, openssl"
 
 termux_step_pre_configure() {
-	LDFLAGS+=" -landroid-spawn"
 	autoreconf --force --install
 }

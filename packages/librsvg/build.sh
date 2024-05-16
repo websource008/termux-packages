@@ -14,7 +14,7 @@ TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 ac_cv_path_GDK_PIXBUF_QUERYLOADERS=$TERMUX_PREFIX/bin/gdk-pixbuf-query-loaders
 --disable-gtk-doc
---enable-introspection
+--disable-introspection
 --disable-static
 "
 

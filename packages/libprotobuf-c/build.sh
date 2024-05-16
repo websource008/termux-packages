@@ -8,6 +8,7 @@ TERMUX_PKG_SRCURL=https://github.com/protobuf-c/protobuf-c/releases/download/v${
 TERMUX_PKG_SHA256=7b404c63361ed35b3667aec75cc37b54298d56dd2bcf369de3373212cc06fd98
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="abseil-cpp, libc++, libprotobuf, protobuf"
+TERMUX_PKG_BUILD_DEPENDS="libutf8-range"
 TERMUX_PKG_BREAKS="libprotobuf-c-dev"
 TERMUX_PKG_REPLACES="libprotobuf-c-dev"
 

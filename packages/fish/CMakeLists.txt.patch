@@ -12,12 +12,3 @@
  # Force colored warnings in Ninja's output, if the compiler has -fdiagnostics-color support.
  # Rationale in https://github.com/ninja-build/ninja/issues/814
  if (CMAKE_GENERATOR STREQUAL "Ninja" AND
-@@ -185,7 +180,7 @@
- target_sources(fishlib PRIVATE ${FISH_HEADERS})
- target_link_libraries(fishlib
-   ${CURSES_LIBRARY} ${CURSES_EXTRA_LIBRARY} Threads::Threads ${CMAKE_DL_LIBS}
--  ${PCRE2_LIB} ${Intl_LIBRARIES} ${ATOMIC_LIBRARY})
-+  ${PCRE2_LIB} ${Intl_LIBRARIES} ${ATOMIC_LIBRARY} -landroid-spawn)
- target_include_directories(fishlib PRIVATE
-   ${CURSES_INCLUDE_DIRS})
- 

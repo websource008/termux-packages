@@ -1,0 +1,13 @@
+https://github.com/termux/termux-auth/pull/6
+
+diff -u -r ../termux-auth-1.4/pwlogin.c ./pwlogin.c
+--- ../termux-auth-1.4/pwlogin.c	2020-10-30 22:06:53.000000000 +0000
++++ ./pwlogin.c	2024-05-15 16:55:25.194068176 +0000
+@@ -19,6 +19,7 @@
+ #include <libgen.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <string.h>
+ #include <sys/stat.h>
+ #include <sys/wait.h>
+ #include <unistd.h>

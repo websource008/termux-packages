@@ -9,7 +9,7 @@ TERMUX_PKG_SHA256=614c9f5643cd0799df391395fa6bbc3649427bb839722ce3b114d3bbc1a3b2
 TERMUX_PKG_AUTO_UPDATE=true
 # fish calls 'tput' from ncurses-utils, at least when cancelling (Ctrl+C) a command line.
 # man is needed since fish calls apropos during command completion.
-TERMUX_PKG_DEPENDS="bc, libandroid-support, libandroid-spawn, libc++, ncurses, ncurses-utils, man, pcre2"
+TERMUX_PKG_DEPENDS="bc, libc++, ncurses, ncurses-utils, man, pcre2"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -DBUILD_DOCS=OFF

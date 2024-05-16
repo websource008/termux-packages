@@ -1,10 +1,11 @@
 --- a/http.c
 +++ b/http.c
-@@ -48,6 +48,8 @@
+@@ -48,6 +48,9 @@
  #include <limits.h>
  #include <sys/uio.h>
  
 +#include <crypt.h>
++#include <sys/random.h> /* for getentropy */
 +
  #include "havealloca.h"
  

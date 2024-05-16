@@ -7,14 +7,10 @@ TERMUX_PKG_SRCURL=https://github.com/falconindy/pkgfile/archive/refs/tags/v${TER
 TERMUX_PKG_SHA256=809d75738cae785839950c85371ac087bc3b450eed497a565eca01b653f254a5
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_UPDATE_TAG_TYPE="newest-tag"
-TERMUX_PKG_DEPENDS="libandroid-glob, libarchive, libcurl, pcre"
+TERMUX_PKG_DEPENDS="libarchive, libcurl, pcre"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dsystemd_units=false
 "
-
-termux_step_pre_configure() {
-	LDFLAGS+=" -landroid-glob"
-}
 
 termux_step_create_debscripts() {
 	cat <<- EOF > ./postinst

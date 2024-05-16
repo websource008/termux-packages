@@ -5,8 +5,7 @@ TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="0.191"
 TERMUX_PKG_SRCURL="https://sourceware.org/elfutils/ftp/${TERMUX_PKG_VERSION}/elfutils-${TERMUX_PKG_VERSION}.tar.bz2"
 TERMUX_PKG_SHA256=df76db71366d1d708365fc7a6c60ca48398f14367eb2b8954efc8897147ad871
-# libandroid-support for langinfo.
-TERMUX_PKG_DEPENDS="libandroid-support, zlib, zstd"
+TERMUX_PKG_DEPENDS="zlib, zstd"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="ac_cv_c99=yes --disable-symbol-versioning"
 TERMUX_PKG_CONFLICTS="libelf-dev"
 TERMUX_PKG_REPLACES="libelf-dev"
@@ -25,7 +24,6 @@ termux_step_pre_configure() {
 		CFLAGS="${CFLAGS/-Oz/-O1}"
 	fi
 
-	cp $TERMUX_PKG_BUILDER_DIR/stdio_ext.h .
 	cp $TERMUX_PKG_BUILDER_DIR/obstack.h .
 	cp $TERMUX_PKG_BUILDER_DIR/qsort_r.h .
 	cp $TERMUX_PKG_BUILDER_DIR/aligned_alloc.c libelf

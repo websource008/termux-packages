@@ -5,7 +5,7 @@ TERMUX_PKG_MAINTAINER="@Maxython <mixython@gmail.com>"
 TERMUX_PKG_VERSION=6.1.0
 TERMUX_PKG_SRCURL=https://gitlab.archlinux.org/pacman/pacman/-/releases/v${TERMUX_PKG_VERSION}/downloads/pacman-${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=5a60ac6e6bf995ba6140c7d038c34448df1f3daa4ae7141d2cad88eeb5f1f9d9
-TERMUX_PKG_DEPENDS="bash, curl, gpgme, libandroid-glob, libarchive, libcurl, openssl, termux-licenses, termux-keyring"
+TERMUX_PKG_DEPENDS="bash, curl, gpgme, libarchive, libcurl, openssl, termux-licenses, termux-keyring"
 TERMUX_PKG_BUILD_DEPENDS="doxygen, asciidoc, nettle"
 TERMUX_PKG_GROUPS="base-devel"
 TERMUX_PKG_CONFFILES="etc/pacman.conf, etc/pacman.d/serverlist, etc/makepkg.conf, var/log/pacman.log"
@@ -24,10 +24,6 @@ termux_step_pre_configure() {
 	rm -f ./scripts/libmakepkg/executable/fakeroot.sh.in
 
 	sed -i "s/@TERMUX_ARCH@/${TERMUX_ARCH}/" ./etc/{pacman,makepkg}.conf.in
-}
-
-termux_step_post_configure() {
-	sed -i 's/$ARGS -o $out $in $LINK_ARGS/$ARGS -o $out $in $LINK_ARGS -landroid-glob/' ${TERMUX_PKG_BUILDDIR}/build.ninja
 }
 
 termux_step_post_make_install() {

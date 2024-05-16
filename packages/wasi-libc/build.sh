@@ -3,19 +3,19 @@ TERMUX_PKG_DESCRIPTION="Libc for WebAssembly programs built on top of WASI syste
 TERMUX_PKG_LICENSE="Apache-2.0, BSD 2-Clause, MIT"
 TERMUX_PKG_LICENSE_FILE="LICENSE, src/wasi-libc/LICENSE-MIT, src/wasi-libc/libc-bottom-half/cloudlibc/LICENSE"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION=20
+TERMUX_PKG_VERSION=22
 TERMUX_PKG_SRCURL=https://github.com/WebAssembly/wasi-sdk/archive/refs/tags/wasi-sdk-${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=28f317520d9b522134f7a014b84833d91ab1329fbd697bad05aa4fcfa2746c83
+TERMUX_PKG_SHA256=ba96ddde7d10a9e4e559d55ece20a03687519da3cb50e7bbb4f504989b471705
 TERMUX_PKG_PLATFORM_INDEPENDENT=true
 TERMUX_PKG_NO_STATICSPLIT=true
 TERMUX_PKG_BUILD_IN_SRC=true
 
 termux_step_post_get_source() {
 	local WASI_LIBC_SRCURL="https://github.com/WebAssembly/wasi-libc/archive/refs/tags/wasi-sdk-${TERMUX_PKG_VERSION}.tar.gz"
-	local WASI_LIBC_SHA256=0a1c09c8c1da62a1ba214254ff4c9db6b60979c00f648a5eae33831d6ee2840e
+	local WASI_LIBC_SHA256=7efede97bd490c336a6fff4252dffaef5247149d74e4208865cd5e59908d529d
 	local LLVM_VERSION=$(. "${TERMUX_SCRIPTDIR}/packages/libllvm/build.sh"; echo ${TERMUX_PKG_VERSION})
 	local LLVM_SRCURL="https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VERSION}/llvm-project-${LLVM_VERSION}.src.tar.xz"
-	local LLVM_SHA256=be5a1e44d64f306bb44fce7d36e3b3993694e8e6122b2348608906283c176db8
+	local LLVM_SHA256=3591a52761a7d390ede51af01ea73abfecc4b1d16445f9d019b67a57edd7de56
 
 	termux_download \
 		"${WASI_LIBC_SRCURL}" \
@@ -36,6 +36,10 @@ termux_step_post_get_source() {
 termux_step_pre_configure() {
 	termux_setup_cmake
 	termux_setup_ninja
+	termux_setup_rust
+
+	export WASI_VERSION=$TERMUX_PKG_VERSION
+	export WASI_VERSION_FULL=${WASI_VERSION}.0
 
 	if [[ "${TERMUX_ON_DEVICE_BUILD}" == "false" ]]; then
 		# https://github.com/android/ndk/issues/1960

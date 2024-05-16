@@ -8,8 +8,8 @@ _COMMIT=82234f890786d49c49cf4ecbcb09c47bd9bea7ed
 TERMUX_PKG_SRCURL=https://github.com/openjdk/mobile/archive/$_COMMIT.tar.gz
 TERMUX_PKG_SHA256=5b298148a26e754120c6dfe699056d0609fc6ed92bfc858dc2ba4909ef6e791b
 TERMUX_PKG_AUTO_UPDATE=false
-TERMUX_PKG_DEPENDS="libiconv, libjpeg-turbo, zlib, libandroid-spawn"
-TERMUX_PKG_BUILD_DEPENDS="cups, libandroid-spawn, libandroid-shmem, xorgproto"
+TERMUX_PKG_DEPENDS="libiconv, libjpeg-turbo, zlib"
+TERMUX_PKG_BUILD_DEPENDS="cups, libandroid-shmem"
 # openjdk-17-x is recommended because X11 separation is still very experimental.
 TERMUX_PKG_RECOMMENDS="ca-certificates-java, openjdk-17-x, resolv-conf"
 TERMUX_PKG_SUGGESTS="cups"
@@ -31,7 +31,7 @@ termux_step_configure() {
 		--with-debug-level=release \
 		--with-extra-cflags="$CFLAGS $CPPFLAGS -DLE_STANDALONE -D__ANDROID__=1 -D__TERMUX__=1" \
 		--with-extra-cxxflags="$CXXFLAGS $CPPFLAGS -DLE_STANDALONE -D__ANDROID__=1 -D__TERMUX__=1" \
-		--with-extra-ldflags="${jdk_ldflags} -Wl,--as-needed -landroid-shmem -landroid-spawn" \
+		--with-extra-ldflags="${jdk_ldflags} -Wl,--as-needed -landroid-shmem" \
 		--with-fontconfig-include="$TERMUX_PREFIX/include" \
 		--with-freetype-include="$TERMUX_PREFIX/include/freetype2" \
 		--with-freetype-lib="$TERMUX_PREFIX/lib" \
@@ -40,10 +40,8 @@ termux_step_configure() {
 		--with-libjpeg=system \
 		--with-libpng=system \
 		--with-toolchain-type=clang \
-		--with-x="$TERMUX_PREFIX/include/X11" \
+		--without-x \
 		--with-zlib=system \
-		--x-includes="$TERMUX_PREFIX/include/X11" \
-		--x-libraries="$TERMUX_PREFIX/lib" \
 		AR="$AR" \
 		NM="$NM" \
 		OBJCOPY="$OBJCOPY" \

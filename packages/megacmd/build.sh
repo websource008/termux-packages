@@ -9,7 +9,7 @@ TERMUX_PKG_GIT_BRANCH=${TERMUX_PKG_VERSION}_Linux
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_UPDATE_VERSION_REGEXP="\d+\.\d+\.\d+"
 # dbus is required for $PREFIX/var/lib/dbus/machine-id
-TERMUX_PKG_DEPENDS="c-ares, cryptopp, dbus, ffmpeg, freeimage, libandroid-glob, libc++, libcurl, libsodium, libsqlite, libuv, mediainfo, openssl, pcre, readline, zlib"
+TERMUX_PKG_DEPENDS="c-ares, cryptopp, dbus, ffmpeg, freeimage, libc++, libcurl, libsodium, libsqlite, libuv, mediainfo, openssl, pcre, readline, zlib"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-static
@@ -33,8 +33,7 @@ termux_step_pre_configure() {
 
 	export OBJCXX="$CXX"
 
-	LDFLAGS+=" -landroid-glob"
-	LDFLAGS+=" $($CC -print-libgcc-file-name)"
+		LDFLAGS+=" $($CC -print-libgcc-file-name)"
 
 	# Fix build against FFmpeg 6.0:
 	CPPFLAGS+=" -DCODEC_CAP_TRUNCATED=0"

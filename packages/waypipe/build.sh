@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION="0.9.0"
 TERMUX_PKG_SRCURL=https://gitlab.freedesktop.org/mstoeckl/waypipe/-/archive/v${TERMUX_PKG_VERSION}/waypipe-v${TERMUX_PKG_VERSION}.tar.bz2
 TERMUX_PKG_SHA256=79d5e8c534e190b0f076ae2e9cd711881d31efc58dbbd6326b477f3ed5a99807
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="libandroid-spawn, liblz4, zstd"
+TERMUX_PKG_DEPENDS="liblz4, zstd"
 TERMUX_PKG_BUILD_DEPENDS="ffmpeg"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dwith_video=enabled
@@ -16,7 +16,3 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dwith_vaapi=disabled
 -Dwith_systemtap=false
 "
-
-termux_step_pre_configure() {
-	LDFLAGS+=" -landroid-spawn"
-}

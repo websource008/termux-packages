@@ -9,7 +9,7 @@
  
  EXDIR   = $(prefix)/bin
  HELPDIR = $(prefix)/share/$(name)
-@@ -20,10 +20,11 @@
+@@ -20,10 +20,10 @@
  
  # Change these to your liking or use `make CC=gcc` etc
  #CC   = cc
@@ -18,7 +18,6 @@
  #SED  = sed
  
  LDLIBS += -lm
-+LDLIBS += -landroid-support
  
  CFLAGS += -Wall -g
  CFLAGS += -DNCURSES

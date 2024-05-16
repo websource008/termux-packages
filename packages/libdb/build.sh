@@ -17,6 +17,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --enable-smallbuild
 --enable-compat185
 db_cv_atomic=gcc-builtin
+ac_cv_func_shmget=no
 --enable-cxx
 "
 

@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION=4.16.11
 TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://download.samba.org/pub/samba/samba-${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=5218878cdcc01aa8e83d2c84ad16c5f37a01ea5e1a93f640f9ee282053c46e12
-TERMUX_PKG_DEPENDS="krb5, libandroid-execinfo, libandroid-spawn, libbsd, libcap, libcrypt, libgnutls, libiconv, libicu, libpopt, libtalloc, libtasn1, libtirpc, ncurses, openssl, readline, tdb-tools, zlib"
+TERMUX_PKG_DEPENDS="krb5, libandroid-execinfo, libbsd, libcap, libcrypt, libgnutls, libiconv, libicu, libpopt, libtalloc, libtasn1, libtirpc, ncurses, openssl, readline, tdb-tools, zlib"
 TERMUX_PKG_BUILD_DEPENDS="e2fsprogs"
 TERMUX_PKG_BUILD_IN_SRC=true
 
@@ -24,7 +24,6 @@ share/man/man8/tdbtool.8.gz
 
 termux_step_pre_configure() {
 	CPPFLAGS+=" -D_FILE_OFFSET_BITS=64"
-	LDFLAGS+=" -landroid-spawn"
 }
 
 termux_step_configure() {

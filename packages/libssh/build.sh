@@ -15,5 +15,5 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 "
 
 termux_step_pre_configure() {
-	CPPFLAGS+=" -D__USE_GNU"
+	CPPFLAGS+=" -D__USE_GNU -D__USE_BSD"
 }

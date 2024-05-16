@@ -6,7 +6,7 @@ TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="7.7.0"
 TERMUX_PKG_SRCURL=https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=529b067f5d80981f45ddf6766627b8fc5af619822f068f342aab776e683df4f3
-TERMUX_PKG_DEPENDS="libandroid-complex-math, libgmp, libmpfr, libopenblas"
+TERMUX_PKG_DEPENDS="libgmp, libmpfr, libopenblas"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_FORCE_CMAKE=true
 TERMUX_PKG_AUTO_UPDATE=true
@@ -23,7 +23,7 @@ termux_step_configure() {
 	termux_setup_ninja
 	termux_setup_flang
 
-	LDFLAGS+=" -landroid-complex-math -lm"
+	LDFLAGS+=" -lm"
 }
 
 termux_step_make() {

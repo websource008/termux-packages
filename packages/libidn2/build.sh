@@ -5,6 +5,6 @@ TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="2.3.7"
 TERMUX_PKG_SRCURL=https://mirrors.kernel.org/gnu/libidn/libidn2-$TERMUX_PKG_VERSION.tar.gz
 TERMUX_PKG_SHA256=4c21a791b610b9519b9d0e12b8097bf2f359b12f8dd92647611a929e6bfd7d64
-TERMUX_PKG_DEPENDS="libandroid-support, libiconv, libunistring"
+TERMUX_PKG_DEPENDS="libiconv, libunistring"
 TERMUX_PKG_BREAKS="libidn2-dev"
 TERMUX_PKG_REPLACES="libidn2-dev"

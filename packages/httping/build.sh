@@ -7,4 +7,4 @@ TERMUX_PKG_SRCURL=https://github.com/folkertvanheusden/HTTPing/archive/refs/tags
 TERMUX_PKG_SHA256=d332fc5436bcf8290bcb4fe75b7019b90facfb64264dc3c7bc3407da27c18d77
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_BUILD_IN_SRC=true
-TERMUX_PKG_DEPENDS="fftw, libandroid-support, ncurses, openssl"
+TERMUX_PKG_DEPENDS="fftw,ncurses, openssl"

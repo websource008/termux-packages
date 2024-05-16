@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION=0.11.2
 TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://github.com/tstack/lnav/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=03b72fd02faccdbf98fcdeba62306794b677b8bcf49d6023117808f88ed627dc
-TERMUX_PKG_DEPENDS="libandroid-execinfo, libandroid-glob, libandroid-utimes, libarchive, libbz2, libc++, libcurl, libsqlite, ncurses, pcre2, readline, zlib"
+TERMUX_PKG_DEPENDS="libandroid-execinfo, libarchive, libbz2, libc++, libcurl, libsqlite, ncurses, pcre2, readline, zlib"
 
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-system-paths
@@ -16,6 +16,4 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 
 termux_step_pre_configure() {
 	autoreconf -fi
-
-	LDFLAGS+=" -landroid-glob -landroid-utimes"
 }

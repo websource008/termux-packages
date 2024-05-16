@@ -11,7 +11,7 @@ TERMUX_PKG_SRCURL=(https://github.com/MacPaw/XADMaster/archive/v${TERMUX_PKG_VER
 TERMUX_PKG_SHA256=(3d766dc1856d04a8fb6de9942a6220d754d0fa7eae635d5287e7b1cf794c4f45
                    8e8532111d0163628eb828a60d67b53133afad3f710b1967e69d3b8eee28a811)
 TERMUX_PKG_AUTO_UPDATE=false
-TERMUX_PKG_DEPENDS="libandroid-utimes, libbz2, libc++, libgnustep-base, libicu, libwavpack, zlib"
+TERMUX_PKG_DEPENDS="libbz2, libc++, libgnustep-base, libicu, libwavpack, zlib"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_EXTRA_MAKE_ARGS="-e -f Makefile.linux"
 
@@ -24,7 +24,6 @@ termux_step_pre_configure() {
 	CXXFLAGS+=" $CPPFLAGS"
 	export OBJCC="$CC"
 	export OBJCFLAGS="$CFLAGS -fobjc-nonfragile-abi"
-	export LDFLAGS+=" -landroid-utimes"
 	LD="$CXX"
 }
 

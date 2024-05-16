@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION="3.3.5"
 TERMUX_PKG_SRCURL=https://gmic.eu/files/source/gmic_$TERMUX_PKG_VERSION.tar.gz
 TERMUX_PKG_SHA256=052456e0d9dd6a3c1e102a857ae32150ee6d5cb02a1d2f810c197ec490e56c1b
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="fftw, imath, libc++, libcurl, libjpeg-turbo, libpng, libtiff, libx11, openexr, zlib"
+TERMUX_PKG_DEPENDS="fftw, imath, libc++, libcurl, libjpeg-turbo, libpng, libtiff, openexr, zlib"
 TERMUX_PKG_BUILD_DEPENDS="graphicsmagick"
 TERMUX_PKG_BUILD_IN_SRC=true
 

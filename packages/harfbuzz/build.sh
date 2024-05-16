@@ -15,7 +15,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dcpp_std=c++17
 -Dgobject=enabled
 -Dgraphite=enabled
--Dintrospection=enabled
+-Dintrospection=disabled
 -Dtests=disabled
 "
 TERMUX_PKG_RM_AFTER_INSTALL="

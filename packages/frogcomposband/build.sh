@@ -12,6 +12,7 @@ TERMUX_PKG_RM_AFTER_INSTALL="share/angband/xtra share/angband/icons"
 
 termux_step_pre_configure () {
 	./autogen.sh
+	chmod +x configure
 	perl -p -i -e 's|ncursesw5-config|ncursesw6-config|g' configure
 }
 

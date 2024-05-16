@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION="4.9"
 TERMUX_PKG_SRCURL=https://github.com/jarun/nnn/archive/v${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=9e25465a856d3ba626d6163046669c0d4010d520f2fb848b0d611e1ec6af1b22
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="file, findutils, readline, wget, libandroid-support, lzip"
+TERMUX_PKG_DEPENDS="file, findutils, readline, wget,lzip"
 TERMUX_PKG_BUILD_IN_SRC=true
 
 termux_step_post_make_install() {

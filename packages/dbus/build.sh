@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION=1.15.6
 TERMUX_PKG_REVISION=3
 TERMUX_PKG_SRCURL="https://dbus.freedesktop.org/releases/dbus/dbus-$TERMUX_PKG_VERSION.tar.xz"
 TERMUX_PKG_SHA256=f97f5845f9c4a5a1fb3df67dfa9e16b5a3fd545d348d6dc850cb7ccc9942bd8c
-TERMUX_PKG_DEPENDS="libexpat, libx11"
+TERMUX_PKG_DEPENDS="libexpat"
 TERMUX_PKG_BREAKS="dbus-dev"
 TERMUX_PKG_REPLACES="dbus-dev"
 TERMUX_PKG_BUILD_IN_SRC=true
@@ -17,10 +17,8 @@ ac_cv_func_close_range=no
 --disable-libaudit
 --disable-systemd
 --disable-tests
---enable-x11-autolaunch
 --with-test-socket-dir=$TERMUX_PREFIX/tmp
 --with-session-socket-dir=$TERMUX_PREFIX/tmp
---with-x=auto
 "
 
 termux_step_pre_configure() {

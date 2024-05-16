@@ -7,10 +7,9 @@ TERMUX_PKG_VERSION="7.3.15"
 TERMUX_PKG_SRCURL=https://downloads.python.org/pypy/pypy$_MAJOR_VERSION-v$TERMUX_PKG_VERSION-src.tar.bz2
 TERMUX_PKG_SHA256=9e1a10d75eea8830f95035063e107bc7e4252a0b473407c929bf3d132ce6737f
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="gdbm, libandroid-posix-semaphore, libandroid-support, libbz2, libcrypt, libexpat, libffi, liblzma, libsqlite, ncurses, ncurses-ui-libs, openssl, zlib"
-TERMUX_PKG_BUILD_DEPENDS="binutils, clang, dash, make, ndk-multilib, pkg-config, python2, tk, xorgproto"
+TERMUX_PKG_DEPENDS="gdbm, libandroid-posix-semaphore,libbz2, libcrypt, libexpat, libffi, liblzma, libsqlite, ncurses, ncurses-ui-libs, openssl, zlib"
+TERMUX_PKG_BUILD_DEPENDS="binutils, clang, dash, make, ndk-multilib, pkg-config, python2"
 TERMUX_PKG_RECOMMENDS="clang, make, pkg-config"
-TERMUX_PKG_SUGGESTS="pypy-tkinter"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_RM_AFTER_INSTALL="
 opt/pypy/lib-python/${_MAJOR_VERSION}/test

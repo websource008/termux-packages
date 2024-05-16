@@ -8,7 +8,7 @@ TERMUX_PKG_SHA256=7d4cfa2bfff93d5fc89fc89e537d2c072e08918276b140b7ed48ea45ebfbe8
 TERMUX_PKG_PLATFORM_INDEPENDENT=true
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_CONFLICTS="termux-tools (<< 0.51)"
-_GRADLE_VERSION=7.5
+_GRADLE_VERSION=8.7
 
 termux_step_post_get_source() {
 	sed -i'' -E -e "s|\@TERMUX_PREFIX\@|${TERMUX_PREFIX}|g" "$TERMUX_PKG_SRCDIR/am-libexec-packaged"
@@ -20,7 +20,7 @@ termux_step_make() {
 	termux_download \
 		https://services.gradle.org/distributions/gradle-$_GRADLE_VERSION-bin.zip \
 		$TERMUX_PKG_CACHEDIR/gradle-$_GRADLE_VERSION-bin.zip \
-		cb87f222c5585bd46838ad4db78463a5c5f3d336e5e2b98dc7c0c586527351c2
+		544c35d6bd849ae8a5ed0bcea39ba677dc40f49df7d1835561582da2009b961d
 	mkdir $TERMUX_PKG_TMPDIR/gradle
 	unzip -q $TERMUX_PKG_CACHEDIR/gradle-$_GRADLE_VERSION-bin.zip -d $TERMUX_PKG_TMPDIR/gradle
 
@@ -31,7 +31,12 @@ termux_step_make() {
 	export ANDROID_HOME
 	export GRADLE_OPTS="-Dorg.gradle.daemon=false -Xmx1536m -Dorg.gradle.java.home=/usr/lib/jvm/java-1.17.0-openjdk-amd64"
 
-	$TERMUX_PKG_TMPDIR/gradle/gradle-$_GRADLE_VERSION/bin/gradle \
+	# Why 'echo -n |'? See https://github.com/gradle/gradle/issues/14961 -
+	# the build can hang otherwise.
+	echo -n | $TERMUX_PKG_TMPDIR/gradle/gradle-$_GRADLE_VERSION/bin/gradle \
+		--parallel \
+		--console=plain \
+		--no-daemon \
 		:app:assembleRelease
 }
 

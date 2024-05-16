@@ -7,7 +7,6 @@ TERMUX_PKG_SRCURL="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/${TER
 TERMUX_PKG_SHA256=bcd2a0327ad40592a9c43e09a4d2ef834e6f17aa9a59012a5fb1007950b5eced
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_UPDATE_TAG_TYPE="newest-tag"
-TERMUX_PKG_DEPENDS="libandroid-support"
 TERMUX_PKG_BUILD_IN_SRC=true
 
 termux_step_make() {

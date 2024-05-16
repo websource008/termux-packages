@@ -18,6 +18,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --prefix=${TERMUX_PKG_SRCDIR}/depends/$TERMUX_HOST_PLATFORM
 --bindir=$TERMUX_PREFIX/bin
 --mandir=$TERMUX_PREFIX/share/man
+ac_cv_func_shmget=no
 "
 
 termux_step_pre_configure() {

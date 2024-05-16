@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION="3.37.3670"
 _VERSION=$(echo "${TERMUX_PKG_VERSION}" | sed 's/\./-/2')
 TERMUX_PKG_SRCURL=https://github.com/tsduck/tsduck/archive/refs/tags/v${_VERSION}.tar.gz
 TERMUX_PKG_SHA256=dbb7c654330108c509f2d8a97fe0346e3a1f55ad959e13dcee4a40dd04507886
-TERMUX_PKG_DEPENDS="libandroid-glob, libc++, libcurl, libedit"
+TERMUX_PKG_DEPENDS="libc++, libcurl, libedit"
 TERMUX_PKG_HOSTBUILD=true
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_AUTO_UPDATE=true
@@ -61,8 +61,7 @@ termux_step_pre_configure() {
 	PATH=$TERMUX_PKG_HOSTBUILD_DIR/bin/release:$PATH
 
 	CXXFLAGS+=" -fno-strict-aliasing"
-	LDFLAGS+=" -landroid-glob"
-}
+	}
 
 termux_step_make() {
 	sed \

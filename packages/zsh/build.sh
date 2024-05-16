@@ -9,7 +9,7 @@ TERMUX_PKG_SRCURL="https://sourceforge.net/projects/zsh/files/zsh/$TERMUX_PKG_VE
 TERMUX_PKG_SHA256=9b8d1ecedd5b5e81fbf1918e876752a7dd948e05c1a0dba10ab863842d45acd5
 # Remove hard link to bin/zsh as Android does not support hard links:
 TERMUX_PKG_RM_AFTER_INSTALL="bin/zsh-${TERMUX_PKG_VERSION}"
-TERMUX_PKG_DEPENDS="libandroid-support, libcap, ncurses, termux-tools, command-not-found, pcre"
+TERMUX_PKG_DEPENDS="libcap, ncurses, termux-tools, command-not-found, pcre"
 TERMUX_PKG_RECOMMENDS="command-not-found, zsh-completions"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-gdbm

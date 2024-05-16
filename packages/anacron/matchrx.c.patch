@@ -1,0 +1,11 @@
+diff -u -r ../cache/anacron-2.3/matchrx.c ./matchrx.c
+--- ../cache/anacron-2.3/matchrx.c	2000-06-20 23:12:18.000000000 +0000
++++ ./matchrx.c	2024-05-14 13:14:25.427055370 +0000
+@@ -26,6 +26,7 @@
+ #include <regex.h>
+ #include <stdarg.h>
+ #include <stdlib.h>
++#include <string.h>
+ #include "matchrx.h"
+ 
+ int

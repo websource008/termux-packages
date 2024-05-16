@@ -1,0 +1,63 @@
+diff -u -r ../libuv-v1.48.0/src/unix/procfs-exepath.c ./src/unix/procfs-exepath.c
+--- ../libuv-v1.48.0/src/unix/procfs-exepath.c	2024-02-07 20:20:07.000000000 +0000
++++ ./src/unix/procfs-exepath.c	2024-05-15 15:16:49.922665849 +0000
+@@ -24,8 +24,51 @@
+ 
+ #include <stddef.h>
+ #include <unistd.h>
+ 
+ int uv_exepath(char* buffer, size_t* size) {
++#ifdef __ANDROID__
++  // Read arg0 from /proc/self/cmdline instead of resolving
++  // /proc/self/exec, as it does not work with termux-exec.
++  
++  const int BUFSIZE = 4096;
++  char arg_buffer[BUFSIZE];
++
++  int fd = open("/proc/self/cmdline", O_RDONLY);
++  if (fd < 0) {
++    return UV_EIO;
++  }
++  int num_bytes_read = read(fd, arg_buffer, BUFSIZE);
++  close(fd);
++  if (num_bytes_read <= 0) {
++    return UV_EIO;
++  }
++  int bytes_skipped = 0;
++  char* p = arg_buffer;
++  while (1) {
++    char skipped_char = *p++;
++    bytes_skipped++;
++    if (bytes_skipped == num_bytes_read) {
++      return UV_EIO;
++    }
++    if (!skipped_char) {
++      break;
++    }
++  }
++  int start_offset = bytes_skipped;
++  while (1) {
++    char skipped_char = *p++;
++    if (skipped_char) {
++      buffer[bytes_skipped - start_offset] = skipped_char;
++    } else {
++      break;
++    }
++    bytes_skipped++;
++    if (bytes_skipped == num_bytes_read) {
++      return UV_EIO;
++    }
++  }
++  *size = bytes_skipped - start_offset;
++#else
+   ssize_t n;
+ 
+   if (buffer == NULL || size == NULL || *size == 0)
+@@ -40,6 +91,7 @@
+ 
+   buffer[n] = '\0';
+   *size = n;
++#endif
+ 
+   return 0;
+ }

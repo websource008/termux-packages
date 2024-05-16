@@ -9,7 +9,6 @@ TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="gettext, libgc, ncurses, readline"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
-ac_cv_header_glob_h=no
 --disable-hserver
 --disable-threads
 --with-sysroot=$TERMUX_BASE_DIR

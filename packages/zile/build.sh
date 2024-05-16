@@ -8,7 +8,6 @@ TERMUX_PKG_SHA256=77eb7daff3c98bdc88daa1ac040dccca72b81dc32fc3166e079dd7a63e42c7
 TERMUX_PKG_DEPENDS="glib, libgee, ncurses"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
-ac_cv_header_spawn_h=no
 gl_cv_have_weak=no
 "
 

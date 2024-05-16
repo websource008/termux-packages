@@ -7,7 +7,6 @@ TERMUX_PKG_SRCURL=https://github.com/OpenPrinting/cups/releases/download/v${TERM
 TERMUX_PKG_SHA256=75c326b4ba73975efcc9a25078c4b04cdb4ee333caaad0d0823dbd522c6479a0
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="libc++, libcrypt, libgnutls, libiconv, zlib"
-TERMUX_PKG_BUILD_DEPENDS="libandroid-spawn"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --with-tls=gnutls

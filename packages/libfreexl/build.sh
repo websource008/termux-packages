@@ -7,3 +7,6 @@ TERMUX_PKG_SRCURL=https://www.gaia-gis.it/gaia-sins/freexl-sources/freexl-${TERM
 TERMUX_PKG_SHA256=176705f1de58ab7c1eebbf5c6de46ab76fcd8b856508dbd28f5648f7c6e1a7f0
 TERMUX_PKG_DEPENDS="libiconv, libminizip, libexpat"
 TERMUX_PKG_GROUPS="science"
+TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
+ac_cv_search_iconv=-liconv
+"

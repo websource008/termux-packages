@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION="11.0.0"
 TERMUX_PKG_SRCURL=https://gitlab.com/graphviz/graphviz/-/archive/$TERMUX_PKG_VERSION/graphviz-$TERMUX_PKG_VERSION.tar.gz
 TERMUX_PKG_SHA256=d374f7d98a1ae985510a82dddd887e8058aa37e5f95b4ce0aa58416d2b22714b
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="fontconfig, freetype, gdk-pixbuf, glib, harfbuzz, libandroid-glob, libc++, libcairo, libexpat, libgd, libgts, libltdl, librsvg, libwebp, pango, zlib"
+TERMUX_PKG_DEPENDS="fontconfig, freetype, gdk-pixbuf, glib, harfbuzz, libc++, libcairo, libexpat, libgd, libgts, libltdl, librsvg, libwebp, pango, zlib"
 TERMUX_PKG_BREAKS="graphviz-dev"
 TERMUX_PKG_REPLACES="graphviz-dev"
 TERMUX_PKG_BUILD_DEPENDS="libtool"
@@ -39,7 +39,7 @@ termux_step_pre_configure() {
 	./autogen.sh NOCONFIG
 	export HOSTCC="gcc"
 
-	LDFLAGS+=" -lm -landroid-glob"
+	LDFLAGS+=" -lm"
 	LDFLAGS+=" $($CC -print-libgcc-file-name)"
 	LDFLAGS+=" -Wl,-rpath=$TERMUX_PREFIX/lib/graphviz"
 }

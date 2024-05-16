@@ -7,7 +7,7 @@ TERMUX_PKG_VERSION=2023.01.27
 TERMUX_PKG_SRCURL=git+https://github.com/vgmrips/vgmtools
 TERMUX_PKG_SHA256=490b7e0f1dd3f58dc8ca501fa6cfd47ea65dde110023dcb16b25c7760e92851c
 TERMUX_PKG_GIT_BRANCH=master
-TERMUX_PKG_DEPENDS="libandroid-glob, libc++, zlib"
+TERMUX_PKG_DEPENDS="libc++, zlib"
 
 termux_step_post_get_source() {
 	git fetch --unshallow
@@ -24,8 +24,4 @@ termux_step_post_get_source() {
 	if [[ "${s}" != "${TERMUX_PKG_SHA256}  "* ]]; then
 		termux_error_exit "Checksum mismatch for source files."
 	fi
-}
-
-termux_step_pre_configure() {
-	LDFLAGS+=" -landroid-glob"
 }

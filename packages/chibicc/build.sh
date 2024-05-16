@@ -9,7 +9,7 @@ TERMUX_PKG_SRCURL=git+https://github.com/rui314/chibicc
 TERMUX_PKG_SHA256=9cb136d4713c8003122e8b637730a15808dd102dc2b54a5f96f33053a34a8171
 TERMUX_PKG_AUTO_UPDATE=false
 TERMUX_PKG_GIT_BRANCH=main
-TERMUX_PKG_DEPENDS="binutils-is-llvm | binutils, libandroid-glob"
+TERMUX_PKG_DEPENDS="binutils-is-llvm | binutils"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_BLACKLISTED_ARCHES="aarch64, arm, i686"
 
@@ -28,10 +28,6 @@ termux_step_post_get_source() {
 	if [[ "${s}" != "${TERMUX_PKG_SHA256}  "* ]]; then
 		termux_error_exit "Checksum mismatch for source files."
 	fi
-}
-
-termux_step_pre_configure() {
-	LDFLAGS+=" -landroid-glob"
 }
 
 termux_step_make_install() {

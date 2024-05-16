@@ -11,5 +11,6 @@ TERMUX_PKG_DEPENDS="libc++, libiconv"
 termux_step_pre_configure() {
 	autoreconf -fi
 
+	CXXFLAGS+=" -Wno-error=dynamic-exception-spec"
 	LDFLAGS+=" $($CC -print-libgcc-file-name)"
 }

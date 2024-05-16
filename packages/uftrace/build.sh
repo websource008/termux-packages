@@ -7,8 +7,8 @@ TERMUX_PKG_SRCURL=https://github.com/namhyung/uftrace/archive/v${TERMUX_PKG_VERS
 TERMUX_PKG_SHA256=dd0549f610d186b6f25fa2334a5e82b6ddc232ec6ca088dbb41b3fe66961d6bb
 # Hardcoded libpython${TERMUX_PYTHON_VERSION}.so is dlopen(3)ed by uftrace.
 # Please revbump and rebuild when bumping TERMUX_PYTHON_VERSION.
-# libandroid-{execinfo,spawn} are dlopen(3)ed.
-TERMUX_PKG_DEPENDS="capstone, libandroid-execinfo, libandroid-glob, libandroid-spawn, libc++, libdw, libelf, libluajit, ncurses, python"
+# libandroid-{execinfo} are dlopen(3)ed.
+TERMUX_PKG_DEPENDS="capstone, libandroid-execinfo, libc++, libdw, libelf, libluajit, ncurses, python"
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_UPDATE_TAG_TYPE="newest-tag"
 
@@ -20,7 +20,7 @@ fi
 termux_step_pre_configure() {
 	# uftrace uses custom configure script implementation, so we need to provide some flags
 	CFLAGS+=" -DEFD_SEMAPHORE=1 -DEF_ARM_ABI_FLOAT_HARD=0x400 -w"
-	LDFLAGS+=" -Wl,--wrap=_Unwind_Resume -landroid-glob -largp"
+	LDFLAGS+=" -Wl,--wrap=_Unwind_Resume -largp"
 
 	if [ "$TERMUX_ARCH" = "i686" ]; then
 		export ARCH="i386"

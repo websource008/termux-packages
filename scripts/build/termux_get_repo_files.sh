@@ -19,10 +19,7 @@ termux_get_repo_files() {
 		local download_attempts=6
 		while ((download_attempts > 0)); do
 			if [ "$TERMUX_REPO_PKG_FORMAT" = "debian" ]; then
-				if termux_download "${repo_base}/Release" "$RELEASE_FILE" SKIP_CHECKSUM && \
-					termux_download "${repo_base}/Release.gpg" "${RELEASE_FILE}.gpg" SKIP_CHECKSUM && \
-					gpg --verify "${RELEASE_FILE}.gpg" "$RELEASE_FILE"; then
-
+				if termux_download "${repo_base}/Release" "$RELEASE_FILE" SKIP_CHECKSUM; then
 					local failed=false
 					for arch in all $TERMUX_ARCH; do
 						local PACKAGES_HASH=$(./scripts/get_hash_from_file.py ${RELEASE_FILE} $arch ${TERMUX_REPO_COMPONENT[$idx-1]})

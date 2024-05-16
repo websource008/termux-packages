@@ -19,6 +19,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 ac_cv_func_chown=no
 ac_cv_func_chroot=no
 ac_cv_func_getpwnam=no
+ac_cv_func_shmget=no
 --enable-event-api
 --enable-ipsecmod
 --enable-linux-ip-local-port-range

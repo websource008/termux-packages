@@ -5,5 +5,5 @@ TERMUX_PKG_MAINTAINER="@finagolfin"
 TERMUX_PKG_VERSION=5.10
 TERMUX_PKG_SRCURL=https://github.com/apple/swift-llbuild/archive/swift-${TERMUX_PKG_VERSION}-RELEASE.tar.gz
 TERMUX_PKG_SHA256=ae8962d59244abac157c02813d05e1c077915bbd6022fe9fb62040806ac8dc55
-TERMUX_PKG_DEPENDS="libc++, libandroid-spawn, libsqlite"
+TERMUX_PKG_DEPENDS="libc++, libsqlite"
 TERMUX_PKG_NO_STATICSPLIT=true

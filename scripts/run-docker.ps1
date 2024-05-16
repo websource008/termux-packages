@@ -2,7 +2,7 @@
 #
 # Usage example:
 #
-# .\scripts\run-docker.ps1 ./build-package.sh -a arm libandroid-support
+# .\scripts\run-docker.ps1 ./build-package.sh -a arm dash
 
 Set-Variable -Name IMAGE_NAME -Value "ghcr.io/termux/package-builder"
 Set-Variable -Name CONTAINER_NAME -Value "termux-package-builder"

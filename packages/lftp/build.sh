@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION=4.9.2
 TERMUX_PKG_REVISION=6
 TERMUX_PKG_SRCURL=http://lftp.yar.ru/ftp/lftp-$TERMUX_PKG_VERSION.tar.gz
 TERMUX_PKG_SHA256=a37589c61914073f53c5da0e68bd233b41802509d758a022000e1ae2076da733
-TERMUX_PKG_DEPENDS="libandroid-support, libc++, libexpat, libiconv, openssl, readline, libidn2, zlib"
+TERMUX_PKG_DEPENDS="libc++, libexpat, libiconv, openssl, readline, libidn2, zlib"
 
 # (1) Android has dn_expand, but lftp assumes that dn_skipname then exists, which it does not on android.
 # (2) Use --with-openssl to use openssl instead of gnutls.

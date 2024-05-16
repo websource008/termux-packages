@@ -19,7 +19,6 @@ ac_cv_snprintf_returns_bogus=no
 --with-curl
 --with-expat
 --with-shell=$TERMUX_PREFIX/bin/sh
---with-tcltk=$TERMUX_PREFIX/bin/wish
 "
 # expat is only used by git-http-push for remote lock management over DAV, so disable:
 # NO_INSTALL_HARDLINKS to use symlinks instead of hardlinks (which does not work on Android M):

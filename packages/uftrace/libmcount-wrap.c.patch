@@ -13,21 +13,6 @@
  	real_cxa_throw = dlsym(RTLD_NEXT, "__cxa_throw");
  	real_cxa_rethrow = dlsym(RTLD_NEXT, "__cxa_rethrow");
  	real_cxa_begin_catch = dlsym(RTLD_NEXT, "__cxa_begin_catch");
-@@ -281,8 +285,14 @@
- 	real_dlopen = dlsym(RTLD_NEXT, "dlopen");
- 	real_pthread_exit = dlsym(RTLD_NEXT, "pthread_exit");
- 	real_unwind_resume = dlsym(RTLD_NEXT, "_Unwind_Resume");
-+#if !defined __ANDROID__ || __ANDROID_API__ >= 28
- 	real_posix_spawn = dlsym(RTLD_NEXT, "posix_spawn");
- 	real_posix_spawnp = dlsym(RTLD_NEXT, "posix_spawnp");
-+#else
-+	void *libandroid_spawn = dlopen("libandroid-spawn.so", RTLD_NOW);
-+	real_posix_spawn = dlsym(libandroid_spawn, "posix_spawn");
-+	real_posix_spawnp = dlsym(libandroid_spawn, "posix_spawnp");
-+#endif
- 	real_execve = dlsym(RTLD_NEXT, "execve");
- 	real_execvpe = dlsym(RTLD_NEXT, "execvpe");
- 	real_fexecve = dlsym(RTLD_NEXT, "fexecve");
 @@ -338,7 +320,8 @@
  	real_cxa_rethrow();
  }

@@ -2,12 +2,11 @@ TERMUX_PKG_HOMEPAGE=https://github.com/phiresky/ripgrep-all
 TERMUX_PKG_DESCRIPTION="Search tool able to locate in PDFs, E-Books, zip, tar.gz, etc"
 TERMUX_PKG_LICENSE="AGPL-V3"
 TERMUX_PKG_MAINTAINER="Krishna Kanhaiya @kcubeterm"
-TERMUX_PKG_VERSION="1.0.0-alpha.5"
-TERMUX_PKG_REVISION=2
+TERMUX_PKG_VERSION="0.10.6"
 TERMUX_PKG_DEPENDS="ripgrep, fzf"
 TERMUX_PKG_RECOMMENDS="ffmpeg, poppler, sqlite"
 TERMUX_PKG_SRCURL=https://github.com/phiresky/ripgrep-all/archive/v${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=bda5944e3fdfba4348b1b27b3ab770c5daf5a62feff86a1dcaa4221f450c7f19
+TERMUX_PKG_SHA256=06cd619ad6638be206266a77fdf11034dc2dc15d97b3a057b0d6280a17334680
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_BUILD_IN_SRC=true
 

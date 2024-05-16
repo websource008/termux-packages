@@ -6,7 +6,7 @@ TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION=2.0.4
 TERMUX_PKG_SRCURL=https://nim-lang.org/download/nim-$TERMUX_PKG_VERSION.tar.xz
 TERMUX_PKG_SHA256=71526bd07439dc8e378fa1a6eb407eda1298f1f3d4df4476dca0e3ca3cbe3f09
-TERMUX_PKG_DEPENDS="clang, git, libandroid-glob, openssl"
+TERMUX_PKG_DEPENDS="clang, git, openssl"
 TERMUX_PKG_HOSTBUILD=true
 TERMUX_PKG_BUILD_IN_SRC=true
 
@@ -34,8 +34,7 @@ termux_step_make() {
 	else
 		export NIM_ARCH=arm
 	fi
-	LDFLAGS+=" -landroid-glob"
-	sed -i "s%\@CC\@%${CC}%g"  config/nim.cfg
+		sed -i "s%\@CC\@%${CC}%g"  config/nim.cfg
 	sed -i "s%\@CFLAGS\@%${CFLAGS}%g" config/nim.cfg
 	sed -i "s%\@LDFLAGS\@%${LDFLAGS}%g" config/nim.cfg
 	sed -i "s%\@CPPFLAGS\@%${CPPFLAGS}%g" config/nim.cfg
@@ -55,7 +54,7 @@ termux_step_make() {
 			koch) nim_flags="--opt:size" ;;
 			*) nim_flags= ;;
 		esac
-		nim --cc:clang --clang.exe=$CC --clang.linkerexe=$CC $nim_flags --define:termux -d:release -d:sslVersion=3 --os:android --cpu:$NIM_ARCH  -t:"$CPPFLAGS $CFLAGS" -l:"$LDFLAGS -landroid-glob" -d:tempDir:$TERMUX_PREFIX/tmp c $(basename $cmd).nim
+		nim --cc:clang --clang.exe=$CC --clang.linkerexe=$CC $nim_flags --define:termux -d:release -d:sslVersion=3 --os:android --cpu:$NIM_ARCH  -t:"$CPPFLAGS $CFLAGS" -l:"$LDFLAGS" -d:tempDir:$TERMUX_PREFIX/tmp c $(basename $cmd).nim
 		popd
 	done
 }

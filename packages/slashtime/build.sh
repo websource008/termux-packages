@@ -2,12 +2,12 @@ TERMUX_PKG_HOMEPAGE=https://github.com/istathar/slashtime
 TERMUX_PKG_DESCRIPTION="A small program which displays the time in various places"
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_MAINTAINER="@termux"
-_COMMIT=aa4e96d36ec6e4cb56e3567c560c1c209f4fd492
-TERMUX_PKG_VERSION=2023.01.04
+_COMMIT=ee7de6fdc7d05d5078de8551822ce61cc7548bd6
+TERMUX_PKG_VERSION=2023.12.11
 TERMUX_PKG_SRCURL=git+https://github.com/istathar/slashtime
-TERMUX_PKG_SHA256=c15f9df0cee790156460a624cedc4c5b4367aba46b48d729f987e9b4d32a8132
+TERMUX_PKG_SHA256=9efab8326e3e04dc52433e8c0c80c8477857b5e165a2be8ff453c6b4f1ee85f8
 TERMUX_PKG_AUTO_UPDATE=false
-TERMUX_PKG_GIT_BRANCH=master
+TERMUX_PKG_GIT_BRANCH=main
 TERMUX_PKG_DEPENDS="perl"
 TERMUX_PKG_PLATFORM_INDEPENDENT=true
 TERMUX_PKG_BUILD_IN_SRC=true
@@ -25,7 +25,7 @@ termux_step_post_get_source() {
 
 	local s=$(find . -type f ! -path '*/.git/*' -print0 | xargs -0 sha256sum | LC_ALL=C sort | sha256sum)
 	if [[ "${s}" != "${TERMUX_PKG_SHA256}  "* ]]; then
-		termux_error_exit "Checksum mismatch for source files."
+		termux_error_exit "Checksum mismatch for source files: ${s}"
 	fi
 }
 
