@@ -12,7 +12,7 @@ TERMUX_PKG_BREAKS="gegl-dev"
 TERMUX_PKG_REPLACES="gegl-dev"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
--Dintrospection=disabled
+-Dintrospection=false
 "
 
 termux_step_pre_configure() {

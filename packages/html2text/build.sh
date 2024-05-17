@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION="1:2.2.3"
 TERMUX_PKG_SRCURL=https://github.com/grobian/html2text/archive/v${TERMUX_PKG_VERSION:2}.tar.gz
 TERMUX_PKG_SHA256=29e4b04e7cc7b9b6acb7db76edf4739d3a72a672f37452267e707d40249520ee
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="libc++, libiconv"
+TERMUX_PKG_DEPENDS="libc++"
 TERMUX_PKG_BUILD_IN_SRC=true
 
 termux_step_pre_configure() {

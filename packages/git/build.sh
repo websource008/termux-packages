@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION="2.45.0"
 TERMUX_PKG_SRCURL=https://mirrors.kernel.org/pub/software/scm/git/git-${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=0aac200bd06476e7df1ff026eb123c6827bc10fe69d2823b4bf2ebebe5953429
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="libcurl, libexpat, libiconv, less, openssl, pcre2, zlib"
+TERMUX_PKG_DEPENDS="libcurl, libexpat, less, openssl, pcre2, zlib"
 TERMUX_PKG_RECOMMENDS="openssh"
 TERMUX_PKG_SUGGESTS="perl"
 

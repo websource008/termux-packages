@@ -7,7 +7,7 @@ TERMUX_PKG_VERSION=1.3.3
 TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=git+https://git.code.sf.net/p/minidlna/git
 TERMUX_PKG_GIT_BRANCH=v${TERMUX_PKG_VERSION//./_}
-TERMUX_PKG_DEPENDS="ffmpeg, libexif, libflac, libiconv, libid3tag, libjpeg-turbo, libogg, libsqlite, libvorbis"
+TERMUX_PKG_DEPENDS="ffmpeg, libexif, libflac, libid3tag, libjpeg-turbo, libogg, libsqlite, libvorbis"
 TERMUX_PKG_BUILD_IN_SRC=true
 
 TERMUX_PKG_CONFFILES="etc/minidlna.conf"

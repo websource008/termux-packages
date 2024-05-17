@@ -6,4 +6,4 @@ TERMUX_PKG_VERSION="2.3.12"
 TERMUX_PKG_SRCURL=ftp://ftp.unixodbc.org/pub/unixODBC/unixODBC-${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=f210501445ce21bf607ba51ef8c125e10e22dffdffec377646462df5f01915ec
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="libiconv, libltdl, readline"
+TERMUX_PKG_DEPENDS="libltdl, readline"

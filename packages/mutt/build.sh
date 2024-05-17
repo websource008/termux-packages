@@ -7,7 +7,7 @@ TERMUX_PKG_VERSION="2.2.13"
 TERMUX_PKG_SRCURL=ftp://ftp.mutt.org/pub/mutt/mutt-${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=eb23faddc1cc97d867693f3a4a9f30949ad93765ad5b6fdae2797a4001c58efb
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="ncurses, gdbm, openssl, libsasl, media-types, zlib, libiconv"
+TERMUX_PKG_DEPENDS="ncurses, gdbm, openssl, libsasl, media-types, zlib"
 TERMUX_PKG_BUILD_IN_SRC=true
 
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="

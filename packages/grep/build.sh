@@ -15,5 +15,3 @@ ac_cv_header_langinfo_h=no
 am_cv_langinfo_codeset=no
 gl_cv_func_setlocale_works=yes
 "
-# Avoid automagic dependency on libiconv
-TERMUX_PKG_EXTRA_CONFIGURE_ARGS+=" am_cv_func_iconv=no"

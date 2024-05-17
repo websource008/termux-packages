@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION=9.2.5
 TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL="https://downloads.haskell.org/~ghc/${TERMUX_PKG_VERSION}/ghc-${TERMUX_PKG_VERSION}-src.tar.xz"
 TERMUX_PKG_SHA256=0606797d1b38e2d88ee2243f38ec6b9a1aa93e9b578e95f0de9a9c0a4144021c
-TERMUX_PKG_DEPENDS="libiconv, libffi, ncurses, libgmp, libandroid-posix-semaphore"
+TERMUX_PKG_DEPENDS="libffi, ncurses, libgmp, libandroid-posix-semaphore"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-ld-override

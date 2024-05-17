@@ -8,7 +8,7 @@ TERMUX_PKG_VERSION=0.1.0-p${_COMMIT_DATE}
 TERMUX_PKG_SRCURL=git+https://github.com/libhangul/libhangul.git
 TERMUX_PKG_SHA256=e1dd5bf2553f2676ac05e99069c6fd0eaa1b24c283b12678b780ea70a19a664d
 TERMUX_PKG_GIT_BRANCH=main
-TERMUX_PKG_DEPENDS="libexpat, libiconv"
+TERMUX_PKG_DEPENDS="libexpat"
 
 termux_step_post_get_source() {
 	git fetch --unshallow

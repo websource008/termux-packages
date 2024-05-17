@@ -10,11 +10,6 @@ TERMUX_PKG_DEPENDS="littlecms"
 TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner, valac"
 TERMUX_PKG_BREAKS="babl-dev"
 TERMUX_PKG_REPLACES="babl-dev"
-TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
--Denable-gir=true
+-Denable-gir=false
 "
-
-termux_step_pre_configure() {
-	termux_setup_gir
-}

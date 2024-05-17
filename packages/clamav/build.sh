@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION="1.3.1"
 TERMUX_PKG_SRCURL=https://www.clamav.net/downloads/production/clamav-$TERMUX_PKG_VERSION.tar.gz
 TERMUX_PKG_SHA256=12a3035bf26f55f71e3106a51a5fa8d7b744572df98a63920a9cff876a7dcce4
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="json-c,libbz2, libc++, libcurl, libiconv, libxml2, ncurses, openssl, pcre2, zlib"
+TERMUX_PKG_DEPENDS="json-c,libbz2, libc++, libcurl, libxml2, ncurses, openssl, pcre2, zlib"
 TERMUX_PKG_BREAKS="clamav-dev"
 TERMUX_PKG_REPLACES="clamav-dev"
 

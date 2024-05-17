@@ -7,4 +7,13 @@ TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://downloads.sourceforge.net/project/pidgin/libgnt/${TERMUX_PKG_VERSION}/libgnt-${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=57f5457f72999d0bb1a139a37f2746ec1b5a02c094f2710a339d8bcea4236123
 TERMUX_PKG_DEPENDS="glib, libxml2, ncurses"
+TERMUX_PKG_BUILD_DEPENDS="glib-cross"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="-Ddoc=false -Dpython2=false"
+
+termux_step_pre_configure() {
+	ln -s -f $TERMUX_PREFIX/opt/glib/cross/bin/glib-genmarshal $TERMUX_PREFIX/bin/glib-genmarshal
+}
+
+termux_step_post_make_install() {
+	rm $TERMUX_PREFIX/bin/glib-genmarshal
+}

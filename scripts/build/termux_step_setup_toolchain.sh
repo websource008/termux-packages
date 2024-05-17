@@ -5,6 +5,6 @@ termux_step_setup_toolchain() {
 	# Bump TERMUX_STANDALONE_TOOLCHAIN if a change is made in
 	# toolchain setup to ensure that everyone gets an updated
 	# toolchain
-	TERMUX_STANDALONE_TOOLCHAIN+="-v4"
+	TERMUX_STANDALONE_TOOLCHAIN+="-v5"
 	termux_setup_toolchain
 }

@@ -7,12 +7,11 @@ TERMUX_PKG_SRCURL=https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${TE
 TERMUX_PKG_SHA256=1225ef4a329fae1cadc5ec727dab249ad567e8072879493561ceb91ed34aa414
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="glib"
-TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner"
 TERMUX_PKG_BREAKS="gstreamer-dev"
 TERMUX_PKG_REPLACES="gstreamer-dev"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
--Dintrospection=enabled
+-Dintrospection=disabled
 -Dcheck=disabled
 -Dtests=disabled
 -Dexamples=disabled
@@ -22,8 +21,6 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 "
 
 termux_step_pre_configure() {
-	TERMUX_PKG_VERSION=. termux_setup_gir
-
 	local _WRAPPER_BIN="${TERMUX_PKG_BUILDDIR}/_wrapper/bin"
 	mkdir -p "${_WRAPPER_BIN}"
 	if [[ "${TERMUX_ON_DEVICE_BUILD}" == "false" ]]; then

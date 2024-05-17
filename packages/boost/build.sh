@@ -9,7 +9,7 @@ TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://boostorg.jfrog.io/artifactory/main/release/$TERMUX_PKG_VERSION/source/boost_${TERMUX_PKG_VERSION//./_}.tar.bz2
 TERMUX_PKG_SHA256=6478edfe2f3305127cffe8caf73ea0176c53769f4bf1585be237eb30798c3b8e
 TERMUX_PKG_AUTO_UPDATE=false
-TERMUX_PKG_DEPENDS="libc++, libbz2, libiconv, liblzma, zlib"
+TERMUX_PKG_DEPENDS="libc++, libbz2, liblzma, zlib"
 TERMUX_PKG_BUILD_DEPENDS="python"
 TERMUX_PKG_BREAKS="libboost-python (<= 1.65.1-2), boost-dev"
 TERMUX_PKG_REPLACES="libboost-python (<= 1.65.1-2), boost-dev"

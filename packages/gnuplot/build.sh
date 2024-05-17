@@ -7,7 +7,7 @@ TERMUX_PKG_VERSION="6.0.0"
 TERMUX_PKG_SRCURL=https://downloads.sourceforge.net/project/gnuplot/gnuplot/${TERMUX_PKG_VERSION}/gnuplot-${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=635a28f0993f6ab0d1179e072ad39b8139d07f51237f841d93c6c2ff4b1758ec
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="glib, libcairo, libgd, libiconv, pango, readline"
+TERMUX_PKG_DEPENDS="glib, libcairo, libgd, pango, readline"
 TERMUX_PKG_BREAKS="gnuplot-x"
 TERMUX_PKG_REPLACES="gnuplot-x"
 TERMUX_PKG_HOSTBUILD=true
@@ -23,7 +23,6 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --with-bitmap-terminals
 --without-latex
 --without-qt
-ac_cv_search_iconv_open=-liconv
 "
 
 termux_step_host_build() {

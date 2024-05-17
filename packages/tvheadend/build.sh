@@ -8,7 +8,7 @@ TERMUX_PKG_SRCURL="https://github.com/tvheadend/tvheadend/archive/v${TERMUX_PKG_
 TERMUX_PKG_SHA256=1aef889373d5fad2a7bd2f139156d4d5e34a64b6d38b87b868a2df415f01f7ad
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_UPDATE_TAG_TYPE="newest-tag"
-TERMUX_PKG_DEPENDS="dbus, libandroid-execinfo, libdvbcsa, libiconv, openssl, tvheadend-data, zlib"
+TERMUX_PKG_DEPENDS="dbus, libandroid-execinfo, libdvbcsa, openssl, tvheadend-data, zlib"
 TERMUX_PKG_BUILD_IN_SRC=true
 
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="

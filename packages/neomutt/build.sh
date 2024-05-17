@@ -8,7 +8,7 @@ TERMUX_PKG_SRCURL=https://github.com/neomutt/neomutt/archive/${TERMUX_PKG_VERSIO
 TERMUX_PKG_SHA256=a5aed0a0f506260997821c23cb148bc5ca4938fd613e0e8b89556f397ffc17f7
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_UPDATE_VERSION_REGEXP="\d{8}"
-TERMUX_PKG_DEPENDS="gdbm, krb5,libiconv, libsasl, ncurses, notmuch, openssl, zlib, zstd"
+TERMUX_PKG_DEPENDS="gdbm, krb5, libsasl, ncurses, notmuch, openssl, zlib, zstd"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_CONFFILES="etc/neomuttrc"
 

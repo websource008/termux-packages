@@ -7,7 +7,7 @@ TERMUX_PKG_SRCURL=https://github.com/harfbuzz/harfbuzz/archive/refs/tags/${TERMU
 TERMUX_PKG_SHA256=9f1ca089813b05944ad1ce8c7e018213026d35dc9bab480a21eb876838396556
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="freetype, glib, libcairo, libgraphite"
-TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner, glib-cross"
+TERMUX_PKG_BUILD_DEPENDS="glib-cross"
 TERMUX_PKG_BREAKS="harfbuzz-dev"
 TERMUX_PKG_REPLACES="harfbuzz-dev"
 TERMUX_PKG_DISABLE_GIR=false
@@ -36,8 +36,6 @@ termux_step_post_get_source() {
 }
 
 termux_step_pre_configure() {
-	TERMUX_PKG_VERSION=. termux_setup_gir
-
 	local _WRAPPER_BIN="${TERMUX_PKG_BUILDDIR}/_wrapper/bin"
 	mkdir -p "${_WRAPPER_BIN}"
 	if [[ "${TERMUX_ON_DEVICE_BUILD}" == "false" ]]; then

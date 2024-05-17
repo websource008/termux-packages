@@ -8,7 +8,7 @@ TERMUX_PKG_VERSION="3.10"
 TERMUX_PKG_SRCURL=https://prdownloads.sourceforge.net/nsis/nsis-${TERMUX_PKG_VERSION}-src.tar.bz2
 TERMUX_PKG_SHA256=11b54a6307ab46fef505b2700aaf6f62847c25aa6eebaf2ae0aab2f17f0cb297
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="libc++, libiconv, nsis-stubs, zlib"
+TERMUX_PKG_DEPENDS="libc++, nsis-stubs, zlib"
 TERMUX_PKG_BUILD_IN_SRC=true
 
 termux_step_make_install() {

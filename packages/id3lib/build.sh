@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION=3.8.3
 TERMUX_PKG_REVISION=3
 TERMUX_PKG_SRCURL=https://downloads.sourceforge.net/id3lib/id3lib-${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=2749cc3c0cd7280b299518b1ddf5a5bcfe2d1100614519b68702230e26c7d079
-TERMUX_PKG_DEPENDS="libc++, libiconv, zlib"
+TERMUX_PKG_DEPENDS="libc++, zlib"
 
 termux_step_pre_configure() {
 	for f in examples/demo_*.cpp; do

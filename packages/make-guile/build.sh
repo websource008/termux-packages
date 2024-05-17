@@ -11,8 +11,6 @@ TERMUX_PKG_BREAKS="make-dev"
 TERMUX_PKG_REPLACES="make-dev"
 # Prevent linking against libelf:
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="ac_cv_lib_elf_elf_begin=no"
-# Prevent linking against libiconv:
-TERMUX_PKG_EXTRA_CONFIGURE_ARGS+=" am_cv_func_iconv=no"
 
 # make-guile:
 TERMUX_PKG_CONFLICTS="make"

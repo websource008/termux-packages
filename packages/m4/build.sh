@@ -10,8 +10,6 @@ TERMUX_PKG_GROUPS="base-devel"
 TERMUX_PKG_EXTRA_MAKE_ARGS="
 HELP2MAN=:
 "
-# Avoid automagic dependency on libiconv
-TERMUX_PKG_EXTRA_CONFIGURE_ARGS+=" am_cv_func_iconv=no"
 
 termux_step_pre_configure() {
 	CPPFLAGS+=" -D__USE_FORTIFY_LEVEL=0"

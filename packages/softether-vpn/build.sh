@@ -9,7 +9,7 @@ TERMUX_PKG_SRCURL=(https://github.com/SoftEtherVPN/SoftEtherVPN/releases/downloa
                    https://github.com/jedisct1/libsodium/archive/${TERMUX_PKG_VERSION[1]}-RELEASE.tar.gz)
 TERMUX_PKG_SHA256=(b5649a8ea3cc6477325e09e2248ef708d434ee3b2251eb8764bcfc15fb1de456
                    b7292dd1da67a049c8e78415cd498ec138d194cfdb302e716b08d26b80fecc10)
-TERMUX_PKG_DEPENDS="libiconv, libsodium, ncurses, openssl, readline, resolv-conf, zlib"
+TERMUX_PKG_DEPENDS="libsodium, ncurses, openssl, readline, resolv-conf, zlib"
 TERMUX_PKG_FORCE_CMAKE=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -DHAS_SSE2=OFF

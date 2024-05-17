@@ -15,7 +15,7 @@ TERMUX_PKG_SHA256=(
 )
 TERMUX_PKG_AUTO_UPDATE=true
 # gawk is used by texindex:
-TERMUX_PKG_DEPENDS="gawk, libiconv, ncurses, perl"
+TERMUX_PKG_DEPENDS="gawk, ncurses, perl"
 TERMUX_PKG_RECOMMENDS="update-info-dir"
 TERMUX_PKG_GROUPS="base-devel"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="

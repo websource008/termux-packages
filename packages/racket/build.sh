@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION="8.12"
 TERMUX_PKG_SRCURL=https://www.cs.utah.edu/plt/installers/${TERMUX_PKG_VERSION}/racket-minimal-${TERMUX_PKG_VERSION}-src-builtpkgs.tgz
 TERMUX_PKG_SHA256=af5436cffc1f28ea943750c411c44687d4ff5028aca5cfca84598c426830ea7c
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="libffi, libiconv"
+TERMUX_PKG_DEPENDS="libffi"
 TERMUX_PKG_NO_DEVELSPLIT=true
 TERMUX_PKG_HOSTBUILD=true
 
@@ -31,6 +31,6 @@ termux_step_host_build() {
 
 termux_step_pre_configure() {
 	CPPFLAGS+=" -I$TERMUX_PKG_SRCDIR/src/bc/include -I$TERMUX_PKG_BUILDDIR/bc"
-	LDFLAGS+=" -liconv -llog"
+	LDFLAGS+=" -llog"
 	export TERMUX_PKG_SRCDIR="$TERMUX_PKG_SRCDIR/src"
 }

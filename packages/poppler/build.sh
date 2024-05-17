@@ -11,7 +11,7 @@ TERMUX_PKG_SRCURL=https://poppler.freedesktop.org/poppler-${TERMUX_PKG_VERSION}.
 TERMUX_PKG_SHA256=d8c5eb30b50285ad9f0af8c6335cc2d3b9597fca475cbc2598a5479fa379f779
 # The package must be updated at the same time as poppler, auto updater script does not support that.
 TERMUX_PKG_AUTO_UPDATE=false
-TERMUX_PKG_DEPENDS="fontconfig, freetype, glib, gpgme, gpgmepp, libc++, libcairo, libcurl, libiconv, libjpeg-turbo, libnspr, libnss, libpng, libtiff, littlecms, openjpeg, zlib"
+TERMUX_PKG_DEPENDS="fontconfig, freetype, glib, gpgme, gpgmepp, libc++, libcairo, libcurl, libjpeg-turbo, libnspr, libnss, libpng, libtiff, littlecms, openjpeg, zlib"
 TERMUX_PKG_BUILD_DEPENDS="boost, boost-headers, g-ir-scanner, openjpeg-tools"
 TERMUX_PKG_BREAKS="poppler-dev, poppler-qt (<< ${TERMUX_PKG_VERSION})"
 TERMUX_PKG_REPLACES="poppler-dev, poppler-qt (<< 22.04.0-3)"
@@ -19,7 +19,7 @@ TERMUX_PKG_DISABLE_GIR=false
 #texlive needs the xpdf headers
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -DENABLE_GLIB=ON
--DENABLE_GOBJECT_INTROSPECTION=ON
+-DENABLE_GOBJECT_INTROSPECTION=OFF
 -DENABLE_UNSTABLE_API_ABI_HEADERS=ON
 -DENABLE_QT5=OFF
 -DENABLE_QT6=OFF
@@ -34,8 +34,6 @@ termux_step_pre_configure() {
 	if [ "${sover_cmake}" != "${_POPPLER_SOVERSION}" ]; then
 		termux_error_exit "SOVERSION guard check failed (CMakeLists.txt: \"${sover_cmake}\")."
 	fi
-
-	TERMUX_PKG_VERSION=. termux_setup_gir
 
 	CPPFLAGS+=" -DCMS_NO_REGISTER_KEYWORD"
 }
