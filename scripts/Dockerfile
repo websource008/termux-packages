@@ -1,20 +1,20 @@
 # Build with:
-#	docker build -t ghcr.io/termux/package-builder .
+#	docker build -t ghcr.io/fornwall/package-builder .
 # Push to GitHub registry with:
-#	docker push ghcr.io/termux/package-builder
+#	docker push ghcr.io/fornwall/package-builder
 # This is done after changing this file or any of the
-# scripts/setup-{ubuntu,android-sdk,cgct}.sh setup scripts.
+# scripts/setup-{ubuntu,android-sdk}.sh setup scripts.
 FROM ubuntu:22.04
 
 # Fix locale to avoid warnings:
 ENV LANG en_US.UTF-8
 
 # Needed for setup:
-COPY ./llvm-snapshot.gpg.key ./openjdk-r-ppa.gpg ./properties.sh ./setup-android-sdk.sh ./setup-cgct.sh ./setup-ubuntu.sh /tmp/
+COPY ./llvm-snapshot.gpg.key ./openjdk-r-ppa.gpg ./properties.sh ./setup-android-sdk.sh ./setup-ubuntu.sh /tmp/
 RUN mkdir /tmp/build
 COPY ./build/termux_download.sh /tmp/build/
 
-# Setup needed packages and the Android SDK and NDK and the CGCT:
+# Setup needed packages and the Android SDK and NDK:
 RUN apt-get update && \
 	apt-get -yq upgrade && \
 	apt-get install -yq sudo lsb-release software-properties-common && \

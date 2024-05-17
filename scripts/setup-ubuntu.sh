@@ -65,7 +65,6 @@ PACKAGES+=" xmlto"
 PACKAGES+=" xmltoman"
 
 # Needed by python modules (e.g. asciinema) and some build systems.
-PACKAGES+=" python3.9"
 PACKAGES+=" python3.10"
 PACKAGES+=" python3.11"
 PACKAGES+=" python3-pip"
@@ -99,7 +98,6 @@ PACKAGES+=" gengetopt"
 PACKAGES+=" libdbus-1-dev"
 
 # Needed by package below.
-PACKAGES+=" clang-15"
 PACKAGES+=" libelf-dev"
 
 # Needed by package ghostscript.
@@ -136,7 +134,6 @@ PACKAGES+=" ruby"
 
 # Needed by host build of package nodejs.
 PACKAGES+=" libc-ares-dev"
-PACKAGES+=" libc-ares-dev:i386"
 PACKAGES+=" libicu-dev"
 
 # Needed by php.
@@ -163,8 +160,6 @@ PACKAGES+=" tcl"
 # Needed by package swi-prolog.
 PACKAGES+=" openssl"
 PACKAGES+=" zlib1g-dev"
-PACKAGES+=" libssl-dev:i386"
-PACKAGES+=" zlib1g-dev:i386"
 
 # For swift.
 PACKAGES+=" lld"
@@ -190,10 +185,6 @@ PACKAGES+=" rsync"
 # Needed by megacmd
 PACKAGES+=" wget"
 
-# Needed by codeblocks
-PACKAGES+=" libwxgtk3.0-gtk3-dev"
-PACKAGES+=" libgtk-3-dev"
-
 # Needed by packages in unstable repository.
 PACKAGES+=" comerr-dev"
 PACKAGES+=" docbook-to-man"
@@ -214,22 +205,17 @@ PACKAGES+=" alex"
 PACKAGES+=" docbook-xsl-ns"
 PACKAGES+=" gnome-common"
 PACKAGES+=" gobject-introspection"
-PACKAGES+=" gtk-3-examples"
-PACKAGES+=" gtk-doc-tools"
 PACKAGES+=" happy"
 PACKAGES+=" itstool"
 PACKAGES+=" libdbus-glib-1-dev-bin"
 PACKAGES+=" libgdk-pixbuf2.0-dev"
 PACKAGES+=" libwayland-dev"
 PACKAGES+=" python-setuptools"
-PACKAGES+=" python3-xcbgen"
 PACKAGES+=" sassc"
 PACKAGES+=" texlive-extra-utils"
 PACKAGES+=" unifdef"
-PACKAGES+=" wayland-scanner++"
 PACKAGES+=" xfce4-dev-tools"
 PACKAGES+=" xfonts-utils"
-PACKAGES+=" xutils-dev"
 PACKAGES+=" desktop-file-utils"
 
 # Needed by packages in science repository
@@ -237,7 +223,6 @@ PACKAGES+=" protobuf-c-compiler"
 PACKAGES+=" sqlite3"
 
 # Needed by packages in game repository
-PACKAGES+=" cvs"
 PACKAGES+=" python3-yaml"
 
 # Needed by gobject-introspection (termux_setup_gir).
@@ -261,12 +246,6 @@ PACKAGES+=" guile-3.0"
 PACKAGES+=" python3-fontforge"
 PACKAGES+=" texlive-metapost"
 
-# Needed by package motif.
-PACKAGES+=" libfl-dev"
-PACKAGES+=" libxft-dev"
-PACKAGES+=" libxt-dev"
-PACKAGES+=" xbitmaps"
-
 # Needed by proxmark3/proxmark3-git
 PACKAGES+=" gcc-arm-none-eabi"
 
@@ -288,15 +267,6 @@ PACKAGES+=" libcurl4-openssl-dev"
 # Required by openjdk-17
 PACKAGES+=" openjdk-17-jre openjdk-17-jdk"
 
-# Required by qt5-qtwebengine
-PACKAGES+=" libnss3 libnss3:i386 libnss3-dev"
-PACKAGES+=" libwebp7 libwebp7:i386 libwebp-dev"
-PACKAGES+=" libwebpdemux2 libwebpdemux2:i386"
-PACKAGES+=" libwebpmux3 libwebpmux3:i386"
-
-# Required by wine-stable
-PACKAGES+=" libfreetype-dev:i386"
-
 # Required by CGCT
 PACKAGES+=" libdebuginfod-dev"
 
@@ -312,9 +282,6 @@ if [ "$(id -u)" = "0" ]; then
 else
 	SUDO="sudo"
 fi
-
-# Allow 32-bit packages.
-$SUDO dpkg --add-architecture i386
 
 # Add apt.llvm.org repo to get newer LLVM than Ubuntu provided
 $SUDO cp $(dirname "$(realpath "$0")")/llvm-snapshot.gpg.key /etc/apt/trusted.gpg.d/apt.llvm.org.asc
