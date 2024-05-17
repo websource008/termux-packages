@@ -9,5 +9,8 @@ TERMUX_PKG_SHA256=a6cb4ea863ac61d242ffb2db564a39123761578d3e40d71ce7b6f2905be609
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="openssl"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="--with-ssl=$TERMUX_PREFIX"
-TERMUX_PKG_RM_AFTER_INSTALL="lib/python${TERMUX_PYTHON_VERSION}/site-packages/__pycache__"
-TERMUX_PKG_PYTHON_COMMON_DEPS="wheel"
+TERMUX_PKG_RM_AFTER_INSTALL="
+bin/fetchmailconf
+share/man/man1/fetchmailconf.1
+local/lib/python*
+"
