@@ -90,5 +90,5 @@ while read -r PKG PKG_DIR; do
 done<"${BUILDORDER_FILE}"
 
 # Update build status
-rm -f "$BUILDSTATUS_FILE"
+# rm -f "$BUILDSTATUS_FILE"
 echo "Finished"
