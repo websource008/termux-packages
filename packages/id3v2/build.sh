@@ -12,4 +12,5 @@ TERMUX_PKG_EXTRA_MAKE_ARGS="PREFIX=$TERMUX_PREFIX"
 
 termux_step_post_configure() {
 	make clean
+	mkdir -p $TERMUX_PREFIX/share/man/man1/
 }
