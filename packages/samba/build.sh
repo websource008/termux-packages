@@ -2,11 +2,10 @@ TERMUX_PKG_HOMEPAGE=https://www.samba.org/
 TERMUX_PKG_DESCRIPTION="SMB/CIFS fileserver"
 TERMUX_PKG_LICENSE="GPL-3.0"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION=4.16.11
-TERMUX_PKG_REVISION=1
+TERMUX_PKG_VERSION=4.20.1
 TERMUX_PKG_SRCURL=https://download.samba.org/pub/samba/samba-${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=5218878cdcc01aa8e83d2c84ad16c5f37a01ea5e1a93f640f9ee282053c46e12
-TERMUX_PKG_DEPENDS="krb5, libandroid-execinfo, libbsd, libcap, libcrypt, libgnutls, libiconv, libicu, libpopt, libtalloc, libtasn1, libtirpc, ncurses, openssl, readline, tdb-tools, zlib"
+TERMUX_PKG_SHA256=f93c3af5295340d08106c7c0dcfb85e4f85057dfd14587aa8817beb31aff88f7
+TERMUX_PKG_DEPENDS="krb5, libandroid-execinfo, libbsd, libcap, libcrypt, libgnutls, libicu, libpopt, libtalloc, libtasn1, libtirpc, ncurses, openssl, readline, tdb-tools, zlib"
 TERMUX_PKG_BUILD_DEPENDS="e2fsprogs"
 TERMUX_PKG_BUILD_IN_SRC=true
 
@@ -24,6 +23,8 @@ share/man/man8/tdbtool.8.gz
 
 termux_step_pre_configure() {
 	CPPFLAGS+=" -D_FILE_OFFSET_BITS=64"
+
+	export PYTHONHASHSEED=1
 }
 
 termux_step_configure() {
@@ -86,6 +87,7 @@ getcwd takes a NULL argument: OK
 Checking for readlink breakage: NO
 Checking for gnutls fips mode support: NO
 Checking whether the WRFILE -keytab is supported: OK
+Checking whether fcntl supports setting/getting hints: YES
 EOF
 
 	USING_SYSTEM_ASN1_COMPILE=1 ASN1_COMPILE=/usr/bin/asn1_compile \
