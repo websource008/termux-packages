@@ -69,9 +69,6 @@ mkdir -p "$TERMUX_PKG_TMPDIR"
 (. "$TERMUX_SCRIPTDIR"/scripts/build/setup/termux_setup_swift.sh
 	termux_setup_swift
 )
-(. "$TERMUX_SCRIPTDIR"/scripts/build/setup/termux_setup_zig.sh
-	termux_setup_zig
-)
 (test -d "$TERMUX_SCRIPTDIR"/build-tools/android-sdk && test -d "$TERMUX_SCRIPTDIR"/build-tools/android-ndk && exit 0
 	"$TERMUX_SCRIPTDIR"/scripts/setup-android-sdk.sh
 )
