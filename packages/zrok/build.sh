@@ -3,6 +3,7 @@ TERMUX_PKG_DESCRIPTION="An open source sharing solution built on OpenZiti."
 TERMUX_PKG_LICENSE="Apache-2.0"
 TERMUX_PKG_MAINTAINER="Joshua Kahn @TomJo2000"
 TERMUX_PKG_VERSION="0.4.30"
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://github.com/openziti/zrok/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=922b8bdc7113e0819082f339967e36c31ef65d994d83dd988be4ddfc8bc9ceeb
 TERMUX_PKG_BUILD_IN_SRC=true
