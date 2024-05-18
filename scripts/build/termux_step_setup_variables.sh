@@ -12,35 +12,9 @@ termux_step_setup_variables() {
 	: "${TERMUX_QUIET_BUILD:="false"}"
 	: "${TERMUX_WITHOUT_DEPVERSION_BINDING:="false"}"
 	: "${TERMUX_SKIP_DEPCHECK:="false"}"
-	: "${TERMUX_GLOBAL_LIBRARY:="false"}"
 	: "${TERMUX_TOPDIR:="$HOME/.termux-build"}"
-	: "${TERMUX_PACMAN_PACKAGE_COMPRESSION:="xz"}"
 
-	if [ -z "${TERMUX_PACKAGE_FORMAT-}" ]; then
-		if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ] && [ -n "${TERMUX_APP_PACKAGE_MANAGER-}" ]; then
-			TERMUX_PACKAGE_FORMAT="$([ "${TERMUX_APP_PACKAGE_MANAGER-}" = "apt" ] && echo "debian" || echo "${TERMUX_APP_PACKAGE_MANAGER-}")"
-		else
-			TERMUX_PACKAGE_FORMAT="debian"
-		fi
-	fi
-
-	case "${TERMUX_PACKAGE_FORMAT-}" in
-		debian) export TERMUX_PACKAGE_MANAGER="apt";;
-		pacman) export TERMUX_PACKAGE_MANAGER="pacman";;
-		*) termux_error_exit "Unsupported package format \"${TERMUX_PACKAGE_FORMAT-}\". Only 'debian' and 'pacman' formats are supported";;
-	esac
-
-	# Default package library base
-	if [ -z "${TERMUX_PACKAGE_LIBRARY-}" ]; then
-		export TERMUX_PACKAGE_LIBRARY="bionic"
-	fi
-
-	if [ "$TERMUX_PACKAGE_LIBRARY" = "glibc" ]; then
-		export TERMUX_PREFIX="$TERMUX_PREFIX/glibc"
-		if ! package__is_package_name_have_glibc_prefix "$TERMUX_PKG_NAME"; then
-			TERMUX_PKG_NAME="$(package__add_prefix_glibc_to_package_name ${TERMUX_PKG_NAME})"
-		fi
-	fi
+	TERMUX_PACKAGE_FORMAT="debian"
 
 	if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
 		# For on-device builds cross-compiling is not supported so we can
@@ -48,11 +22,9 @@ termux_step_setup_variables() {
 		TERMUX_BUILT_PACKAGES_DIRECTORY="$TERMUX_TOPDIR/.built-packages"
 		TERMUX_NO_CLEAN="true"
 
-		if [ "$TERMUX_PACKAGE_LIBRARY" = "bionic" ]; then
-			# On-device builds without termux-exec are unsupported.
-			if ! grep -q "${TERMUX_PREFIX}/lib/libtermux-exec.so" <<< "${LD_PRELOAD-x}"; then
-				termux_error_exit "On-device builds without termux-exec are not supported."
-			fi
+		# On-device builds without termux-exec are unsupported.
+		if ! grep -q "${TERMUX_PREFIX}/lib/libtermux-exec.so" <<< "${LD_PRELOAD-x}"; then
+			termux_error_exit "On-device builds without termux-exec are not supported."
 		fi
 	else
 		TERMUX_BUILT_PACKAGES_DIRECTORY="/data/data/.built-packages"
@@ -67,43 +39,17 @@ termux_step_setup_variables() {
 		TERMUX_ARCH_BITS=32
 	fi
 
-	if [ "$TERMUX_PACKAGE_LIBRARY" = "bionic" ]; then
-		TERMUX_HOST_PLATFORM="${TERMUX_ARCH}-linux-android"
-	else
-		TERMUX_HOST_PLATFORM="${TERMUX_ARCH}-linux-gnu"
-	fi
+	TERMUX_HOST_PLATFORM="${TERMUX_ARCH}-linux-android"
 	if [ "$TERMUX_ARCH" = "arm" ]; then
 		TERMUX_HOST_PLATFORM="${TERMUX_HOST_PLATFORM}eabi"
-		if [ "$TERMUX_PACKAGE_LIBRARY" = "glibc" ]; then
-			TERMUX_HOST_PLATFORM="${TERMUX_HOST_PLATFORM}hf"
-		fi
 	fi
 
-	if [ "$TERMUX_PACKAGE_LIBRARY" = "bionic" ]; then
-		if [ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && [ ! -d "$NDK" ]; then
-			termux_error_exit 'NDK not pointing at a directory!'
-		fi
+	if [ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && [ ! -d "$NDK" ]; then
+		termux_error_exit 'NDK not pointing at a directory!'
+	fi
 
-		if [ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && ! grep -s -q "Pkg.Revision = $TERMUX_NDK_VERSION_NUM" "$NDK/source.properties"; then
-			termux_error_exit "Wrong NDK version - we need $TERMUX_NDK_VERSION"
-		fi
-	elif [ "$TERMUX_PACKAGE_LIBRARY" = "glibc" ]; then
-		if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
-			if [ -n "${LD_PRELOAD-}" ]; then
-				unset LD_PRELOAD
-			fi
-			if ! $(echo "$PATH" | grep -q "^$TERMUX_PREFIX/bin"); then
-				if [ -d "${TERMUX_PREFIX}/bin" ]; then
-					export PATH="${TERMUX_PREFIX}/bin:${PATH}"
-				else
-					termux_error_exit "Glibc components are not installed, run './scripts/setup-termux-glibc.sh'"
-				fi
-			fi
-		else
-			if [ ! -d "${CGCT_DIR}/${TERMUX_ARCH}/bin" ]; then
-				termux_error_exit "The cgct tools were not found, run './scripts/setup-cgct.sh'"
-			fi
-		fi
+	if [ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && ! grep -s -q "Pkg.Revision = $TERMUX_NDK_VERSION_NUM" "$NDK/source.properties"; then
+		termux_error_exit "Wrong NDK version - we need $TERMUX_NDK_VERSION"
 	fi
 
 	# The build tuple that may be given to --build configure flag:
@@ -179,7 +125,7 @@ termux_step_setup_variables() {
 	TERMUX_PKG_GROUPS="" # https://wiki.archlinux.org/title/Pacman#Installing_package_groups
 	TERMUX_PKG_ON_DEVICE_BUILD_NOT_SUPPORTED=false # if the package does not support compilation on a device, then this package should not be compiled on devices
 	TERMUX_PKG_SETUP_PYTHON=false # setting python to compile a package
-	TERMUX_PYTHON_VERSION=$(. $TERMUX_SCRIPTDIR/$(test "${TERMUX_PACKAGE_LIBRARY}" = "bionic" && echo "packages" || echo "gpkg")/python/build.sh; echo $_MAJOR_VERSION) # get the latest version of python
+	TERMUX_PYTHON_VERSION=$(. $TERMUX_SCRIPTDIR/packages/python/build.sh; echo $_MAJOR_VERSION) # get the latest version of python
 	TERMUX_PKG_PYTHON_TARGET_DEPS="" # python modules to be installed via pip3
 	TERMUX_PKG_PYTHON_BUILD_DEPS="" # python modules to be installed via build-pip
 	TERMUX_PKG_PYTHON_COMMON_DEPS="" # python modules to be installed via pip3 or build-pip

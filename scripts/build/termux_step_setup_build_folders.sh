@@ -35,10 +35,5 @@ termux_step_setup_build_folders() {
 		 "$TERMUX_PKG_TMPDIR" \
 		 "$TERMUX_PKG_CACHEDIR" \
 		 "$TERMUX_PKG_MASSAGEDIR"
-	if [ "$TERMUX_PACKAGE_LIBRARY" = "bionic" ]; then
-		mkdir -p $TERMUX_PREFIX/{bin,etc,lib,libexec,share,share/LICENSES,tmp,include}
-	elif [ "$TERMUX_PACKAGE_LIBRARY" = "glibc" ]; then
-		mkdir -p $TERMUX_PREFIX/{bin,etc,lib,share,share/LICENSES,include}
-		mkdir -p $TERMUX_PREFIX_CLASSICAL/{bin,etc,tmp}
-	fi
+	mkdir -p $TERMUX_PREFIX/{bin,etc,lib,libexec,share,share/LICENSES,tmp,include}
 }

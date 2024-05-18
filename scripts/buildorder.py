@@ -8,8 +8,6 @@ from itertools import filterfalse
 from typing import Set
 
 termux_arch = os.getenv('TERMUX_ARCH') or 'aarch64'
-termux_global_library = os.getenv('TERMUX_GLOBAL_LIBRARY') or 'false'
-termux_pkg_library = os.getenv('TERMUX_PACKAGE_LIBRARY') or 'bionic'
 
 def unique_everseen(iterable, key=None):
     """List unique elements, preserving order. Remember all elements ever seen.
@@ -134,7 +132,7 @@ class TermuxPackage(object):
         self.separate_subdeps = parse_build_file_variable_bool(build_sh_path, 'TERMUX_PKG_SEPARATE_SUB_DEPENDS')
         self.accept_dep_scr = parse_build_file_variable_bool(build_sh_path, 'TERMUX_PKG_ACCEPT_PKG_IN_DEP')
 
-        if os.getenv('TERMUX_ON_DEVICE_BUILD') == "true" and termux_pkg_library == "bionic":
+        if os.getenv('TERMUX_ON_DEVICE_BUILD') == "true":
             always_deps = ['libc++']
             for dependency_name in always_deps:
                 if dependency_name not in self.deps and self.name not in always_deps:
@@ -394,8 +392,6 @@ def generate_target_buildorder(target_path, pkgs_map, fast_build_mode):
         target_path = target_path[:-1]
 
     package_name = os.path.basename(target_path)
-    if "gpkg" in target_path.split("/")[-2].split("-") and "glibc" not in package_name.split("-"):
-        package_name += "-glibc"
     package = pkgs_map[package_name]
     # Do not depend on any sub package
     if fast_build_mode:

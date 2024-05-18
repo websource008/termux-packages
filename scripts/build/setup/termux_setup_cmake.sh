@@ -5,11 +5,7 @@ termux_setup_cmake() {
 	local TERMUX_CMAKE_TARNAME=cmake-${TERMUX_CMAKE_VERSION}-linux-x86_64.tar.gz
 	local TERMUX_CMAKE_TARFILE=$TERMUX_PKG_TMPDIR/$TERMUX_CMAKE_TARNAME
 	local TERMUX_CMAKE_FOLDER
-	if [ "$TERMUX_PACKAGE_LIBRARY" = "bionic" ]; then
-		local TERMUX_CMAKE_NAME="cmake"
-	elif [ "$TERMUX_PACKAGE_LIBRARY" = "glibc" ]; then
-		local TERMUX_CMAKE_NAME="cmake-glibc"
-	fi
+	local TERMUX_CMAKE_NAME="cmake"
 
 	if [ "${TERMUX_PACKAGES_OFFLINE-false}" = "true" ]; then
 		TERMUX_CMAKE_FOLDER=$TERMUX_SCRIPTDIR/build-tools/cmake-$TERMUX_CMAKE_VERSION

@@ -38,9 +38,6 @@ TERMUX_APPS_DIR="${TERMUX_BASE_DIR}/apps"
 TERMUX_PREFIX_CLASSICAL="${TERMUX_BASE_DIR}/usr"
 TERMUX_PREFIX="${TERMUX_PREFIX_CLASSICAL}"
 
-# Path to CGCT tools
-export CGCT_DIR="/data/data/${TERMUX_APP_PACKAGE}/cgct"
-
 # Package name for the packages hosted on the repo.
 # This must only equal TERMUX_APP_PACKAGE if using custom repo that
 # has packages that were built with same package name.

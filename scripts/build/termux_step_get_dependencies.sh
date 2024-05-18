@@ -69,19 +69,14 @@ termux_step_get_dependencies() {
 				[ ! "$TERMUX_QUIET_BUILD" = true ] && echo "extracting $PKG to $TERMUX_COMMON_CACHEDIR-$DEP_ARCH..."
 				(
 					cd $TERMUX_COMMON_CACHEDIR-$DEP_ARCH
-					if [ "$TERMUX_REPO_PKG_FORMAT" = "debian" ]; then
-						ar x ${PKG}_${DEP_VERSION}_${DEP_ARCH}.deb data.tar.xz
-						if tar -tf data.tar.xz|grep "^./$">/dev/null; then
-							# Strip prefixed ./, to avoid possible
-							# permission errors from tar
-							tar -xf data.tar.xz --strip-components=1 \
-								--no-overwrite-dir -C /
-						else
-							tar -xf data.tar.xz --no-overwrite-dir -C /
-						fi
-					elif [ "$TERMUX_REPO_PKG_FORMAT" = "pacman" ]; then
-						tar -xJf "${PKG}-${DEP_VERSION_PAC}-${DEP_ARCH}.pkg.tar.xz" \
-							--force-local --no-overwrite-dir -C / data
+					ar x ${PKG}_${DEP_VERSION}_${DEP_ARCH}.deb data.tar.xz
+					if tar -tf data.tar.xz|grep "^./$">/dev/null; then
+						# Strip prefixed ./, to avoid possible
+						# permission errors from tar
+						tar -xf data.tar.xz --strip-components=1 \
+							--no-overwrite-dir -C /
+					else
+						tar -xf data.tar.xz --no-overwrite-dir -C /
 					fi
 				)
 			fi
@@ -122,20 +117,11 @@ termux_force_check_package_dependency() {
 }
 
 termux_run_build-package() {
-	local set_library
-	if [ "$TERMUX_GLOBAL_LIBRARY" = "true" ]; then
-		set_library="$TERMUX_PACKAGE_LIBRARY -L"
-	else
-		set_library="bionic"
-		if package__is_package_name_have_glibc_prefix "$PKG"; then
-			set_library="glibc"
-		fi
-	fi
 	TERMUX_BUILD_IGNORE_LOCK=true ./build-package.sh \
  		$(test "${TERMUX_INSTALL_DEPS}" = "true" && echo "-I" || echo "-s") \
  		$(test "${TERMUX_FORCE_BUILD_DEPENDENCIES}" = "true" && echo "-F") \
    		$(test "${TERMUX_WITHOUT_DEPVERSION_BINDING}" = "true" && echo "-w") \
-     		--format $TERMUX_PACKAGE_FORMAT --library $set_library "${PKG_DIR}"
+     		"${PKG_DIR}"
 }
 
 termux_download_repo_file() {
@@ -143,9 +129,6 @@ termux_download_repo_file() {
 
 	# When doing build on device, ensure that apt lists are up-to-date.
 	if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
-		case "$TERMUX_APP_PACKAGE_MANAGER" in
-			"apt") apt update;;
-			"pacman") pacman -Sy;;
-		esac
+		apt update
 	fi
 }

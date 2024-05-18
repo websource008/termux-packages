@@ -1,13 +1,9 @@
 termux_create_debian_subpackages() {
 	# Sub packages:
-	local _ADD_PREFIX=""
-	if [ "$TERMUX_PACKAGE_LIBRARY" = "glibc" ]; then
-		_ADD_PREFIX="glibc/"
-	fi
-	if [ "$TERMUX_PKG_NO_STATICSPLIT" = "false" ] && [[ -n $(shopt -s globstar; shopt -s nullglob; echo ${_ADD_PREFIX}lib/**/*.a) ]]; then
+	if [ "$TERMUX_PKG_NO_STATICSPLIT" = "false" ] && [[ -n $(shopt -s globstar; shopt -s nullglob; echo lib/**/*.a) ]]; then
 		# Add virtual -static sub package if there are include files:
 		local _STATIC_SUBPACKAGE_FILE=$TERMUX_PKG_TMPDIR/${TERMUX_PKG_NAME}-static.subpackage.sh
-		echo TERMUX_SUBPKG_INCLUDE=\"$(find ${_ADD_PREFIX}lib -name '*.a' -o -name '*.la') $TERMUX_PKG_STATICSPLIT_EXTRA_PATTERNS\" > "$_STATIC_SUBPACKAGE_FILE"
+		echo TERMUX_SUBPKG_INCLUDE=\"$(find lib -name '*.a' -o -name '*.la') $TERMUX_PKG_STATICSPLIT_EXTRA_PATTERNS\" > "$_STATIC_SUBPACKAGE_FILE"
 		echo "TERMUX_SUBPKG_DESCRIPTION=\"Static libraries for ${TERMUX_PKG_NAME}\"" >> "$_STATIC_SUBPACKAGE_FILE"
 	fi
 
@@ -17,9 +13,6 @@ termux_create_debian_subpackages() {
 		test ! -f "$subpackage" && continue
 		local SUB_PKG_NAME
 		SUB_PKG_NAME=$(basename "$subpackage" .subpackage.sh)
-		if [ "$TERMUX_PACKAGE_LIBRARY" = "glibc" ] && ! package__is_package_name_have_glibc_prefix "$SUB_PKG_NAME"; then
-			SUB_PKG_NAME="$(package__add_prefix_glibc_to_package_name ${SUB_PKG_NAME})"
-		fi
 		# Default value is same as main package, but sub package may override:
 		local TERMUX_SUBPKG_PLATFORM_INDEPENDENT=$TERMUX_PKG_PLATFORM_INDEPENDENT
 		local SUB_PKG_DIR=$TERMUX_TOPDIR/$TERMUX_PKG_NAME/subpackages/$SUB_PKG_NAME
@@ -106,16 +99,6 @@ termux_create_debian_subpackages() {
 			TERMUX_SUBPKG_DEPENDS+=", $TERMUX_PKG_NAME"
 		elif [ "$TERMUX_SUBPKG_DEPEND_ON_PARENT" = deps ]; then
 			TERMUX_SUBPKG_DEPENDS+=", $TERMUX_PKG_DEPENDS"
-		fi
-
-		if [ "$TERMUX_GLOBAL_LIBRARY" = "true" ] && [ "$TERMUX_PACKAGE_LIBRARY" = "glibc" ]; then
-			test ! -z "$TERMUX_SUBPKG_DEPENDS" && TERMUX_SUBPKG_DEPENDS=$(package__add_prefix_glibc_to_package_list "$TERMUX_SUBPKG_DEPENDS")
-			test ! -z "$TERMUX_SUBPKG_BREAKS" && TERMUX_SUBPKG_BREAKS=$(package__add_prefix_glibc_to_package_list "$TERMUX_SUBPKG_BREAKS")
-			test ! -z "$TERMUX_SUBPKG_CONFLICTS" && TERMUX_SUBPKG_CONFLICTS=$(package__add_prefix_glibc_to_package_list "$TERMUX_SUBPKG_CONFLICTS")
-			test ! -z "$TERMUX_SUBPKG_RECOMMENDS" && TERMUX_SUBPKG_RECOMMENDS=$(package__add_prefix_glibc_to_package_list "$TERMUX_SUBPKG_RECOMMENDS")
-			test ! -z "$TERMUX_SUBPKG_REPLACES" && TERMUX_SUBPKG_REPLACES=$(package__add_prefix_glibc_to_package_list "$TERMUX_SUBPKG_REPLACES")
-			test ! -z "$TERMUX_SUBPKG_PROVIDES" && TERMUX_SUBPKG_PROVIDES=$(package__add_prefix_glibc_to_package_list "$TERMUX_SUBPKG_PROVIDES")
-			test ! -z "$TERMUX_SUBPKG_SUGGESTS" && TERMUX_SUBPKG_SUGGESTS=$(package__add_prefix_glibc_to_package_list "$TERMUX_SUBPKG_SUGGESTS")
 		fi
 
 		[ "$TERMUX_SUBPKG_ESSENTIAL" = "true" ] && echo "Essential: yes" >> control

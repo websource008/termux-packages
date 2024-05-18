@@ -58,8 +58,6 @@ if [ ! -e "$TERMUX_BUILD_LOCK_FILE" ]; then
 	touch "$TERMUX_BUILD_LOCK_FILE"
 fi
 
-export TERMUX_REPO_PKG_FORMAT=$(jq --raw-output '.pkg_format // "debian"' ${TERMUX_SCRIPTDIR}/repo.json)
-
 # Special variable for internal use. It forces script to ignore
 # lock file.
 : "${TERMUX_BUILD_IGNORE_LOCK:=false}"
@@ -307,10 +305,6 @@ source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_create_subpkg_debscripts.sh"
 # shellcheck source=scripts/build/termux_create_debian_subpackages.sh
 source "$TERMUX_SCRIPTDIR/scripts/build/termux_create_debian_subpackages.sh"
 
-# Create all subpackages. Run from termux_step_massage
-# shellcheck source=scripts/build/termux_create_pacman_subpackages.sh
-source "$TERMUX_SCRIPTDIR/scripts/build/termux_create_pacman_subpackages.sh"
-
 # Function to run various cleanup/fixes
 # shellcheck source=scripts/build/termux_step_massage.sh
 source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_massage.sh"
@@ -325,18 +319,9 @@ termux_step_create_debscripts() {
 	return
 }
 
-# Convert Debian maintainer scripts into pacman-compatible installation hooks.
-# This is used only when creating pacman packages.
-# shellcheck source=scripts/build/termux_step_create_pacman_install_hook.sh
-source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_create_pacman_install_hook.sh"
-
 # Create the build deb file. Not to be overridden by package scripts.
 # shellcheck source=scripts/build/termux_step_create_debian_package.sh
 source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_create_debian_package.sh"
-
-# Create the build .pkg.tar.xz file. Not to be overridden by package scripts.
-# shellcheck source=scripts/build/termux_step_create_pacman_package.sh
-source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_create_pacman_package.sh"
 
 # Finish the build. Not to be overridden by package scripts.
 # shellcheck source=scripts/build/termux_step_finish_build.sh
@@ -405,8 +390,6 @@ _show_usage() {
 	echo "  -w Install dependencies without version binding."
 	echo "  -s Skip dependency check."
 	echo "  -o Specify directory where to put built packages. Default: output/."
-	echo "  --format Specify package output format (debian, pacman)."
-	echo "  --library Specify library of package (bionic, glibc)."
 	exit 1
 }
 
@@ -417,28 +400,6 @@ while (($# >= 1)); do
 	case "$1" in
 		--) shift 1; break;;
 		-h|--help) _show_usage;;
-		--format)
-			if [ $# -ge 2 ]; then
-				shift 1
-				if [ -z "$1" ]; then
-					termux_error_exit "./build-package.sh: argument to '--format' should not be empty"
-				fi
-				export TERMUX_PACKAGE_FORMAT="$1"
-			else
-				termux_error_exit "./build-package.sh: option '--format' requires an argument"
-			fi
-			;;
-		--library)
-			if [ $# -ge 2 ]; then
-				shift
-				if [ -z "$1" ]; then
-					termux_error_exit "./build-package.sh: argument to '--library' should not be empty"
-				fi
-				export TERMUX_PACKAGE_LIBRARY="$1"
-			else
-				termux_error_exit "./build-package.sh: option '--library' requires an argument"
-			fi
-			;;
 		-a)
 			if [ $# -ge 2 ]; then
 				shift 1
@@ -475,7 +436,6 @@ while (($# >= 1)); do
 				export TERMUX_NO_CLEAN=true
 			fi
 			;;
-		-L) export TERMUX_GLOBAL_LIBRARY=true;;
 		-q) export TERMUX_QUIET_BUILD=true;;
 		-w) export TERMUX_WITHOUT_DEPVERSION_BINDING=true;;
 		-s) export TERMUX_SKIP_DEPCHECK=true;;
@@ -505,10 +465,6 @@ if [ "$TERMUX_REPO_PACKAGE" != "$TERMUX_APP_PACKAGE" ]; then
 	TERMUX_INSTALL_DEPS=false
 fi
 
-if [ "$TERMUX_REPO_PKG_FORMAT" != "debian" ] && [ "$TERMUX_REPO_PKG_FORMAT" != "pacman" ]; then
-	termux_error_exit "'pkg_format' is incorrectly specified in repo.json file. Only 'debian' and 'pacman' formats are supported"
-fi
-
 if [ -n "${TERMUX_PACKAGE_FORMAT-}" ]; then
 	case "${TERMUX_PACKAGE_FORMAT-}" in
 		debian|pacman) :;;
@@ -516,14 +472,7 @@ if [ -n "${TERMUX_PACKAGE_FORMAT-}" ]; then
 	esac
 fi
 
-if [ -n "${TERMUX_PACKAGE_LIBRARY-}" ]; then
-	case "${TERMUX_PACKAGE_LIBRARY-}" in
-		bionic|glibc) :;;
-		*) termux_error_exit "Unsupported library \"${TERMUX_PACKAGE_LIBRARY-}\". Only 'bionic' and 'glibc' library are supported";;
-	esac
-fi
-
-if [ "${TERMUX_INSTALL_DEPS-false}" = "true" ] || [ "${TERMUX_PACKAGE_LIBRARY-bionic}" = "glibc" ]; then
+if [ "${TERMUX_INSTALL_DEPS-false}" = "true" ]; then
 	# Setup PGP keys for verifying integrity of dependencies.
 	# Keys are obtained from our keyring package.
 	gpg --list-keys 2C7F29AE97891F6419A9E2CDB0076E490B71616B > /dev/null 2>&1 || {
@@ -549,10 +498,9 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 				env TERMUX_ARCH="$arch" TERMUX_BUILD_IGNORE_LOCK=true ./build-package.sh \
 					${TERMUX_FORCE_BUILD+-f} ${TERMUX_INSTALL_DEPS+-i} ${TERMUX_IS_DISABLED+-D} \
 					${TERMUX_DEBUG_BUILD+-d} ${TERMUX_OUTPUT_DIR+-o $TERMUX_OUTPUT_DIR} \
-					${TERMUX_FORCE_BUILD_DEPENDENCIES+-F} ${TERMUX_GLOBAL_LIBRARY+-L} \
+					${TERMUX_FORCE_BUILD_DEPENDENCIES+-F} \
 					${TERMUX_WITHOUT_DEPVERSION_BINDING+-w} \
-					--format ${TERMUX_PACKAGE_FORMAT:=debian} \
-					--library ${TERMUX_PACKAGE_LIBRARY:=bionic} "${PACKAGE_LIST[i]}"
+					"${PACKAGE_LIST[i]}"
 			done
 			exit
 		fi
@@ -599,9 +547,6 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 
 		if [ "$TERMUX_CONTINUE_BUILD" == "false" ]; then
 			termux_step_get_dependencies
-			if [ "$TERMUX_PACKAGE_LIBRARY" = "glibc" ]; then
-				termux_step_setup_cgct_environment
-			fi
 			termux_step_override_config_scripts
 		fi
 

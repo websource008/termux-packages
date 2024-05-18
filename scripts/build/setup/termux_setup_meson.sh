@@ -56,11 +56,9 @@ termux_setup_meson() {
 	echo "pkgconfig = '$PKG_CONFIG'" >> $TERMUX_MESON_CROSSFILE
 	echo "strip = '$STRIP'" >> $TERMUX_MESON_CROSSFILE
 
-	if [ "$TERMUX_PACKAGE_LIBRARY" = "bionic" ]; then
-		echo '' >> $TERMUX_MESON_CROSSFILE
-		echo "[properties]" >> $TERMUX_MESON_CROSSFILE
-		echo "needs_exe_wrapper = true" >> $TERMUX_MESON_CROSSFILE
-  	fi
+	echo '' >> $TERMUX_MESON_CROSSFILE
+	echo "[properties]" >> $TERMUX_MESON_CROSSFILE
+	echo "needs_exe_wrapper = true" >> $TERMUX_MESON_CROSSFILE
 
 	echo '' >> $TERMUX_MESON_CROSSFILE
 	echo "[built-in options]" >> $TERMUX_MESON_CROSSFILE
@@ -109,9 +107,5 @@ termux_setup_meson() {
 	echo "cpu_family = '$MESON_CPU_FAMILY'" >> $TERMUX_MESON_CROSSFILE
 	echo "cpu = '$MESON_CPU'" >> $TERMUX_MESON_CROSSFILE
 	echo "endian = 'little'" >> $TERMUX_MESON_CROSSFILE
- 	if [ "$TERMUX_PACKAGE_LIBRARY" = "bionic" ]; then
-		echo "system = 'android'" >> $TERMUX_MESON_CROSSFILE
-  	elif [ "$TERMUX_PACKAGE_LIBRARY" = "glibc" ]; then
-		echo "system = 'linux'" >> $TERMUX_MESON_CROSSFILE
-     	fi
+	echo "system = 'android'" >> $TERMUX_MESON_CROSSFILE
 }
