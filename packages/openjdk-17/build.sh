@@ -22,6 +22,7 @@ termux_step_configure() {
 	bash ./configure \
 		--disable-precompiled-headers \
 		--disable-warnings-as-errors \
+		--enable-headless-only \
 		--enable-option-checking=fatal \
 		--openjdk-target=$TERMUX_HOST_PLATFORM \
 		--with-cups-include="$TERMUX_PREFIX/include" \
@@ -37,10 +38,9 @@ termux_step_configure() {
 		--with-libjpeg=system \
 		--with-libpng=system \
 		--with-toolchain-type=clang \
-		--with-x="$TERMUX_PREFIX/include/X11" \
+		--without-x \
 		--with-zlib=system \
 		--x-includes="$TERMUX_PREFIX/include/X11" \
-		--x-libraries="$TERMUX_PREFIX/lib" \
 		AR="$AR" \
 		NM="$NM" \
 		OBJCOPY="$OBJCOPY" \
