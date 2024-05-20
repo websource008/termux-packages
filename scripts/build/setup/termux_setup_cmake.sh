@@ -33,14 +33,11 @@ termux_setup_cmake() {
 
 		export PATH=$TERMUX_CMAKE_FOLDER/bin:$PATH
 	else
-		if [[ "$TERMUX_APP_PACKAGE_MANAGER" = "apt" && "$(dpkg-query -W -f '${db:Status-Status}\n' $TERMUX_CMAKE_NAME 2>/dev/null)" != "installed" ]] ||
-                   [[ "$TERMUX_APP_PACKAGE_MANAGER" = "pacman" && ! "$(pacman -Q $TERMUX_CMAKE_NAME 2>/dev/null)" ]]; then
+		if [[ "$(dpkg-query -W -f '${db:Status-Status}\n' $TERMUX_CMAKE_NAME 2>/dev/null)" != "installed" ]]; then
 			echo "Package '$TERMUX_CMAKE_NAME' is not installed."
 			echo "You can install it with"
 			echo
 			echo "  pkg install $TERMUX_CMAKE_NAME"
-			echo
-			echo "  pacman -S $TERMUX_CMAKE_NAME"
 			echo
 			exit 1
 		fi

@@ -1,13 +1,10 @@
 termux_setup_python_pip() {
 	if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
-		if [[ "$TERMUX_APP_PACKAGE_MANAGER" = "apt" && "$(dpkg-query -W -f '${db:Status-Status}\n' python-pip 2>/dev/null)" != "installed" ]] ||
-		[[ "$TERMUX_APP_PACKAGE_MANAGER" = "pacman" && ! "$(pacman -Q python-pip 2>/dev/null)" ]]; then
+		if [[ "$(dpkg-query -W -f '${db:Status-Status}\n' python-pip 2>/dev/null)" != "installed" ]]; then
 			echo "Package 'python-pip' is not installed."
 			echo "You can install it with"
 			echo
 			echo "  pkg install python-pip"
-			echo
-			echo "  pacman -S python-pip"
 			echo
 			echo "Note that package 'python-pip' is known to be problematic for building on device."
 			exit 1

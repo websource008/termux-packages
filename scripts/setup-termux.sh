@@ -50,13 +50,6 @@ export TERMUX_SCRIPTDIR=$(dirname "$(realpath "$0")")/../
 . $(dirname "$(realpath "$0")")/properties.sh
 source "$TERMUX_PREFIX/bin/termux-setup-package-manager" || true
 
-if [ "$TERMUX_APP_PACKAGE_MANAGER" = "apt" ]; then
-	apt update
-	apt dist-upgrade -y
-	apt install -y $PACKAGES
-elif [ "$TERMUX_APP_PACKAGE_MANAGER" = "pacman" ]; then
-	pacman -Syu $PACKAGES --needed --noconfirm
-else
-	echo "Error: no package manager defined"
-	exit 1
-fi
+apt update
+apt dist-upgrade -y
+apt install -y $PACKAGES

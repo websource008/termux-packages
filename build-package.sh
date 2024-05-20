@@ -333,15 +333,9 @@ source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_finish_build.sh"
 . "$TERMUX_SCRIPTDIR/scripts/properties.sh"
 
 if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
-	# Setup TERMUX_APP_PACKAGE_MANAGER
-	source "$TERMUX_PREFIX/bin/termux-setup-package-manager"
-
 	# For on device builds cross compiling is not supported.
 	# Target architecture must be same as for environment used currently.
-	case "$TERMUX_APP_PACKAGE_MANAGER" in
-		"apt") TERMUX_ARCH=$(dpkg --print-architecture);;
-		"pacman") TERMUX_ARCH=$(pacman-conf Architecture);;
-	esac
+	TERMUX_ARCH=$(dpkg --print-architecture)
 	export TERMUX_ARCH
 fi
 
@@ -465,13 +459,6 @@ if [ "$TERMUX_REPO_PACKAGE" != "$TERMUX_APP_PACKAGE" ]; then
 	TERMUX_INSTALL_DEPS=false
 fi
 
-if [ -n "${TERMUX_PACKAGE_FORMAT-}" ]; then
-	case "${TERMUX_PACKAGE_FORMAT-}" in
-		debian|pacman) :;;
-		*) termux_error_exit "Unsupported package format \"${TERMUX_PACKAGE_FORMAT-}\". Only 'debian' and 'pacman' formats are supported";;
-	esac
-fi
-
 if [ "${TERMUX_INSTALL_DEPS-false}" = "true" ]; then
 	# Setup PGP keys for verifying integrity of dependencies.
 	# Keys are obtained from our keyring package.
@@ -593,13 +580,7 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 		cd "$TERMUX_PKG_MASSAGEDIR/$TERMUX_PREFIX_CLASSICAL"
 		termux_step_post_massage
 		cd "$TERMUX_PKG_MASSAGEDIR"
-		if [ "$TERMUX_PACKAGE_FORMAT" = "debian" ]; then
-			termux_step_create_debian_package
-		elif [ "$TERMUX_PACKAGE_FORMAT" = "pacman" ]; then
-			termux_step_create_pacman_package
-		else
-			termux_error_exit "Unknown packaging format '$TERMUX_PACKAGE_FORMAT'."
-		fi
+		termux_step_create_debian_package
 		# Saving a list of compiled packages for further work with it
 		if termux_check_package_in_building_packages_list "${TERMUX_PKG_BUILDER_DIR#${TERMUX_SCRIPTDIR}/}"; then
 			sed -i "\|^${TERMUX_PKG_BUILDER_DIR#${TERMUX_SCRIPTDIR}/}$|d" "$TERMUX_BUILD_PACKAGE_CALL_BUILDING_PACKAGES_LIST_FILE_PATH"

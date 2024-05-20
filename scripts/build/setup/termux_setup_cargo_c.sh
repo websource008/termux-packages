@@ -12,14 +12,11 @@ termux_setup_cargo_c() {
 	fi
 
 	if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
-		if [[ "$TERMUX_APP_PACKAGE_MANAGER" = "apt" && "$(dpkg-query -W -f '${db:Status-Status}\n' cargo-c 2>/dev/null)" != "installed" ]] ||
-			[[ "$TERMUX_APP_PACKAGE_MANAGER" = "pacman" && ! "$(pacman -Q cargo-c 2>/dev/null)" ]]; then
+		if [[ "$(dpkg-query -W -f '${db:Status-Status}\n' cargo-c 2>/dev/null)" != "installed" ]]; then
 			echo "Package 'cargo-c' is not installed."
 			echo "You can install it with"
 			echo
 			echo "  pkg install cargo-c"
-			echo
-			echo "  pacman -S cargo-c"
 			echo
 			exit 1
 		fi

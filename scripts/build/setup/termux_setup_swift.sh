@@ -42,14 +42,11 @@ termux_setup_swift() {
 			EOF
 		fi
 	else
-		if [[ "${TERMUX_APP_PACKAGE_MANAGER}" == "apt" && "$(dpkg-query -W -f '${db:Status-Status}\n' swift 2>/dev/null)" != "installed" ]] ||
-		   [[ "${TERMUX_APP_PACKAGE_MANAGER}" == "pacman" && ! "$(pacman -Q swift 2>/dev/null)" ]]; then
+		if [[ "$(dpkg-query -W -f '${db:Status-Status}\n' swift 2>/dev/null)" != "installed" ]]; then
 			echo "Package 'swift' is not installed."
 			echo "You can install it with"
 			echo
 			echo "  pkg install swift"
-			echo
-			echo "  pacman -S swift"
 			echo
 			echo "or build it from source with"
 			echo

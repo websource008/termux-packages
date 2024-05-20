@@ -13,8 +13,6 @@ termux_setup_rust() {
 
 			pkg install rust
 
-			pacman -S rust
-
 			or build it from source with
 
 			./build-package.sh rust

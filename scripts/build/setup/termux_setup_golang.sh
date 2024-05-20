@@ -33,14 +33,11 @@ termux_setup_golang() {
 			( cd "$TERMUX_BUILDGO_FOLDER"; . ${TERMUX_SCRIPTDIR}/packages/golang/fix-hardcoded-etc-resolv-conf.sh )
 		fi
 	else
-		if [[ "$TERMUX_APP_PACKAGE_MANAGER" = "apt" && "$(dpkg-query -W -f '${db:Status-Status}\n' golang 2>/dev/null)" != "installed" ]] ||
-		   [[ "$TERMUX_APP_PACKAGE_MANAGER" = "pacman" && ! "$(pacman -Q golang 2>/dev/null)" ]]; then
+		if [[ "$(dpkg-query -W -f '${db:Status-Status}\n' golang 2>/dev/null)" != "installed" ]]; then
 			echo "Package 'golang' is not installed."
 			echo "You can install it with"
 			echo
 			echo "  pkg install golang"
-			echo
-			echo "  pacman -S golang"
 			echo
 			echo "or build it from source with"
 			echo

@@ -1,13 +1,10 @@
 termux_setup_flang() {
     if [ "$TERMUX_ON_DEVICE_BUILD" = true ]; then
-		if [[ "$TERMUX_APP_PACKAGE_MANAGER" = "apt" && "$(dpkg-query -W -f '${db:Status-Status}\n' flang 2>/dev/null)" != "installed" ]] ||
-			[[ "$TERMUX_APP_PACKAGE_MANAGER" = "pacman" && ! "$(pacman -Q flang 2>/dev/null)" ]]; then
+		if [[ "$(dpkg-query -W -f '${db:Status-Status}\n' flang 2>/dev/null)" != "installed" ]]; then
 			echo "Package 'flang' is not installed."
 			echo "You can install it with"
 			echo
 			echo "  pkg install flang"
-			echo
-			echo "  pacman -S flang"
 			echo
 			exit 1
 		fi

@@ -30,10 +30,7 @@ termux_download_deb_pac() {
 	fi
 
 	if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
-		case "$TERMUX_APP_PACKAGE_MANAGER" in
-			"apt") apt install -y "${PACKAGE}$(test ${TERMUX_WITHOUT_DEPVERSION_BINDING} != true && echo "=${VERSION}")";;
-			"pacman") pacman -S "${PACKAGE}$(test ${TERMUX_WITHOUT_DEPVERSION_BINDING} != true && echo "=${VERSION_PACMAN}")" --needed --noconfirm;;
-		esac
+		apt install -y "${PACKAGE}$(test ${TERMUX_WITHOUT_DEPVERSION_BINDING} != true && echo "=${VERSION}")"
 		return "$?"
 	fi
 
