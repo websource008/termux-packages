@@ -12,7 +12,6 @@ target = [
     "i686-linux-android",
     "x86_64-linux-android",
     "wasm32-unknown-unknown",
-    "wasm32-wasi",
 ]
 rustc = "@RUSTC@"
 cargo = "@CARGO@"
@@ -61,9 +60,6 @@ profiler = true
 [target.x86_64-linux-android]
 llvm-config = "@TERMUX_PREFIX@/bin/llvm-config"
 profiler = true
-
-[target.wasm32-wasi]
-wasi-root = "@TERMUX_PREFIX@/share/wasi-sysroot"
 
 [dist]
 src-tarball = false
