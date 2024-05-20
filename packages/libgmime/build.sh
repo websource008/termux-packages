@@ -3,8 +3,8 @@ TERMUX_PKG_DESCRIPTION="MIME message parser and creator"
 TERMUX_PKG_LICENSE="LGPL-2.1"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="3.2.14"
-TERMUX_PKG_SRCURL=https://github.com/jstedfast/gmime/archive/refs/tags/${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=c834081b3a308e4bad809c381cb78f19dabaeee758e86d0a30a35490b5523a9e
+TERMUX_PKG_SRCURL=https://github.com/jstedfast/gmime/releases/download/${TERMUX_PKG_VERSION}/gmime-${TERMUX_PKG_VERSION}.tar.xz
+TERMUX_PKG_SHA256=a5eb3dd675f72e545c8bc1cd12107e4aad2eaec1905eb7b4013cdb1fbe5e2317
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="glib, libidn2, zlib"
 TERMUX_PKG_BREAKS="libgmime-dev"
@@ -17,7 +17,5 @@ ac_cv_have_iconv_detect_h=yes
 "
 
 termux_step_pre_configure() {
-	NOCONFIGURE=1 ./autogen.sh
-
 	cp "$TERMUX_PKG_BUILDER_DIR"/iconv-detect.h ./
 }
