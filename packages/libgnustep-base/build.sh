@@ -37,6 +37,7 @@ cross_found_iconv_liconv=no
 cross_found_iconv_lgiconv=no
 cross_objc2_runtime=1
 ac_cv_func_setpgrp_void=yes
+ac_cv_func_shmctl=no
 "
 
 termux_step_pre_configure() {
