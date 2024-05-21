@@ -56,31 +56,19 @@ termux_step_post_configure() {
 
 	sed -e "s|^#define HAVE_SA_LEN|// #define HAVE_SA_LEN|" -i config.h
 
-	# TODO port libandroid-fexecve from Android P
-	sed -e "s|^#define HAVE_FEXECVE|// #define HAVE_FEXECVE|" -i config.h
-
 	# Bad System Call
 	#sed -e "s|^#define HAVE_SETREUID|// #define HAVE_SETREUID|" -i config.h
 
 	sed -e "s|^#define HAVE_KERN_ARND|// #define HAVE_KERN_ARND|" -i config.h
-
-	# TODO port libandroid-random from Android P
-	sed -e "s|^#define HAVE_GETRANDOM|// #define HAVE_GETRANDOM|" -i config.h
 
 	# Bad System Call
 	#sed -e "s|^#define HAVE_SETGROUPS|// #define HAVE_SETGROUPS|" -i config.h
 
 	sed -e "s|^#define HAVE_LIBUNWIND|// #define HAVE_LIBUNWIND|" -i config.h
 
-	# TODO port libandroid-random from Android P
-	sed -e "s|^#define HAVE_GETENTROPY|// #define HAVE_GETENTROPY|" -i config.h
-
 	sed -e "s|^#define HAVE_RTLGENRANDOM|// #define HAVE_RTLGENRANDOM|" -i config.h
 	sed -e "s|^#define HAVE_LIBUNWIND|// #define HAVE_LIBUNWIND|" -i config.h
 	sed -e "s|^#define HAVE_EPOLL_PWAIT2|// #define HAVE_EPOLL_PWAIT2|" -i config.h
-
-	# TODO port libandroid-getsetdomainname from Android O
-	sed -e "s|^#define HAVE_GETDOMAINNAME|// #define HAVE_GETDOMAINNAME|" -i config.h
 
 	# Bad System Call
 	#sed -e "s|^#define HAVE_CLOCK_SETTIME|// #define HAVE_CLOCK_SETTIME|" -i config.h
