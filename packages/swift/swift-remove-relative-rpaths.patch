@@ -17,7 +17,7 @@ diff --git a/sourcekit-lsp/Utilities/build-script-helper.py b/sourcekit-lsp/Util
 index bd31bec..737c8c3 100755
 --- a/sourcekit-lsp/Utilities/build-script-helper.py
 +++ b/sourcekit-lsp/Utilities/build-script-helper.py
-@@ -124,7 +124,7 @@ def get_swiftpm_options(swift_exec: str, args: argparse.Namespace) -> List[str]:
+@@ -124,6 +124,6 @@ def get_swiftpm_options(swift_exec: str, args: argparse.Namespace) -> List[str]:
              'android-', args.cross_compile_host)):
          swiftpm_args += [
 -            '-Xlinker', '-rpath', '-Xlinker', '$ORIGIN/../lib/swift/android',
@@ -70,7 +70,7 @@ diff --git a/swift-driver/Utilities/build-script-helper.py b/swift-driver/Utilit
 index ce6523d5..e8d63bdd 100755
 --- a/swift-driver/Utilities/build-script-helper.py
 +++ b/swift-driver/Utilities/build-script-helper.py
-@@ -101,7 +101,7 @@ def get_swiftpm_options(args):
+@@ -101,6 +101,6 @@ def get_swiftpm_options(args):
          'android-', args.cross_compile_hosts[0])):
        swiftpm_args += [
 -        '-Xlinker', '-rpath', '-Xlinker', '$ORIGIN/../lib/swift/android',
