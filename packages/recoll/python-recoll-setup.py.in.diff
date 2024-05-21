@@ -7,7 +7,7 @@
 -if "CYGWIN" in os.environ:
 -        libraries =  ['recoll', 'xapian', 'iconv', 'z']
 +if True:
-+        libraries = ['recoll', 'python@PYTHON_VERSION@', 'xslt', 'xml2', 'xapian', 'iconv', 'z']
++        libraries = ['recoll', 'python@PYTHON_VERSION@', 'xslt', 'xml2', 'xapian', 'z']
  else:
          libraries = ['recoll']
 
