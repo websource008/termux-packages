@@ -110,10 +110,10 @@ termux_step_host_build() {
 		local CLANGXX=$(command -v clang++)
 
 		# The Ubuntu CI may not have clang/clang++ in its path so explicitly set it
-		# to clang-15 instead.
+		# to clang-16 instead.
 		if [ -z "$CLANG" ]; then
-			CLANG=$(command -v clang-15)
-			CLANGXX=$(command -v clang++-15)
+			CLANG=$(command -v clang-16)
+			CLANGXX=$(command -v clang++-16)
 		fi
 
 		# Natively compile llvm-tblgen and some other files needed later.
