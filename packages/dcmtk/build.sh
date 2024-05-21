@@ -13,10 +13,23 @@ TERMUX_PKG_DEPENDS="libc++, libpng, libtiff, libxml2, openssl, zlib"
 # As of 3.6.7, libsndfile and openjpeg are detected but not linked against
 TERMUX_PKG_BUILD_DEPENDS="libsndfile, openjpeg"
 TERMUX_PKG_BUILD_IN_SRC=true
+# TODO: Verify the below
+#   - DCMTK_FIXED_ICONV_CONVERSION_FLAGS: The output printed by the test program
+#    config/tests/iconv.cc, when run on the target platform. This value is only
+#    used when compiling with old libiconv versions (older than libiconv 1.8)
+#    and determines the iconv behaviour when encountering illegal byte sequences
+#    during a character set conversion. Possible values are:
+#    - "AbortTranscodingOnIllegalSequence" (use as default)
+#    - "DiscardIllegalSequences"
+#  - DCMTK_STDLIBC_ICONV_HAS_DEFAULT_ENCODING: true if the test program
+#    config/tests/lciconv.cc exits with a return code of zero, false otherwise.
+#    This test determines if libiconv has a default encoding, i.e. if
+#    iconv_open() accepts "" as an argument. Use FALSE as default.
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -DDCMTK_NO_TRY_RUN=ON
 -DDCMTK_ICONV_FLAGS_ANALYZED=ON
--DDCMTK_FIXED_ICONV_CONVERSION_FLAGS=ON
+-DDCMTK_FIXED_ICONV_CONVERSION_FLAGS=DiscardIllegalSequences
+-DDCMTK_STDLIBC_ICONV_HAS_DEFAULT_ENCODING=TRUE
 -DBUILD_SHARED_LIBS=ON
 -DDCMTK_WITH_ICONV=ON
 -DDCMTK_WITH_ICU=OFF
