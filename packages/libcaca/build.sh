@@ -16,6 +16,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-python
 --disable-ruby
 --enable-imlib2
+--without-x
 "
 TERMUX_PKG_HOSTBUILD=true
 
@@ -38,6 +39,8 @@ termux_step_host_build() {
 termux_step_pre_configure() {
 	local _PREFIX_FOR_BUILD=$TERMUX_PKG_HOSTBUILD_DIR/prefix
 	export PATH=$_PREFIX_FOR_BUILD/bin:$PATH
+
+	CFLAGS+=" -DX_DISPLAY_MISSING=1"
 
 	autoreconf -fi
 }
