@@ -28,7 +28,7 @@ termux_step_pre_configure() {
 
 	local d p
 	for d in $CARGO_HOME/registry/src/*/libbpf-sys-*; do
-		for p in libbpf-sys-0.6.0-1-libbpf-include-linux-{compiler,types}.h.diff; do
+		for p in libbpf-sys-0.6.0-1-libbpf-include-linux-types.h.diff; do
 			patch --silent -p1 -d ${d} \
 				< "$TERMUX_PKG_BUILDER_DIR/${p}" || :
 		done
@@ -42,7 +42,7 @@ termux_step_pre_configure() {
 	done
 
 	if [ "$TERMUX_ON_DEVICE_BUILD" = "false" ]; then
-		export CLANG=/usr/bin/clang-15
+		export CLANG=/usr/bin/clang-16
 	fi
 }
 
