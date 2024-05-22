@@ -93,8 +93,7 @@ termux_step_massage() {
 		# Remove non-english man pages:
 		find ./share/man -mindepth 1 -maxdepth 1 -type d ! -name man\* | xargs -r rm -rf
 
-		# Compress man pages with gzip:
-		find ./share/man -type f ! -iname \*.gz -print0 | xargs -r -0 gzip
+		find ./share/man -type f ! -iname \*.gz -print0 | xargs -r -0 gzip -9 -n
 
 		# Update man page symlinks, e.g. unzstd.1 -> zstd.1:
 		while IFS= read -r -d '' file; do
