@@ -1,6 +1,7 @@
---- a/src/Makefile
-+++ b/src/Makefile
-@@ -188,7 +188,7 @@
+diff -u -r ../gmic-3.3.6/src/Makefile ./src/Makefile
+--- ../gmic-3.3.6/src/Makefile	2024-05-16 06:17:33.000000000 +0000
++++ ./src/Makefile	2024-05-22 21:06:56.337632344 +0000
+@@ -189,7 +189,7 @@
  ifndef NO_SRIPDLIB
  MANDATORY_CFLAGS += -std=c++11 -pedantic
  endif
@@ -9,7 +10,18 @@
  ifdef IS_GCC
  MANDATORY_CFLAGS += -Wall -Wextra -Wfatal-errors -Werror=unknown-pragmas -Werror=unused-label
  GCC_VER_GTEQ5 = $(shell expr `$(CXX) -dumpversion | cut -f1 -d.` \>= 5)
-@@ -348,8 +348,8 @@
+@@ -259,8 +259,8 @@
+ # Enable image display, using X11 (Unix).
+ # (Keep /usr/ dirname here since X11 is located in /usr/ on Mac too)
+ ifneq ($(OS),Darwin)
+-X11_CFLAGS = -Dcimg_display=1 $(shell pkg-config --cflags x11 || echo -I/usr/X11R6/include) #-Dcimg_use_xrandr
+-X11_LIBS = $(shell pkg-config --libs x11 || echo -L/usr/X11R6/lib -lX11) -lpthread # $(shell pkg-config --libs xrandr || echo -lXrandr)
++X11_CFLAGS = -Dcimg_display=0
++X11_LIBS = -lpthread
+ else
+ ifeq (,$(wildcard /usr/X11))
+ X11_CFLAGS = -Dcimg_display=0 #-Dcimg_use_xrandr
+@@ -349,8 +349,8 @@
  GMIC_STD_CFLAGS = -Dgmic_community $(MANDATORY_CFLAGS) $(ABORT_CFLAGS) $(PARALLEL_CFLAGS) $(FFTW_CFLAGS) $(CURL_CFLAGS) $(PNG_CFLAGS) $(JPEG_CFLAGS) $(TIFF_CFLAGS)
  GMIC_STD_LIBS = $(MANDATORY_LIBS) $(PARALLEL_LIBS) $(FFTW_LIBS) $(CURL_LIBS) $(PNG_LIBS) $(JPEG_LIBS) $(TIFF_LIBS)
  ifeq ($(OS),Unix) # Unix
@@ -20,7 +32,7 @@
  else
  ifeq ($(OS),Darwin) # MacOSX
  GMIC_STD_CFLAGS += $(X11_CFLAGS) $(OPENEXR_CFLAGS)
-@@ -414,6 +414,10 @@
+@@ -415,6 +415,10 @@
  	$(MAKE) "CFLAGS+=$(GMIC_STD_CFLAGS) $(OPT_CFLAGS)" "LIBS+=gmic.o $(GMIC_STD_LIBS) $(OPT_LIBS)" gmic.o _cli
  	$(STRIP) gmic$(EXE)
  
@@ -31,7 +43,7 @@
  dev:
  	$(MAKE) "CFLAGS+=$(GMIC_STD_CFLAGS)" "LIBS+=gmic.o $(GMIC_STD_LIBS)" gmic.o _cli
  
-@@ -432,13 +436,20 @@
+@@ -433,13 +437,20 @@
  	        "LIBS+=gmic.o $(MANDATORY_LIBS) $(PARALLEL_LIBS) $(OPENMP_LIBS) $(X11_LIBS) $(OPENEXR_LIBS)" gmic.o _cli
  
  _cli: gmic$(EXE)
