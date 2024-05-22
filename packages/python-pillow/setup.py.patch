@@ -7,8 +7,8 @@ diff -u -r ../Pillow-10.3.0/setup.py ./setup.py
  
 -        _add_directory(library_dirs, os.path.join(sys.prefix, "lib"))
 -        _add_directory(include_dirs, os.path.join(sys.prefix, "include"))
-+        _add_directory(library_dirs, os.path.join("/data/data/com.termux/files/usr", "lib"))
-+        _add_directory(include_dirs, os.path.join("/data/data/com.termux/files/usr", "include"))
++        _add_directory(library_dirs, os.path.join("@TERMUX_PREFIX@", "lib"))
++        _add_directory(include_dirs, os.path.join("@TERMUX_PREFIX@", "include"))
  
          #
          # add platform directories
@@ -36,7 +36,8 @@ diff -u -r ../Pillow-10.3.0/setup.py ./setup.py
  ext_modules = [
 -    Extension("PIL._imaging", files),
 +    Extension("PIL._imaging", files, extra_link_args=["-lm"]),
-     Extension("PIL._imagingft", ["src/_imagingft.c"]),
+-    Extension("PIL._imagingft", ["src/_imagingft.c"]),
++    Extension("PIL._imagingft", ["src/_imagingft.c"], extra_link_args=["-lm"]),
      Extension("PIL._imagingcms", ["src/_imagingcms.c"]),
      Extension("PIL._webp", ["src/_webp.c"]),
      Extension("PIL._imagingtk", ["src/_imagingtk.c", "src/Tk/tkImaging.c"]),
