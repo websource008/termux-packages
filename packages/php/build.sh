@@ -37,7 +37,6 @@ ac_cv_phpdbg_userfaultfd_writefault=no
 --with-openssl=$TERMUX_PREFIX
 --with-readline=$TERMUX_PREFIX
 --with-sodium=shared,$TERMUX_PREFIX
---with-iconv-dir=$TERMUX_PREFIX
 --with-zlib
 --with-pgsql=shared,$TERMUX_PREFIX
 --with-pdo-pgsql=shared,$TERMUX_PREFIX
@@ -45,7 +44,6 @@ ac_cv_phpdbg_userfaultfd_writefault=no
 --with-pdo-mysql=mysqlnd
 --with-mysql-sock=$TERMUX_PREFIX/tmp/mysqld.sock
 --with-apxs2=$TERMUX_PKG_TMPDIR/apxs-wrapper.sh
---with-iconv=$TERMUX_PREFIX
 --enable-fpm
 --enable-gd
 --with-external-gd
