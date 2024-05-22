@@ -13,6 +13,10 @@ termux_download_deb_pac() {
 	if [ -n "${TERMUX_LOCAL_DEPINSTALL+x}" ]; then
 		local LOCALLY_BUILT="$PWD/output/${PKG_FILE}"
 		echo "Using locally built: $LOCALLY_BUILT <- $WANTED_FILE"
+		if [ ! -f "$LOCALLY_BUILT" ]; then
+			echo "NOTE: $LOCALLY_BUILT does not exist - building it now"
+			TERMUX_BUILD_IGNORE_LOCK=true "$TERMUX_SCRIPTDIR"/build-package.sh -i "$PACKAGE"
+		fi
 		ln -s -f "$LOCALLY_BUILT" "$WANTED_FILE"
 		return
 	fi
