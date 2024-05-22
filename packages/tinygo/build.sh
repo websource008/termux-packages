@@ -149,16 +149,18 @@ termux_step_pre_configure() {
 
 	local _WRAPPER_BIN=${TERMUX_PKG_BUILDDIR}/_wrapper/bin
 	mkdir -p "${_WRAPPER_BIN}"
+	ln -fs "${TERMUX_STANDALONE_TOOLCHAIN}/bin/lld" "${_WRAPPER_BIN}/ld.lld"
 	cat <<- EOF > "${_WRAPPER_BIN}/ld.lld.sh"
 	#!/bin/bash
 	tmpfile=\$(mktemp)
 	python ${TERMUX_PKG_BUILDER_DIR}/fix-rpath.py -rpath=${TERMUX_PREFIX}/lib \$@ > \${tmpfile}
 	args=\$(cat \${tmpfile})
 	rm -f \${tmpfile}
-	${TERMUX_STANDALONE_TOOLCHAIN}/bin/lld \${args}
+	${_WRAPPER_BIN}/ld.lld \${args}
 	EOF
 	chmod +x "${_WRAPPER_BIN}/ld.lld.sh"
-	# LD="${_WRAPPER_BIN}/ld.lld.sh"
+	rm -f "${TERMUX_STANDALONE_TOOLCHAIN}/bin/ld.lld"
+	ln -fs "${_WRAPPER_BIN}/ld.lld.sh" "${TERMUX_STANDALONE_TOOLCHAIN}/bin/ld.lld"
 }
 
 termux_step_make() {
