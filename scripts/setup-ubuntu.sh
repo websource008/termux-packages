@@ -265,7 +265,7 @@ PACKAGES+=" jq"
 PACKAGES+=" libcurl4-openssl-dev"
 
 # Required by openjdk and other java packages
-PACKAGES+=" openjdk-21-jdk"
+PACKAGES+=" openjdk-21-jdk-headless"
 
 # Required by CGCT
 PACKAGES+=" libdebuginfod-dev"
