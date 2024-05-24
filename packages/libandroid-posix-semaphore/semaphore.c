@@ -27,6 +27,8 @@
    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#define __USE_GNU      // strchrnul()
+
 #include <semaphore.h> // sem_t, sem_init()
 #include <sys/mman.h>  // mmap(), munmap()
 #include <limits.h>    // SEM_NSEMS_MAX, NAME_MAX, INT_MAX
@@ -46,14 +48,6 @@
 
 #define SEM_PREFIX _PATH_TMP "sem."
 
-static __inline__ char *__strchrnul(const char *s, int c)
-{
-    c = (unsigned char)c;
-    if (!c) return (char *)s + strlen(s);
-    for (; *s && *(unsigned char *)s != c; s++);
-    return (char *)s;
-}
-
 typedef struct {
     ino_t ino;
     sem_t *sem;
@@ -72,7 +66,7 @@ static char *__sem_mapname(const char *name, char *buf)
 {
     char *p;
     while (*name == '/') name++;
-    if (*(p = __strchrnul(name, '/')) || p==name ||
+    if (*(p = strchrnul(name, '/')) || p==name ||
         (p-name <= 2 && name[0]=='.' && p[-1]=='.')) {
         errno = EINVAL;
         return 0;
