@@ -22,32 +22,10 @@ TERMUX_PKG_RM_AFTER_INSTALL="share/man/man1/windmc.1 share/man/man1/windres.1"
 TERMUX_PKG_NO_STATICSPLIT=true
 TERMUX_PKG_GROUPS="base-devel"
 
-# For binutils-cross:
-TERMUX_PKG_HOSTBUILD=true
-TERMUX_PKG_EXTRA_HOSTBUILD_CONFIGURE_ARGS="
---prefix=$TERMUX_PREFIX/opt/binutils/cross
---target=$TERMUX_HOST_PLATFORM
---enable-shared
---disable-static
---disable-nls
---with-system-zlib
---disable-gprofng
-"
-
-termux_step_host_build() {
-	$TERMUX_PKG_SRCDIR/configure $TERMUX_PKG_EXTRA_HOSTBUILD_CONFIGURE_ARGS
-	make -j $TERMUX_MAKE_PROCESSES
-	make install
-	make install-strip
-}
-
 # Avoid linking against libfl.so from flex if available:
 export LEXLIB=
 
 termux_step_pre_configure() {
-	# Remove this marker all the time, as binutils is architecture-specific.
-	rm -rf $TERMUX_HOSTBUILD_MARKER
-
 	export CPPFLAGS="$CPPFLAGS -Wno-c++11-narrowing"
 	# llvm upgraded a warning to an error, which caused this build (and some
 	# others, including the rust toolchain) to fail like so:
@@ -73,7 +51,7 @@ termux_step_post_make_install() {
 	mkdir -p $TERMUX_PREFIX/bin
 	cd $TERMUX_PREFIX/libexec/binutils
 
-	mv ld{.bfd,}
+	rm ld
 	ln -sf ld{,.bfd}
 	ln -sfr $TERMUX_PREFIX/libexec/binutils/ld $TERMUX_PREFIX/bin/ld.bfd
 
