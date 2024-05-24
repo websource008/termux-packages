@@ -1,17 +1,17 @@
 diff -u -r ../apt-2.9.3/apt-pkg/CMakeLists.txt ./apt-pkg/CMakeLists.txt
 --- ../apt-2.9.3/apt-pkg/CMakeLists.txt	2024-05-14 11:01:31.000000000 +0000
 +++ ./apt-pkg/CMakeLists.txt	2024-05-24 11:35:38.422874198 +0000
-@@ -61,12 +58,9 @@
+@@ -61,12 +58,12 @@
  )
  
  target_link_libraries(apt-pkg
 -                      PRIVATE -lutil ${CMAKE_DL_LIBS} ${RESOLV_LIBRARIES}
 +                      PRIVATE ${CMAKE_DL_LIBS} ${RESOLV_LIBRARIES}
                               ${CMAKE_THREAD_LIBS_INIT}
--                             ${ZLIB_LIBRARIES}
--                             ${BZIP2_LIBRARIES}
+                              ${ZLIB_LIBRARIES}
+                              ${BZIP2_LIBRARIES}
                               ${LZMA_LIBRARIES}
--                             ${LZ4_LIBRARIES}
+                              ${LZ4_LIBRARIES}
                               $<$<BOOL:${ZSTD_FOUND}>:${ZSTD_LIBRARIES}>
                               $<$<BOOL:${UDEV_FOUND}>:${UDEV_LIBRARIES}>
                               $<$<BOOL:${SYSTEMD_FOUND}>:${SYSTEMD_LIBRARIES}>
