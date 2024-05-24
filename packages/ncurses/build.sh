@@ -8,8 +8,8 @@ TERMUX_PKG_MAINTAINER="@termux"
 # is checked in termux_step_pre_configure(), so the build will fail on a mistake.
 # Using this simplifies things (no need to avoid downloading and applying patches manually),
 # and uses github is a high available hosting.
-_SNAPSHOT_COMMIT=8bd5a3d98fc741bdcc9e5fada1a3d5980e1ea22a
-TERMUX_PKG_VERSION=(6.4.20231001
+_SNAPSHOT_COMMIT=801929d34ab7fda3ca77ef59484b34a127adf8d3
+TERMUX_PKG_VERSION=(6.5.20240519
                     9.31
                     0.34.1
                     0.13.2)
@@ -18,21 +18,18 @@ TERMUX_PKG_SRCURL=(https://github.com/ThomasDickey/ncurses-snapshots/archive/${_
                    https://fossies.org/linux/misc/rxvt-unicode-${TERMUX_PKG_VERSION[1]}.tar.bz2
                    https://github.com/kovidgoyal/kitty/releases/download/v${TERMUX_PKG_VERSION[2]}/kitty-${TERMUX_PKG_VERSION[2]}.tar.xz
                    https://github.com/alacritty/alacritty/archive/refs/tags/v${TERMUX_PKG_VERSION[3]}.tar.gz)
-TERMUX_PKG_SHA256=(ca4a28ed4d38a7b79e1cd883e3d2755839072a7e4fe8cf265be1ef4ae79b6bc2
+TERMUX_PKG_SHA256=(3b0409a769d157a5d4e2bdc9ba336946e1f160f16ab47938a9813bbd96b7559b
                    aaa13fcbc149fe0f3f391f933279580f74a96fd312d6ed06b8ff03c2d46672e8
                    9f6dbb30c018976e14bd959e8db6e5c34055b50f3729bff000bb4e86e283c03e
                    e9a54aabc92bbdc25ab1659c2e5a1e9b76f27d101342c8219cc98a730fd46d90)
 TERMUX_PKG_AUTO_UPDATE=false
-
-# ncurses-utils: tset/reset/clear are moved to package 'ncurses'.
-TERMUX_PKG_BREAKS="ncurses-dev, ncurses-utils (<< 6.1.20190511-4)"
-TERMUX_PKG_REPLACES="ncurses-dev, ncurses-utils (<< 6.1.20190511-4)"
 
 # --disable-stripping to disable -s argument to install which does not work when cross compiling:
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 ac_cv_header_locale_h=no
 am_cv_langinfo_codeset=no
 --disable-stripping
+--disable-opaque-curses
 --enable-const
 --enable-ext-colors
 --enable-ext-mouse
