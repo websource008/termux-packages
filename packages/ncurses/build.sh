@@ -13,7 +13,7 @@ TERMUX_PKG_VERSION=(6.5.20240519
                     9.31
                     0.34.1
                     0.13.2)
-TERMUX_PKG_REVISION=4
+TERMUX_PKG_REVISION=5
 TERMUX_PKG_SRCURL=(https://github.com/ThomasDickey/ncurses-snapshots/archive/${_SNAPSHOT_COMMIT}.tar.gz
                    https://fossies.org/linux/misc/rxvt-unicode-${TERMUX_PKG_VERSION[1]}.tar.bz2
                    https://github.com/kovidgoyal/kitty/releases/download/v${TERMUX_PKG_VERSION[2]}/kitty-${TERMUX_PKG_VERSION[2]}.tar.xz
@@ -30,6 +30,7 @@ ac_cv_header_locale_h=no
 am_cv_langinfo_codeset=no
 --disable-stripping
 --disable-opaque-curses
+--disable-opaque-menu
 --enable-const
 --enable-ext-colors
 --enable-ext-mouse
