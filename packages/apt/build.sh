@@ -3,11 +3,11 @@ TERMUX_PKG_DESCRIPTION="Front-end for the dpkg package manager"
 TERMUX_PKG_LICENSE="GPL-2.0"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="2.9.3"
-TERMUX_PKG_REVISION=1
+TERMUX_PKG_REVISION=5
 TERMUX_PKG_SRCURL=https://deb.debian.org/debian/pool/main/a/apt/apt_${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=ed1d0195ca6e8d78dbba5389ec46fcfe0422badefbbdc7b51a46c909f6ba2d71
 # apt-key requires utilities from coreutils, findutils, gpgv, grep, sed.
-TERMUX_PKG_DEPENDS="coreutils, dpkg, findutils, gpgv, grep, libbz2, libc++, libgnutls, liblz4, liblzma, sed, termux-keyring, termux-licenses, xxhash, zlib, zstd"
+TERMUX_PKG_DEPENDS="coreutils, dpkg, findutils, gpgv, grep, libc++, libgnutls, liblzma, sed, termux-keyring, termux-licenses, xxhash"
 TERMUX_PKG_BUILD_DEPENDS="docbook-xsl"
 TERMUX_PKG_CONFLICTS="apt-transport-https, libapt-pkg, unstable-repo, game-repo, science-repo"
 TERMUX_PKG_REPLACES="apt-transport-https, libapt-pkg, unstable-repo, game-repo, science-repo"
@@ -21,6 +21,11 @@ etc/apt/sources.list
 
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -DPERL_EXECUTABLE=$(command -v perl)
+-DCMAKE_DISABLE_FIND_PACKAGE_ZLIB=TRUE
+-DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE
+-DCMAKE_DISABLE_FIND_PACKAGE_ZIP=TRUE
+-DCMAKE_DISABLE_FIND_PACKAGE_ZSTD=TRUE
+-DCMAKE_DISABLE_FIND_PACKAGE_LZ4=TRUE
 -DCMAKE_INSTALL_FULL_LOCALSTATEDIR=$TERMUX_PREFIX
 -DCACHE_DIR=${TERMUX_CACHE_DIR}/apt
 -DCOMMON_ARCH=$TERMUX_ARCH
