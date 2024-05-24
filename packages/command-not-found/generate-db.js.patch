@@ -31,7 +31,7 @@ diff -u -r ../command-not-found-2.4.0/generate-db.js ./generate-db.js
 -    }
 -
 -    const data = await gunzipAsync(await response.arrayBuffer());
-+    const { error, stdout, stderr } = await execAsync(command);
++    const { error, stdout, stderr } = await execAsync(command, {maxBuffer: 100 * 1024 * 1024});
      const binMap = {};
 -    data
 -      .toString()
