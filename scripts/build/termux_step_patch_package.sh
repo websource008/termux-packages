@@ -17,10 +17,15 @@ termux_step_patch_package() {
 		ON_DEVICE_PATCHES=$(find $TERMUX_PKG_BUILDER_DIR -mindepth 1 -maxdepth 1 -name \*.patch.ondevice | sort)
 	fi
 	shopt -s nullglob
+	local TERMUX_ANDROID_LINKER="/system/bin/linker"
+	if [ "$TERMUX_ARCH_BITS" = "64" ]; then
+		TERMUX_ANDROID_LINKER+="64"
+	fi
 	for patch in $PATCHES $DEBUG_PATCHES $ON_DEVICE_PATCHES; do
 		echo "Applying patch: $(basename $patch)"
 		test -f "$patch" && sed \
 			-e "s%\@TERMUX_APP_PACKAGE\@%${TERMUX_APP_PACKAGE}%g" \
+			-e "s%\@TERMUX_ANDROID_LINKER\@%${TERMUX_ANDROID_LINKER}%g" \
 			-e "s%\@TERMUX_BASE_DIR\@%${TERMUX_BASE_DIR}%g" \
 			-e "s%\@TERMUX_CACHE_DIR\@%${TERMUX_CACHE_DIR}%g" \
 			-e "s%\@TERMUX_HOME\@%${TERMUX_ANDROID_HOME}%g" \

@@ -1,0 +1,32 @@
+diff -u -r ../go/src/runtime/runtime1.go ./src/runtime/runtime1.go
+--- ../go/src/runtime/runtime1.go	2024-03-29 15:27:02.000000000 +0000
++++ ./src/runtime/runtime1.go	2024-05-24 22:01:21.426305476 +0000
+@@ -69,13 +69,25 @@
+ 	sysargs(c, v)
+ }
+ 
++func AndroidSelfExecutable() string {
++	return  gostringnocopy(argv_index(argv, 1))
++}
++
+ func goargs() {
+ 	if GOOS == "windows" {
+ 		return
+ 	}
+-	argslice = make([]string, argc)
+-	for i := int32(0); i < argc; i++ {
+-		argslice[i] = gostringnocopy(argv_index(argv, i))
++	adjust := int32(0)
++	if GOOS == "android" {
++		adjust = 1
++	}
++	argslice = make([]string, argc - adjust)
++	for i := int32(0); i < argc - adjust; i++ {
++		idx := i
++		if i > 0 {
++			idx = idx + adjust
++		}
++		argslice[i] = gostringnocopy(argv_index(argv, idx))
+ 	}
+ }
+ 

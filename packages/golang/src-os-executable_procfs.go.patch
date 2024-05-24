@@ -1,0 +1,15 @@
+diff -u -r ../go/src/os/executable_procfs.go ./src/os/executable_procfs.go
+--- ../go/src/os/executable_procfs.go	2024-03-29 15:27:02.000000000 +0000
++++ ./src/os/executable_procfs.go	2024-05-24 22:02:42.513882949 +0000
+@@ -16,8 +17,10 @@
+ 	switch runtime.GOOS {
+ 	default:
+ 		return "", errors.New("Executable not implemented for " + runtime.GOOS)
+-	case "linux", "android":
++	case "linux":
+ 		procfn = "/proc/self/exe"
++	case "android":
++		return runtime.AndroidSelfExecutable(), nil
+ 	case "netbsd":
+ 		procfn = "/proc/curproc/exe"
+ 	}
