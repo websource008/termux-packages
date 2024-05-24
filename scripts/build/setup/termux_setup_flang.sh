@@ -57,6 +57,8 @@ termux_setup_flang() {
 		tar xf $_flang_toolchain_file -C $FLANG_FOLDER_TMP --strip-components=1
 		cp -Rf $TERMUX_STANDALONE_TOOLCHAIN/sysroot $FLANG_FOLDER_TMP/
 
+		chmod -R u+w "$FLANG_FOLDER_TMP"
+
 		tar xf $_flang_aarch64_libs_file -C $FLANG_FOLDER_TMP/sysroot/usr/lib/aarch64-linux-android --strip-components=1
 		tar xf $_flang_x86_64_libs_file -C $FLANG_FOLDER_TMP/sysroot/usr/lib/x86_64-linux-android --strip-components=1
 
@@ -81,6 +83,8 @@ termux_setup_flang() {
 			$FLANG_FOLDER_TMP/bin/arm-linux-androideabi-flang-new
 		cp $FLANG_FOLDER_TMP/bin/armv7a-linux-androideabi-flang-new \
 			$FLANG_FOLDER_TMP/bin/arm-linux-androideabi${TERMUX_PKG_API_LEVEL}-flang-new
+
+		chmod -R u-w "$FLANG_FOLDER_TMP"
 
 		mv "$FLANG_FOLDER_TMP" "$FLANG_FOLDER"
 	fi
