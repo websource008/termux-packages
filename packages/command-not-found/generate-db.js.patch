@@ -1,8 +1,16 @@
 diff -u -r ../command-not-found-2.4.0/generate-db.js ./generate-db.js
 --- ../command-not-found-2.4.0/generate-db.js	2023-11-27 06:08:59.000000000 +0000
-+++ ./generate-db.js	2024-05-23 12:14:35.380001688 +0000
-@@ -7,7 +7,7 @@
- const gunzipAsync = promisify(gunzip);
++++ ./generate-db.js	2024-05-24 10:21:56.492095469 +0000
+@@ -2,12 +2,13 @@
+ import { readFile, writeFile } from 'node:fs/promises';
+-import { gunzip } from 'node:zlib';
+ import { join } from 'node:path';
++import { exec } from 'node:child_process';
++import { readFileSync } from 'node:fs';
+ import { promisify } from 'node:util';
+ 
+-const gunzipAsync = promisify(gunzip);
++const execAsync = promisify(exec);
  
  // TODO(@thunder-coding): Do not hardcode list of known architectures.
 -const archs = ["aarch64", "arm", "i686", "x86_64"];
@@ -10,3 +18,24 @@ diff -u -r ../command-not-found-2.4.0/generate-db.js ./generate-db.js
  const { TERMUX_PKG_CACHEDIR, TERMUX_PREFIX } = process.env;
  
  if (!TERMUX_PKG_CACHEDIR) {
+@@ -23,17 +25,11 @@
+ 
+ async function processRepo(repo) {
+   for (const arch of archs) {
+-    const url = `${repo.url}/dists/${repo.distribution}/Contents-${arch}.gz`;
+-    const response = await fetch(url);
++    const command = `curl --silent ${repo.url}/dists/${repo.distribution}/Contents-${arch}.xz | xzcat -`;
+ 
+-    if (!response.ok) {
+-      throw new Error(`${url} returned ${response.status}`);
+-    }
+-
+-    const data = await gunzipAsync(await response.arrayBuffer());
++    const { error, stdout, stderr } = await execAsync(command);
+     const binMap = {};
+-    data
+-      .toString()
++    stdout
+       .split('\n')
+       .filter(line => line.startsWith(binPrefix))
+       .forEach(line => {
