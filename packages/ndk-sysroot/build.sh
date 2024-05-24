@@ -2,11 +2,9 @@ TERMUX_PKG_HOMEPAGE=https://developer.android.com/tools/sdk/ndk/index.html
 TERMUX_PKG_DESCRIPTION="System header and library files from the Android NDK needed for compiling C programs"
 TERMUX_PKG_LICENSE="NCSA"
 TERMUX_PKG_MAINTAINER="@termux"
-# Version should be equal to TERMUX_NDK_{VERSION_NUM,REVISION} in
-# scripts/properties.sh
-TERMUX_PKG_VERSION=26c
+TERMUX_PKG_VERSION=$TERMUX_NDK_VERSION
 TERMUX_PKG_SRCURL=https://dl.google.com/android/repository/android-ndk-r${TERMUX_PKG_VERSION}-linux.zip
-TERMUX_PKG_SHA256=6d6e659834d28bb24ba7ae66148ad05115ebbad7dabed1af9b3265674774fcf6
+TERMUX_PKG_SHA256=eefeafe7ccf177de7cc57158da585e7af119bb7504a63604ad719e4b2a328b54
 TERMUX_PKG_AUTO_UPDATE=false
 TERMUX_PKG_NO_STATICSPLIT=true
 TERMUX_PKG_BUILD_IN_SRC=true
