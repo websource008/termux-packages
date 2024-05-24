@@ -1,18 +1,6 @@
 diff -u -r ../apt-2.9.3/apt-pkg/CMakeLists.txt ./apt-pkg/CMakeLists.txt
 --- ../apt-2.9.3/apt-pkg/CMakeLists.txt	2024-05-14 11:01:31.000000000 +0000
 +++ ./apt-pkg/CMakeLists.txt	2024-05-24 11:35:38.422874198 +0000
-@@ -48,10 +48,7 @@
- add_dependencies(apt-pkg apt-pkg-versionscript)
- # Link the library and set the SONAME
- target_include_directories(apt-pkg
--                           PRIVATE ${ZLIB_INCLUDE_DIRS}
--                                   ${BZIP2_INCLUDE_DIR}
--                                   ${LZMA_INCLUDE_DIRS}
--                                   ${LZ4_INCLUDE_DIRS}
-+                           PRIVATE ${LZMA_INCLUDE_DIRS}
-                                    $<$<BOOL:${ZSTD_FOUND}>:${ZSTD_INCLUDE_DIRS}>
-                                    $<$<BOOL:${UDEV_FOUND}>:${UDEV_INCLUDE_DIRS}>
-                                    $<$<BOOL:${SYSTEMD_FOUND}>:${SYSTEMD_INCLUDE_DIRS}>
 @@ -61,12 +58,9 @@
  )
  
