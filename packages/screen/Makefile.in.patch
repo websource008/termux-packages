@@ -1,0 +1,27 @@
+diff -u -r ../screen-4.9.1/Makefile.in ./Makefile.in
+--- ../screen-4.9.1/Makefile.in	2023-08-16 00:29:26.000000000 +0000
++++ ./Makefile.in	2024-05-24 05:46:30.090569733 +0000
+@@ -65,13 +65,13 @@
+ 	termcap.c input.c attacher.c pty.c process.c display.c comm.c \
+ 	kmapdef.c acls.c braille.c braille_tsi.c logfile.c layer.c \
+ 	sched.c teln.c nethack.c encoding.c canvas.c layout.c viewport.c \
+-	list_display.c list_generic.c list_window.c
++	list_display.c list_generic.c list_window.c setuid.c
+ OFILES=	screen.o ansi.o fileio.o mark.o misc.o resize.o socket.o \
+ 	search.o tty.o term.o window.o utmp.o loadav.o putenv.o help.o \
+ 	termcap.o input.o attacher.o pty.o process.o display.o comm.o \
+ 	kmapdef.o acls.o braille.o braille_tsi.o logfile.o layer.o \
+ 	list_generic.o list_display.o list_window.o \
+-	sched.o teln.o nethack.o encoding.o canvas.o layout.o viewport.o
++	sched.o teln.o nethack.o encoding.o canvas.o layout.o viewport.o setuid.o
+ 
+ all:	screen
+ 
+@@ -97,7 +97,6 @@
+ install: installdirs install_bin
+ 	cd doc ; $(MAKE) install
+ 	-if [ -d $(DESTDIR)/usr/lib/terminfo ]; then \
+-		PATH="$$PATH:/usr/5bin" tic ${srcdir}/terminfo/screeninfo.src; \
+ 		chmod 644 $(DESTDIR)/usr/lib/terminfo/s/screen*; \
+ 	fi
+ # Better do this by hand. E.g. under RCS...
