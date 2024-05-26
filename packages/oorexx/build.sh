@@ -12,6 +12,9 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="ac_cv_func_catopen=no"
 TERMUX_PKG_HOSTBUILD=true
 TERMUX_PKG_EXTRA_HOSTBUILD_CONFIGURE_ARGS="CFLAGS=-O0"
 
+# Kill stray rexximage process left around after host build
+trap "killall -9 rexximage 2> /dev/null || /bin/true" EXIT
+
 termux_step_post_get_source() {
 	sed -i 's:__type:_&:g' api/oorexxapi.h
 }
