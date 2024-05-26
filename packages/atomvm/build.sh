@@ -13,6 +13,9 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 "
 
 termux_step_host_build() {
+	# Kill daemon process left behind by host build
+	trap 'killall epmd 2> /dev/null || /bin/true' EXIT
+
 	termux_setup_cmake
 	cmake "$TERMUX_PKG_SRCDIR"
 	make -j $TERMUX_MAKE_PROCESSES
