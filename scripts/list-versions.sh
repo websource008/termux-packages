@@ -30,6 +30,14 @@ check_package() { # path
 		TERMUX_PKG_VERSION+="-$TERMUX_PKG_REVISION"
 	fi
 	echo "$pkg=$TERMUX_PKG_VERSION"
+	local subpkg_file
+	for subpkg_file in "$path"/*.subpackage.sh; do
+		if [ -f $subpkg_file ]; then
+			local subpkg_name=$(basename $subpkg_file)
+			local subpkg_name=${subpkg_name%.subpackage.sh}
+			echo $subpkg_name=$TERMUX_PKG_VERSION
+		fi
+	done
 }
 
 for path in "${TERMUX_SCRIPTDIR}"/packages/*; do
