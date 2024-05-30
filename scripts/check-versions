@@ -14,14 +14,19 @@ PACKAGE_PATTERN = re.compile(r'^(Package|Version): (.*)$', re.MULTILINE)
 
 # packages_path = os.environ['HOME'] + '/src/termux-packages'
 # if not os.path.isdir(packages_path): sys.exit(packages_path + '" does not exist')
-supported_arches = ['aarch64']
+supported_arches = ['aarch64', 'x86_64']
+
+subpkg_to_parent_pkg = {}
 
 for arch in supported_arches:
     name_to_local_version = {}
-    proc = subprocess.Popen(['./scripts/list-versions.sh'],stdout=subprocess.PIPE)
+    proc = subprocess.Popen(['./scripts/list-versions', '-a', arch],stdout=subprocess.PIPE)
     for line in proc.stdout:
         line = line.decode('utf-8').strip()
         [pkg_name, version] = line.split("=")
+        if '<-' in pkg_name:
+            [pkg_name, parent_pkg_name] = pkg_name.split('<-')
+            subpkg_to_parent_pkg[pkg_name] = parent_pkg_name
         name_to_local_version[pkg_name] = version
 
     url = f'https://termux.net/dists/stable/main/binary-{arch}/Packages'
@@ -40,14 +45,20 @@ for arch in supported_arches:
         else:
             remote_version = m.group(2)
             if current_package not in name_to_local_version:
-                print(f"{current_package} Delete - published package not in local")
+                print(f"{current_package} {arch} Delete - published package not in local")
             else:
                 local_version = name_to_local_version[current_package]
-                if local_version != remote_version and current_package not in reported_packages:
-                    print(f'{current_package} Version mismatch - local={local_version}, remote={remote_version}')
-                    reported_packages.add(current_package)
+
+                package_to_report = current_package
+                if current_package in subpkg_to_parent_pkg:
+                    # Report that parent package needs rebuilding
+                    package_to_report = subpkg_to_parent_pkg[current_package]
+
+                if local_version != remote_version and package_to_report not in reported_packages:
+                    print(f'{package_to_report} {arch} Version mismatch - local={local_version}, remote={remote_version} (from {current_package})')
+                    reported_packages.add(package_to_report)
 
     if name_to_local_version:
         for pkg in name_to_local_version.keys():
             if not pkg in remote_packages:
-                print(f"{pkg} Package exists locally but is not published")
+                print(f"{pkg} {arch} Package exists locally but is not published")

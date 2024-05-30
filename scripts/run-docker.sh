@@ -37,7 +37,7 @@ fi
 echo "Running container '$CONTAINER_NAME' from image '$TERMUX_BUILDER_IMAGE_NAME'..."
 
 # Check whether attached to tty and adjust docker flags accordingly.
-if [ -t 1 ]; then
+if [ -t 1 ] && [ -z "${TERMUX_NO_DOCKER_TTY-}" ]; then
 	DOCKER_TTY=" --tty"
 else
 	DOCKER_TTY=""
