@@ -334,7 +334,7 @@ def generate_full_buildorder(pkgs_map):
                 del pkg.deps[dep]
 
     # List of all TermuxPackages without dependencies
-    leaf_pkgs = [pkg for name, pkg in pkgs_map.items() if not pkg.deps]
+    leaf_pkgs = [pkg for pkg in pkgs_map.values() if not pkg.deps]
 
     if not leaf_pkgs:
         for pkg in pkgs_map.values():
@@ -381,6 +381,24 @@ def generate_full_buildorder(pkgs_map):
         for name, pkg in pkgs_map.items():
             if pkg not in build_order:
                 print(name, remaining_deps[name], file=sys.stderr)
+
+        # Print cycles so we have some idea where to start fixing this.
+        def find_cycles(deps, pkg, path):
+            """Yield every dependency path containing a cycle."""
+            if pkg in path:
+                yield path + [pkg]
+            else:
+                for dep in deps[pkg]:
+                    yield from find_cycles(deps, dep, path + [pkg])
+
+        cycles = set()
+        for pkg in remaining_deps:
+            for path_with_cycle in find_cycles(remaining_deps, pkg, []):
+                # Cut the path down to just the cycle.
+                cycle_start = path_with_cycle.index(path_with_cycle[-1])
+                cycles.add(tuple(path_with_cycle[cycle_start:]))
+        for cycle in sorted(cycles):
+            print(f"cycle: {' -> '.join(cycle)}", file=sys.stderr)
 
         sys.exit(1)
 
