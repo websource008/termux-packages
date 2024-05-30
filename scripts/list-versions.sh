@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e -u
 
+: "${TERMUX_HOST_PLATFORM:="aarch64"}"
 TERMUX_ARCH_BITS=64
-TERMUX_HOST_PLATFORM=aarch64
 TERMUX_PKG_SRCDIR=/tmp/termux-src
 TERMUX_PKG_HOSTBUILD_DIR=/tmp/termux-hostbuild-dir
 TERMUX_PKG_CACHEDIR=/tmp/termux-pkg-cachedir
@@ -25,7 +25,14 @@ check_package() { # path
 	local pkg=$(basename "$path")
 	TERMUX_PKG_REVISION=0
 	TERMUX_ARCH=aarch64
+
 	. "$path"/build.sh
+
+	# Check if package is blacklisted:
+	if [[ "${TERMUX_PKG_BLACKLISTED_ARCHES-}" == *"$TERMUX_HOST_PLATFORM"* ]]; then
+		return
+	fi
+
 	if [ "$TERMUX_PKG_REVISION" != "0" ] || [ "$TERMUX_PKG_VERSION" != "${TERMUX_PKG_VERSION/-/}" ]; then
 		TERMUX_PKG_VERSION+="-$TERMUX_PKG_REVISION"
 	fi
