@@ -3,7 +3,7 @@ TERMUX_PKG_DESCRIPTION="Java development kit and runtime"
 TERMUX_PKG_LICENSE="GPL-2.0"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION=21.0
-TERMUX_PKG_REVISION=1
+TERMUX_PKG_REVISION=2
 TERMUX_PKG_SRCURL=git+https://github.com/termux/openjdk-mobile-termux
 TERMUX_PKG_GIT_BRANCH=termux/jdk-21
 TERMUX_PKG_DEPENDS="libiconv, libjpeg-turbo, zlib, libandroid-shmem"
@@ -76,5 +76,15 @@ termux_step_post_make_install() {
 	cd $TERMUX_PREFIX/lib/jvm/java-21-openjdk/man/man1
 	for manpage in *.1; do
 		gzip "$manpage"
+	done
+
+	local binaries="$(find $TERMUX_PREFIX/lib/jvm/java-21-openjdk/bin -executable -type f | xargs -I{} basename "{}" | xargs echo)"
+	for tool in $binaries; do
+		ln -sf $TERMUX_PREFIX/lib/jvm/java-21-openjdk/bin/$tool $TERMUX_PREFIX/bin/$tool
+	done
+
+	local manpages="$(find $TERMUX_PREFIX/lib/jvm/java-21-openjdk/man/man1 -name "*.1.gz" | xargs -I{} basename "{}" | xargs echo)"
+	for manpage in $manpages; do
+		ln -sf $TERMUX_PREFIX/lib/jvm/java-21-openjdk/man/man1/$manpage.gz $TERMUX_PREFIX/share/man/man1/$manpage.gz
 	done
 }
