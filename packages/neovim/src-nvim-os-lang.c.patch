@@ -1,0 +1,37 @@
+Bionic has a simplistic setlocale():
+https://android.googlesource.com/platform/bionic/+/refs/heads/main/libc/bionic/locale.cpp#162
+
+To keep a UTF-8 flag set it expects the locale name to contain 'UTF-8'.
+
+Fixes a ':checkhealth' warning.
+
+diff -u -r ../neovim-0.9.5/src/nvim/os/lang.c ./src/nvim/os/lang.c
+--- ../neovim-0.9.5/src/nvim/os/lang.c	2023-12-30 13:18:40.000000000 +0000
++++ ./src/nvim/os/lang.c	2024-06-01 22:03:22.387420412 +0000
+@@ -129,7 +130,7 @@
+ 
+ #ifdef LC_NUMERIC
+   // Make sure strtod() uses a decimal point, not a comma.
+-  setlocale(LC_NUMERIC, "C");
++  setlocale(LC_NUMERIC, "C.UTF-8");
+ #endif
+ 
+   char localepath[MAXPATHL] = { 0 };
+@@ -207,7 +208,7 @@
+     loc = setlocale(what, name);
+ # ifdef LC_NUMERIC
+     // Make sure strtod() uses a decimal point, not a comma.
+-    setlocale(LC_NUMERIC, "C");
++    setlocale(LC_NUMERIC, "C.UTF-8");
+ # endif
+ # ifndef LC_MESSAGES
+   }
+@@ -367,7 +368,7 @@
+       os_setenv("LANG", buf, true);
+       setlocale(LC_ALL, "");
+       // Make sure strtod() uses a decimal point, not a comma.
+-      setlocale(LC_NUMERIC, "C");
++      setlocale(LC_NUMERIC, "C.UTF-8");
+     } else {
+       ELOG("$LANG is empty and the macOS primary language cannot be inferred.");
+     }
