@@ -37,6 +37,11 @@ termux_step_post_get_source() {
 	fi
 }
 
+termux_step_pre_configure() {
+	# hostbuild step have to be run everytime
+	rm -Rf $TERMUX_PKG_HOSTBUILD_DIR
+}
+
 termux_step_host_build() {
 	termux_setup_cmake
 	cmake "-DCMAKE_BUILD_TYPE=Release" "$TERMUX_PKG_SRCDIR"
