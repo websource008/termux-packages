@@ -2,8 +2,8 @@ TERMUX_PKG_HOMEPAGE=https://www.getdnote.com/
 TERMUX_PKG_DESCRIPTION="A simple command line notebook for programmers"
 TERMUX_PKG_LICENSE="GPL-3.0"
 TERMUX_PKG_MAINTAINER="Ravener <ravener.anime@gmail.com>"
-TERMUX_PKG_VERSION="1:0.15.1"
-TERMUX_PKG_SRCURL=https://github.com/dnote/dnote/archive/refs/tags/cli-v${TERMUX_PKG_VERSION:2}.tar.gz
+TERMUX_PKG_VERSION="0.15.1"
+TERMUX_PKG_SRCURL=https://github.com/dnote/dnote/archive/refs/tags/cli-v${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=257d5f2374507b2790b31a314d7434bfe84b3178724ef73fdc4775c391220f93
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_UPDATE_VERSION_REGEXP="\d+\.\d+\.\d+"
@@ -18,7 +18,7 @@ termux_step_pre_configure() {
 
 termux_step_make() {
 	cd "$TERMUX_PKG_SRCDIR"
-	go build -o dnote -ldflags "-X main.versionTag=${TERMUX_PKG_VERSION:2}" -tags fts5 pkg/cli/main.go
+	go build -o dnote -ldflags "-X main.versionTag=${TERMUX_PKG_VERSION}" -tags fts5 pkg/cli/main.go
 }
 
 termux_step_make_install() {

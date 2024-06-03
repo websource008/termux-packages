@@ -2,12 +2,12 @@ TERMUX_PKG_HOMEPAGE=https://cfengine.com/
 TERMUX_PKG_DESCRIPTION="CFEngine is a configuration management technology"
 TERMUX_PKG_LICENSE="GPL-3.0"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION=1:3.23.0
+TERMUX_PKG_VERSION=3.23.0
 TERMUX_PKG_SRCURL=git+https://github.com/cfengine/core
 TERMUX_PKG_SHA256=6d0b827d396a6e5ddefce8c12f80ec764ecc3ea70633f0c8524d06e0ae5ffbfc
 # "-build[n]" suffix in tag name is not a part of version string.
 _CFENGINE_GIT_TAG_SUFFIX=
-TERMUX_PKG_GIT_BRANCH=${TERMUX_PKG_VERSION#*:}${_CFENGINE_GIT_TAG_SUFFIX}
+TERMUX_PKG_GIT_BRANCH=${TERMUX_PKG_VERSION}${_CFENGINE_GIT_TAG_SUFFIX}
 TERMUX_PKG_DEPENDS="liblmdb, libxml2, libyaml, openssl, pcre"
 # core doesn't work with out-of-tree builds
 TERMUX_PKG_BUILD_IN_SRC=true
@@ -31,7 +31,7 @@ termux_step_post_get_source() {
 	fi
 
 	: ${_CFENGINE_GIT_TAG_SUFFIX:=}
-	local _MASTERFILES_VERSION=${TERMUX_PKG_VERSION#*:}${_CFENGINE_GIT_TAG_SUFFIX}
+	local _MASTERFILES_VERSION=${TERMUX_PKG_VERSION}${_CFENGINE_GIT_TAG_SUFFIX}
 	local _MASTERFILES_SRCURL=https://github.com/cfengine/masterfiles/archive/${_MASTERFILES_VERSION}.zip
 	local _MASTERFILES_SHA256=030c34f802a961feea9ed5cc74c5121287710d9f5da39a41bd49b99468f5caab
 	local _MASTERFILES_FILE=${TERMUX_PKG_CACHEDIR}/masterfiles-${_MASTERFILES_VERSION}.zip
@@ -46,7 +46,7 @@ termux_step_post_get_source() {
 }
 
 termux_step_pre_configure() {
-	export EXPLICIT_VERSION=${TERMUX_PKG_VERSION#*:}
+	export EXPLICIT_VERSION=${TERMUX_PKG_VERSION}
 	NO_CONFIGURE=1 ./autogen.sh
 }
 
