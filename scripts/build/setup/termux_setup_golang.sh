@@ -27,7 +27,15 @@ termux_setup_golang() {
 			"$TERMUX_BUILDGO_TAR" \
 			"$TERMUX_GO_SHA256"
 
-		( cd "$TERMUX_COMMON_CACHEDIR"; tar xf "$TERMUX_BUILDGO_TAR"; mv go "$TERMUX_BUILDGO_FOLDER"; rm "$TERMUX_BUILDGO_TAR" )
+		local old_pwd=$PWD
+		cd "$TERMUX_COMMON_CACHEDIR"
+		tar xf "$TERMUX_BUILDGO_TAR"
+		cd go
+		patch -p1 < $TERMUX_SCRIPTDIR/packages/golang/src-os-exec_posix.go.patch
+		cd ..
+		mv go "$TERMUX_BUILDGO_FOLDER"
+		rm "$TERMUX_BUILDGO_TAR"
+		cd "$old_pwd"
 
 		if [ "$TERMUX_PKG_GO_USE_OLDER" = "false" ]; then
 			( cd "$TERMUX_BUILDGO_FOLDER"; . ${TERMUX_SCRIPTDIR}/packages/golang/fix-hardcoded-etc-resolv-conf.sh )
