@@ -10,45 +10,55 @@ import subprocess
 import sys
 import urllib.request
 
-PACKAGE_PATTERN = re.compile(r'^(Package|Version): (.*)$', re.MULTILINE)
+PACKAGE_PATTERN = re.compile(r"^(Package|Version): (.*)$", re.MULTILINE)
 
 # packages_path = os.environ['HOME'] + '/src/termux-packages'
 # if not os.path.isdir(packages_path): sys.exit(packages_path + '" does not exist')
-supported_arches = ['aarch64', 'x86_64']
+supported_arches = ["aarch64", "x86_64"]
 
 subpkg_to_parent_pkg = {}
 
 for arch in supported_arches:
     name_to_local_version = {}
-    proc = subprocess.run(['./scripts/list-versions', '-a', arch], capture_output=True, check=True, text=True)
+    proc = subprocess.run(
+        ["./scripts/list-versions", "-a", arch],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
     for line in proc.stdout.splitlines():
         [pkg_name, version] = line.split("=")
-        if '<-' in pkg_name:
-            [pkg_name, parent_pkg_name] = pkg_name.split('<-')
+        if "<-" in pkg_name:
+            [pkg_name, parent_pkg_name] = pkg_name.split("<-")
             subpkg_to_parent_pkg[pkg_name] = parent_pkg_name
         name_to_local_version[pkg_name] = version
 
-    url = f'https://termux.net/dists/stable/main/binary-{arch}/Packages'
+    url = f"https://termux.net/dists/stable/main/binary-{arch}/Packages"
     arch_package_file = urllib.request.urlopen(url)
-    arch_package_str = arch_package_file.read().decode('utf-8')
+    arch_package_str = arch_package_file.read().decode("utf-8")
 
     remote_packages = set()
     reported_packages = set()
     current_package = None
     current_is_static = False
     for m in re.finditer(PACKAGE_PATTERN, arch_package_str):
-        if m.group(1) == 'Package':
+        if m.group(1) == "Package":
             current_package = m.group(2)
             remote_packages.add(current_package)
-            if current_package.endswith('-static') and current_package not in name_to_local_version:
+            if (
+                current_package.endswith("-static")
+                and current_package not in name_to_local_version
+            ):
                 current_is_static = True
-                current_package = current_package.removesuffix('-static')
+                current_package = current_package.removesuffix("-static")
             else:
                 current_is_static = False
         else:
             remote_version = m.group(2)
             if current_package not in name_to_local_version:
-                print(f"{current_package} {arch} Delete - published package not in local")
+                print(
+                    f"{current_package} {arch} Delete - published package not in local"
+                )
             else:
                 local_version = name_to_local_version[current_package]
 
@@ -57,10 +67,15 @@ for arch in supported_arches:
                     # Report that parent package needs rebuilding
                     package_to_report = subpkg_to_parent_pkg[current_package]
 
-                if local_version != remote_version and package_to_report not in reported_packages:
+                if (
+                    local_version != remote_version
+                    and package_to_report not in reported_packages
+                ):
                     if current_is_static:
-                        current_package += '-static'
-                    print(f'{package_to_report} {arch} Version mismatch - local={local_version}, remote={remote_version} (from {current_package})')
+                        current_package += "-static"
+                    print(
+                        f"{package_to_report} {arch} Version mismatch - local={local_version}, remote={remote_version} (from {current_package})"
+                    )
                     reported_packages.add(package_to_report)
 
     if name_to_local_version:
