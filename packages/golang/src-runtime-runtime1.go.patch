@@ -1,12 +1,26 @@
 diff -u -r ../go/src/runtime/runtime1.go ./src/runtime/runtime1.go
---- ../go/src/runtime/runtime1.go	2024-03-29 15:27:02.000000000 +0000
-+++ ./src/runtime/runtime1.go	2024-05-24 22:01:21.426305476 +0000
-@@ -69,13 +69,25 @@
+--- ../go/src/runtime/runtime1.go	2024-05-01 19:49:47.000000000 +0000
++++ ./src/runtime/runtime1.go	2024-06-03 19:49:01.863556548 +0000
+@@ -5,6 +5,7 @@
+ package runtime
+ 
+ import (
++	"cgocfg"
+ 	"internal/bytealg"
+ 	"internal/goarch"
+ 	"runtime/internal/atomic"
+@@ -69,13 +70,33 @@
  	sysargs(c, v)
  }
  
 +func AndroidSelfExecutable() string {
-+	return  gostringnocopy(argv_index(argv, 1))
++	var offset int32
++	if cgocfg.Enabled {
++		offset = 0
++	} else {
++		offset = 1
++	}
++	return gostringnocopy(argv_index(argv, offset))
 +}
 +
  func goargs() {
@@ -16,15 +30,17 @@ diff -u -r ../go/src/runtime/runtime1.go ./src/runtime/runtime1.go
 -	argslice = make([]string, argc)
 -	for i := int32(0); i < argc; i++ {
 -		argslice[i] = gostringnocopy(argv_index(argv, i))
-+	adjust := int32(0)
-+	if GOOS == "android" {
++	var adjust int32
++	if GOOS == "android" && !cgocfg.Enabled {
 +		adjust = 1
++	} else {
++		adjust = 0
 +	}
 +	argslice = make([]string, argc - adjust)
 +	for i := int32(0); i < argc - adjust; i++ {
 +		idx := i
 +		if i > 0 {
-+			idx = idx + adjust
++			idx += adjust
 +		}
 +		argslice[i] = gostringnocopy(argv_index(argv, idx))
  	}

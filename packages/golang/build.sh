@@ -10,9 +10,6 @@ TERMUX_PKG_ANTI_BUILD_DEPENDS="clang"
 TERMUX_PKG_RECOMMENDS="resolv-conf"
 TERMUX_PKG_NO_STATICSPLIT=true
 
-termux_step_post_get_source() {
-	. $TERMUX_PKG_BUILDER_DIR/fix-hardcoded-etc-resolv-conf.sh
-}
 
 termux_step_make_install() {
 	termux_setup_golang

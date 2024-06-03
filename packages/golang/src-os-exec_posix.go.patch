@@ -1,22 +1,33 @@
-Note that this patch is also applied to the host toolchain
-in termux_setup_golang().
-
 diff -u -r ../go/src/os/exec_posix.go ./src/os/exec_posix.go
---- ../go/src/os/exec_posix.go	2024-03-29 15:27:02.000000000 +0000
-+++ ./src/os/exec_posix.go	2024-05-24 22:23:22.855862054 +0000
-@@ -51,6 +51,16 @@
+--- ../go/src/os/exec_posix.go	2024-05-01 19:49:47.000000000 +0000
++++ ./src/os/exec_posix.go	2024-06-03 20:13:09.674871730 +0000
+@@ -7,6 +7,7 @@
+ package os
+ 
+ import (
++	"cgocfg"
+ 	"internal/itoa"
+ 	"internal/syscall/execenv"
+ 	"runtime"
+@@ -51,6 +52,22 @@
  		sysattr.Files = append(sysattr.Files, f.Fd())
  	}
  
 +	if runtime.GOOS == "android" {
-+		argv = append([]string{argv[0]}, argv...)
-+		argv[1] = name
++		if cgocfg.Enabled {
++			argv = append([]string{argv[0]}, argv...)
++			argv[1] = name
++		} else {
++			Setenv("TERMUX_EXEC__PROC_SELF_EXE", name)
++			argv = append([]string{argv[0]}, argv...)
++			argv[1] = name
++		}
 +		if runtime.GOARCH == "arm" || runtime.GOARCH == "386" {
 +			name = "/system/bin/linker"
 +		} else {
 +			name = "/system/bin/linker64"
 +		}
-+		}
++	}
 +
  	pid, h, e := syscall.StartProcess(name, argv, sysattr)
  
