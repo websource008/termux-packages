@@ -20,9 +20,8 @@ subpkg_to_parent_pkg = {}
 
 for arch in supported_arches:
     name_to_local_version = {}
-    proc = subprocess.Popen(['./scripts/list-versions', '-a', arch],stdout=subprocess.PIPE)
-    for line in proc.stdout:
-        line = line.decode('utf-8').strip()
+    proc = subprocess.run(['./scripts/list-versions', '-a', arch], capture_output=True, check=True, text=True)
+    for line in proc.stdout.splitlines():
         [pkg_name, version] = line.split("=")
         if '<-' in pkg_name:
             [pkg_name, parent_pkg_name] = pkg_name.split('<-')
