@@ -79,6 +79,14 @@ for arch in supported_arches:
                     reported_packages.add(package_to_report)
 
     if name_to_local_version:
+        already_reported = set()
         for pkg in name_to_local_version.keys():
-            if not pkg in remote_packages:
-                print(f"{pkg} {arch} Package exists locally but is not published")
+            if pkg not in remote_packages:
+                if pkg in subpkg_to_parent_pkg:
+                    parent_pkg = subpkg_to_parent_pkg[pkg]
+                    if parent_pkg not in already_reported:
+                        already_reported.add(parent_pkg)
+                        print(f"{parent_pkg} {arch} Needs to be rebuilt as subpackage {pkg} exists locally but is not published")
+                elif pkg not in already_reported:
+                    already_reported.add(pkg)
+                    print(f"{pkg} {arch} Package exists locally but is not published")
