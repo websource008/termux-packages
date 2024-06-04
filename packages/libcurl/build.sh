@@ -30,11 +30,6 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 # https://github.com/termux/termux-packages/issues/15889
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS+=" ac_cv_func_getpwuid=yes"
 
-# Starting with version 7.62 curl started enabling http/2 by default.
-# Support for http/2 as added in version 1.4.8-8 of the apt package, so we
-# conflict with previous versions to avoid broken installations.
-TERMUX_PKG_CONFLICTS="apt (<< 1.4.8-8)"
-
 termux_step_post_get_source() {
 	# Do not forget to bump revision of reverse dependencies and rebuild them
 	# after SOVERSION is changed.
