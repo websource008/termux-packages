@@ -7,7 +7,6 @@ TERMUX_PKG_SRCURL="https://github.com/ameshkov/dnslookup/archive/refs/tags/v${TE
 TERMUX_PKG_SHA256=f7b6ffb70136210ee321dee3e30a4c2b97958f7286cc7f0979aab3d8ed8ea723
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_GO_USE_OLDER=false
 
 termux_step_make() {
 	termux_setup_golang
