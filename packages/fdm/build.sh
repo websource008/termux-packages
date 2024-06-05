@@ -19,5 +19,4 @@ termux_step_pre_configure() {
 	for f in LICENSE LICENSE.BSD; do
 		cp $TERMUX_PKG_BUILDER_DIR/$f $TERMUX_PKG_SRCDIR/
 	done
-
-	}
+}
