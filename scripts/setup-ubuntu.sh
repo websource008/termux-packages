@@ -135,6 +135,8 @@ PACKAGES+=" ruby"
 # Needed by host build of package nodejs.
 PACKAGES+=" libc-ares-dev"
 PACKAGES+=" libicu-dev"
+# (for 32-bit arm builds):
+PACKAGES+=" libc-ares-dev:i386 libssl-dev:i386 zlib1g-dev:i386"
 
 # Needed by php.
 PACKAGES+=" re2c"
@@ -282,6 +284,9 @@ if [ "$(id -u)" = "0" ]; then
 else
 	SUDO="sudo"
 fi
+
+# Allow 32-bit packages.
+$SUDO dpkg --add-architecture i386
 
 # Add apt.llvm.org repo to get newer LLVM than Ubuntu provided
 $SUDO cp $(dirname "$(realpath "$0")")/llvm-snapshot.gpg.key /etc/apt/trusted.gpg.d/apt.llvm.org.asc
