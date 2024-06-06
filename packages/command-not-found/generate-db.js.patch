@@ -14,7 +14,7 @@ diff -u -r ../command-not-found-2.4.0/generate-db.js ./generate-db.js
  
  // TODO(@thunder-coding): Do not hardcode list of known architectures.
 -const archs = ["aarch64", "arm", "i686", "x86_64"];
-+const archs = ["aarch64", "x86_64"];
++const archs = ["aarch64", "arm", "x86_64"];
  const { TERMUX_PKG_CACHEDIR, TERMUX_PREFIX } = process.env;
  
  if (!TERMUX_PKG_CACHEDIR) {
