@@ -27,7 +27,7 @@ termux_create_debian_subpackages() {
 		local TERMUX_SUBPKG_CONFFILES=""
 		local TERMUX_SUBPKG_DEPEND_ON_PARENT=""
 		local TERMUX_SUBPKG_EXCLUDED_ARCHES=""
-		local SUB_PKG_MASSAGE_DIR=$SUB_PKG_DIR/massage/$TERMUX_PREFIX_CLASSICAL
+		local SUB_PKG_MASSAGE_DIR=$SUB_PKG_DIR/massage/$TERMUX_PREFIX
 		local SUB_PKG_PACKAGE_DIR=$SUB_PKG_DIR/package
 		mkdir -p "$SUB_PKG_MASSAGE_DIR" "$SUB_PKG_PACKAGE_DIR"
 
@@ -72,7 +72,7 @@ termux_create_debian_subpackages() {
 		if [ "$SUB_PKG_ARCH" = "all" ] && [ "$(find . -type f -print | head -n1)" = "" ]; then
 			echo "No files in subpackage '$SUB_PKG_NAME' when built for $SUB_PKG_ARCH with package '$TERMUX_PKG_NAME', so"
 			echo "the subpackage was not created. If unexpected, check to make sure the files are where you expect."
-			cd "$TERMUX_PKG_MASSAGEDIR/$TERMUX_PREFIX_CLASSICAL"
+			cd "$TERMUX_PKG_MASSAGEDIR/$TERMUX_PREFIX"
 			continue
 		fi
 		local SUB_PKG_INSTALLSIZE
@@ -114,7 +114,7 @@ termux_create_debian_subpackages() {
 		test ! -z "$TERMUX_SUBPKG_SUGGESTS" && echo "Suggests: $TERMUX_SUBPKG_SUGGESTS" >> control
 		echo "Description: $TERMUX_SUBPKG_DESCRIPTION" >> control
 
-		for f in $TERMUX_SUBPKG_CONFFILES; do echo "$TERMUX_PREFIX_CLASSICAL/$f" >> conffiles; done
+		for f in $TERMUX_SUBPKG_CONFFILES; do echo "$TERMUX_PREFIX/$f" >> conffiles; done
 
 		# Allow packages to create arbitrary control files.
 		termux_step_create_subpkg_debscripts
@@ -134,6 +134,6 @@ termux_create_debian_subpackages() {
 				   "$SUB_PKG_PACKAGE_DIR/data.tar.xz"
 
 		# Go back to main package:
-		cd "$TERMUX_PKG_MASSAGEDIR/$TERMUX_PREFIX_CLASSICAL"
+		cd "$TERMUX_PKG_MASSAGEDIR/$TERMUX_PREFIX"
 	done
 }

@@ -378,7 +378,6 @@ _show_usage() {
 	echo "  -L The package and its dependencies will be based on the same library."
 	echo "  -q Quiet build."
 	echo "  -w Install dependencies without version binding."
-	echo "  -s Skip dependency check."
 	echo "  -o Specify directory where to put built packages. Default: output/."
 	exit 1
 }
@@ -428,7 +427,6 @@ while (($# >= 1)); do
 			;;
 		-q) export TERMUX_QUIET_BUILD=true;;
 		-w) export TERMUX_WITHOUT_DEPVERSION_BINDING=true;;
-		-s) export TERMUX_SKIP_DEPCHECK=true;;
 		-o)
 			if [ $# -ge 2 ]; then
 				shift 1
@@ -573,7 +571,7 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 		cd "$TERMUX_PKG_MASSAGEDIR"
 		termux_step_extract_into_massagedir
 		termux_step_massage
-		cd "$TERMUX_PKG_MASSAGEDIR/$TERMUX_PREFIX_CLASSICAL"
+		cd "$TERMUX_PKG_MASSAGEDIR/$TERMUX_PREFIX"
 		termux_step_post_massage
 		cd "$TERMUX_PKG_MASSAGEDIR"
 		termux_step_create_debian_package

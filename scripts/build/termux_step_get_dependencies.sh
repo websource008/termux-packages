@@ -1,5 +1,5 @@
 termux_step_get_dependencies() {
-	if [ "$TERMUX_SKIP_DEPCHECK" = true ] || [ "$TERMUX_PKG_METAPACKAGE" = true ]; then
+	if [ "$TERMUX_PKG_METAPACKAGE" = true ]; then
 		return 0
 	fi
 

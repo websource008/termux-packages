@@ -1,7 +1,7 @@
 termux_step_massage() {
 	[ "$TERMUX_PKG_METAPACKAGE" = "true" ] && return
 
-	cd "$TERMUX_PKG_MASSAGEDIR/$TERMUX_PREFIX_CLASSICAL"
+	cd "$TERMUX_PKG_MASSAGEDIR/$TERMUX_PREFIX"
 
 	# Remove lib/charset.alias which is installed by gettext-using packages:
 	rm -f lib/charset.alias
@@ -73,7 +73,7 @@ termux_step_massage() {
 				echo "INFO: Skip shebang fix for ${file}"
 				continue
 			fi
-			if head -c 100 "$file" | head -n 1 | grep -E "^#!.*/bin/.*" | grep -q -E -v -e "^#! ?/system" -e "^#! ?$TERMUX_PREFIX_CLASSICAL"; then
+			if head -c 100 "$file" | head -n 1 | grep -E "^#!.*/bin/.*" | grep -q -E -v -e "^#! ?/system" -e "^#! ?$TERMUX_PREFIX"; then
 				sed --follow-symlinks -i -E "1 s@^#\!(.*)/bin/(.*)@#\!$TERMUX_PREFIX/bin/\2@" "$file"
 			fi
 		done < <(find -L . -type f -print0)
