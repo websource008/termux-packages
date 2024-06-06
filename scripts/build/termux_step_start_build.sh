@@ -25,18 +25,6 @@ termux_step_start_build() {
 		# "0" is the default revision, so only include it if the upstream versions contains "-" itself
 		TERMUX_PKG_FULLVERSION+="-$TERMUX_PKG_REVISION"
 	fi
-	# full format version for pacman
-	local TERMUX_PKG_VERSION_EDITED=${TERMUX_PKG_VERSION//-/.}
-	local INCORRECT_SYMBOLS=$(echo $TERMUX_PKG_VERSION_EDITED | grep -o '[0-9][a-z]')
-	if [ -n "$INCORRECT_SYMBOLS" ]; then
-		local TERMUX_PKG_VERSION_EDITED=${TERMUX_PKG_VERSION_EDITED//${INCORRECT_SYMBOLS:0:1}${INCORRECT_SYMBOLS:1:1}/${INCORRECT_SYMBOLS:0:1}.${INCORRECT_SYMBOLS:1:1}}
-	fi
-	TERMUX_PKG_FULLVERSION_FOR_PACMAN="${TERMUX_PKG_VERSION_EDITED}"
-	if [ -n "$TERMUX_PKG_REVISION" ]; then
-		TERMUX_PKG_FULLVERSION_FOR_PACMAN+="-${TERMUX_PKG_REVISION}"
-	else
-		TERMUX_PKG_FULLVERSION_FOR_PACMAN+="-0"
-	fi
 
 	if [ "$TERMUX_DEBUG_BUILD" = "true" ]; then
 		if [ "$TERMUX_PKG_HAS_DEBUG" = "true" ]; then
