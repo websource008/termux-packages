@@ -44,17 +44,6 @@ termux_extract_dep_info() {
 		fi
 		echo -n "${TERMUX_ARCH} ${TERMUX_PKG_VERSION} "
 	)
-	(
-		# pacman version
-		TERMUX_PKG_REVISION="0"
-		source ${PKG_DIR}/build.sh
-		TERMUX_PKG_VERSION_EDITED=${TERMUX_PKG_VERSION//-/.}
-		INCORRECT_SYMBOLS=$(echo $TERMUX_PKG_VERSION_EDITED | grep -o '[0-9][a-z]')
-		if [ -n "$INCORRECT_SYMBOLS" ]; then
-			TERMUX_PKG_VERSION_EDITED=${TERMUX_PKG_VERSION_EDITED//${INCORRECT_SYMBOLS:0:1}${INCORRECT_SYMBOLS:1:1}/${INCORRECT_SYMBOLS:0:1}.${INCORRECT_SYMBOLS:1:1}}
-		fi
-		echo "${TERMUX_PKG_VERSION_EDITED}-${TERMUX_PKG_REVISION}"
-	)
 }
 
 # Make script standalone executable as well as sourceable

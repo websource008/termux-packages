@@ -27,7 +27,7 @@ termux_step_get_dependencies() {
 			fi
 			# llvm doesn't build if ndk-sysroot is installed:
 			if [ "$PKG" = "ndk-sysroot" ]; then continue; fi
-			read DEP_ARCH DEP_VERSION DEP_VERSION_PAC <<< $(termux_extract_dep_info $PKG "${PKG_DIR}")
+			read DEP_ARCH DEP_VERSION <<< $(termux_extract_dep_info $PKG "${PKG_DIR}")
 			if [ "$cyclic_dependence" = false ]; then
 				[ ! "$TERMUX_QUIET_BUILD" = true ] && echo "Downloading dependency $PKG$(test ${TERMUX_WITHOUT_DEPVERSION_BINDING} = false && echo "@$DEP_VERSION") if necessary..."
 				local force_build_dependency="$TERMUX_FORCE_BUILD_DEPENDENCIES"
@@ -48,7 +48,7 @@ termux_step_get_dependencies() {
 					[ ! "$TERMUX_QUIET_BUILD" = true ] && echo "Skipping already built dependency $PKG$(test ${TERMUX_WITHOUT_DEPVERSION_BINDING} = false && echo "@$DEP_VERSION")"
 					continue
 				fi
-				if ! TERMUX_WITHOUT_DEPVERSION_BINDING=$(test "${cyclic_dependence}" = "true" && echo "true" || echo "${TERMUX_WITHOUT_DEPVERSION_BINDING}") termux_download_deb_pac $PKG $DEP_ARCH $DEP_VERSION $DEP_VERSION_PAC; then
+				if ! TERMUX_WITHOUT_DEPVERSION_BINDING=$(test "${cyclic_dependence}" = "true" && echo "true" || echo "${TERMUX_WITHOUT_DEPVERSION_BINDING}") termux_download_deb_pac $PKG $DEP_ARCH $DEP_VERSION; then
 					if [ "$cyclic_dependence" = "true" ] || ([ "$TERMUX_FORCE_BUILD_DEPENDENCIES" = "true" ] && [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]); then
 						echo "Download of $PKG$(test ${TERMUX_WITHOUT_DEPVERSION_BINDING} = false && test ${cyclic_dependence} = false && echo "@$DEP_VERSION") from $TERMUX_REPO_URL failed"
 						return 1
@@ -98,7 +98,7 @@ termux_step_get_dependencies() {
 					echo "Building $PKG on device is not supported. Consider passing -I flag to download it instead"
 					return 1
 				fi
-				read DEP_ARCH DEP_VERSION DEP_VERSION_PAC <<< $(termux_extract_dep_info $PKG "${PKG_DIR}")
+				read DEP_ARCH DEP_VERSION <<< $(termux_extract_dep_info $PKG "${PKG_DIR}")
 				termux_force_check_package_dependency && continue
 			else
 				[ ! "$TERMUX_QUIET_BUILD" = true ] && echo "Building dependency $PKG if necessary..."
