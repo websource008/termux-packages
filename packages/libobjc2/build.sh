@@ -1,4 +1,4 @@
-TERMUX_PKG_HOMEPAGE=http://www.gnustep.org/
+TERMUX_PKG_HOMEPAGE=https://gnustep.github.io
 TERMUX_PKG_DESCRIPTION="The GNUstep Objective-C runtime"
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_MAINTAINER="@termux"
