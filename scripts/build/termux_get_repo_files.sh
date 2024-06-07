@@ -14,7 +14,7 @@ termux_get_repo_files() {
 		local download_attempts=6
 		while ((download_attempts > 0)); do
 			if termux_download "${repo_base}/InRelease" "$RELEASE_FILE" SKIP_CHECKSUM; then
-				gpg --verify "$RELEASE_FILE"
+				gpg --quiet --verify "$RELEASE_FILE"
 				local failed=false
 				for arch in all $TERMUX_ARCH; do
 					local PACKAGES_HASH=$(./scripts/get_hash_from_file.py ${RELEASE_FILE} $arch ${TERMUX_REPO_COMPONENT[$idx-1]})

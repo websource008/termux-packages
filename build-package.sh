@@ -5,19 +5,6 @@
 : "${TMPDIR:=/tmp}"
 export TMPDIR
 
-# Set the build-package.sh call depth
-# If its the root call, then create a file to store the list of packages and their dependencies
-# that have been compiled at any instant by recursive calls to build-package.sh
-if [[ ! "$TERMUX_BUILD_PACKAGE_CALL_DEPTH" =~ ^[0-9]+$ ]]; then
-	export TERMUX_BUILD_PACKAGE_CALL_DEPTH=0
-	export TERMUX_BUILD_PACKAGE_CALL_BUILT_PACKAGES_LIST_FILE_PATH="${TMPDIR}/build-package-call-built-packages-list-$(date +"%Y-%m-%d-%H.%M.%S.")$((RANDOM%1000))"
-	export TERMUX_BUILD_PACKAGE_CALL_BUILDING_PACKAGES_LIST_FILE_PATH="${TMPDIR}/build-package-call-building-packages-list-$(date +"%Y-%m-%d-%H.%M.%S.")$((RANDOM%1000))"
-	echo -n " " > "$TERMUX_BUILD_PACKAGE_CALL_BUILT_PACKAGES_LIST_FILE_PATH"
-	touch "$TERMUX_BUILD_PACKAGE_CALL_BUILDING_PACKAGES_LIST_FILE_PATH"
-else
-	export TERMUX_BUILD_PACKAGE_CALL_DEPTH=$((TERMUX_BUILD_PACKAGE_CALL_DEPTH+1))
-fi
-
 set -e -o pipefail -u
 
 cd "$(realpath "$(dirname "$0")")"
@@ -331,27 +318,6 @@ if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
 	export TERMUX_ARCH
 fi
 
-# Check if the package is in the compiled list
-termux_check_package_in_built_packages_list() {
-	[ ! -f "$TERMUX_BUILD_PACKAGE_CALL_BUILT_PACKAGES_LIST_FILE_PATH" ] && termux_error_exit "ERROR: file '$TERMUX_BUILD_PACKAGE_CALL_BUILT_PACKAGES_LIST_FILE_PATH' not found."
-	cat "$TERMUX_BUILD_PACKAGE_CALL_BUILT_PACKAGES_LIST_FILE_PATH" | grep -q " $1 "
-	return $?
-}
-
-# Adds a package to the list of built packages if it is not in the list
-termux_add_package_to_built_packages_list() {
-	if ! termux_check_package_in_built_packages_list "$1"; then
-		echo -n "$1 " >> $TERMUX_BUILD_PACKAGE_CALL_BUILT_PACKAGES_LIST_FILE_PATH
-	fi
-}
-
-# Check if the package is in the compiling list
-termux_check_package_in_building_packages_list() {
-	[ ! -f "$TERMUX_BUILD_PACKAGE_CALL_BUILDING_PACKAGES_LIST_FILE_PATH" ] && termux_error_exit "ERROR: file '$TERMUX_BUILD_PACKAGE_CALL_BUILDING_PACKAGES_LIST_FILE_PATH' not found."
-	grep -q "^${1}$" "$TERMUX_BUILD_PACKAGE_CALL_BUILDING_PACKAGES_LIST_FILE_PATH"
-	return $?
-}
-
 # Special hook to prevent use of "sudo" inside package build scripts.
 # build-package.sh shouldn't perform any privileged operations.
 sudo() {
@@ -366,13 +332,9 @@ _show_usage() {
 	echo "Available options:"
 	[ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && echo "  -a The architecture to build for: aarch64(default), arm, i686, x86_64 or all."
 	echo "  -d Build with debug symbols."
-	echo "  -D Build a disabled package in disabled-packages/."
-	echo "  -f Force build even if package has already been built."
 	echo "  -F Force build even if package and its dependencies have already been built."
-	[ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && echo "  -i Download and extract dependencies instead of building them."
-	echo "  -L The package and its dependencies will be based on the same library."
+	[ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && echo "  -i Download dependencies instead of building them."
 	echo "  -q Quiet build."
-	echo "  -w Install dependencies without version binding."
 	echo "  -o Specify directory where to put built packages. Default: output/."
 	exit 1
 }
@@ -400,9 +362,6 @@ while (($# >= 1)); do
 			fi
 			;;
 		-d) export TERMUX_DEBUG_BUILD=true;;
-		-D) TERMUX_IS_DISABLED=true;;
-		-f) TERMUX_FORCE_BUILD=true;;
-		-F) TERMUX_FORCE_BUILD_DEPENDENCIES=true && TERMUX_FORCE_BUILD=true;;
 		-i)
 			if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
 				termux_error_exit "./build-package.sh: option '-i' is not available for on-device builds"
@@ -439,9 +398,10 @@ fi
 if [ "${TERMUX_INSTALL_DEPS-false}" = "true" ]; then
 	# Setup PGP keys for verifying integrity of dependencies.
 	# Keys are obtained from our keyring package.
-	gpg --list-keys 2C7F29AE97891F6419A9E2CDB0076E490B71616B > /dev/null 2>&1 || {
+	FINGERPRINT=$(gpg --with-colons --show-keys $TERMUX_SCRIPTDIR/packages/termux-keyring/termux-packages.gpg | awk -F':' '$1=="fpr"{print $10}')
+	gpg --list-keys $FINGERPRINT > /dev/null 2>&1 || {
 		gpg --import "$TERMUX_SCRIPTDIR/packages/termux-keyring/termux-packages.gpg"
-		gpg --no-tty --command-file <(echo -e "trust\n5\ny")  --edit-key FE9D544EA817CD35966A4EB51584981E6CDDB22D
+		gpg --no-tty --command-file <(echo -e "trust\n5\ny")  --edit-key $FINGERPRINT
 	}
 fi
 
@@ -460,9 +420,8 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 		if [ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && [ -n "${TERMUX_ARCH+x}" ] && [ "${TERMUX_ARCH}" = 'all' ]; then
 			for arch in 'aarch64' 'x86_64'; do
 				env TERMUX_ARCH="$arch" TERMUX_BUILD_IGNORE_LOCK=true ./build-package.sh \
-					${TERMUX_FORCE_BUILD+-f} ${TERMUX_INSTALL_DEPS+-i} ${TERMUX_IS_DISABLED+-D} \
+					${TERMUX_INSTALL_DEPS+-i} \
 					${TERMUX_DEBUG_BUILD+-d} ${TERMUX_OUTPUT_DIR+-o $TERMUX_OUTPUT_DIR} \
-					${TERMUX_FORCE_BUILD_DEPENDENCIES+-F} \
 					"${PACKAGE_LIST[i]}"
 			done
 			exit
@@ -480,9 +439,6 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 			for package_directory in $TERMUX_PACKAGES_DIRECTORIES; do
 				if [ -d "${TERMUX_SCRIPTDIR}/${package_directory}/${TERMUX_PKG_NAME}" ]; then
 					export TERMUX_PKG_BUILDER_DIR=${TERMUX_SCRIPTDIR}/$package_directory/$TERMUX_PKG_NAME
-					break
-				elif [ -n "${TERMUX_IS_DISABLED=""}" ] && [ -d "${TERMUX_SCRIPTDIR}/disabled-packages/${TERMUX_PKG_NAME}" ]; then
-					export TERMUX_PKG_BUILDER_DIR=$TERMUX_SCRIPTDIR/disabled-packages/$TERMUX_PKG_NAME
 					break
 				fi
 			done
@@ -503,10 +459,6 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 		fi
 
 		termux_step_start_build
-
-		if ! termux_check_package_in_building_packages_list "${TERMUX_PKG_BUILDER_DIR#${TERMUX_SCRIPTDIR}/}"; then
-			echo "${TERMUX_PKG_BUILDER_DIR#${TERMUX_SCRIPTDIR}/}" >> $TERMUX_BUILD_PACKAGE_CALL_BUILDING_PACKAGES_LIST_FILE_PATH
-		fi
 
 		if [ "$TERMUX_CONTINUE_BUILD" == "false" ]; then
 			termux_step_get_dependencies
@@ -557,17 +509,6 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 		termux_step_post_massage
 		cd "$TERMUX_PKG_MASSAGEDIR"
 		termux_step_create_debian_package
-		# Saving a list of compiled packages for further work with it
-		if termux_check_package_in_building_packages_list "${TERMUX_PKG_BUILDER_DIR#${TERMUX_SCRIPTDIR}/}"; then
-			sed -i "\|^${TERMUX_PKG_BUILDER_DIR#${TERMUX_SCRIPTDIR}/}$|d" "$TERMUX_BUILD_PACKAGE_CALL_BUILDING_PACKAGES_LIST_FILE_PATH"
-		fi
-		termux_add_package_to_built_packages_list "$TERMUX_PKG_NAME"
 		termux_step_finish_build
 	) 5< "$TERMUX_BUILD_LOCK_FILE"
 done
-
-# Removing a file to store a list of compiled packages
-if [ "$TERMUX_BUILD_PACKAGE_CALL_DEPTH" = "0" ]; then
-	rm "$TERMUX_BUILD_PACKAGE_CALL_BUILT_PACKAGES_LIST_FILE_PATH"
-	rm "$TERMUX_BUILD_PACKAGE_CALL_BUILDING_PACKAGES_LIST_FILE_PATH"
-fi

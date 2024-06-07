@@ -11,12 +11,6 @@ termux_step_get_dependencies() {
 	local DEBS_TO_INSTALL=()
 
 	while read PKG PKG_DIR; do
-		# Checking for duplicate dependencies
-		local cyclic_dependence=false
-		if termux_check_package_in_building_packages_list "$PKG_DIR"; then
-			termux_error_exit "A circular dependency was found on '$PKG'"
-		fi
-
 		if [ -z $PKG ]; then
 			continue
 		elif [ "$PKG" = "ERROR" ]; then
@@ -28,20 +22,23 @@ termux_step_get_dependencies() {
 
 		read DEP_ARCH DEP_VERSION <<< $(termux_extract_dep_info $PKG "${PKG_DIR}")
 
-		local force_build_dependency="$TERMUX_FORCE_BUILD_DEPENDENCIES"
-		if [ "$TERMUX_FORCE_BUILD_DEPENDENCIES" = "true" ] && [ "$TERMUX_ON_DEVICE_BUILD" = "true" ] && ! package__is_package_on_device_build_supported "$PKG_DIR"; then
+		local can_build_locally=true
+		if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ] && ! package__is_package_on_device_build_supported "$PKG_DIR"; then
 			echo "Building dependency $PKG on device is not supported. It will be downloaded..."
-			force_build_dependency="false"
+			can_build_locally=false
 		fi
 
 		local DEB_FILE_TO_INSTALL
 
 		local build_dependency=false
-		if [ "$force_build_dependency" = "true" ] || [ "$TERMUX_INSTALL_DEPS" = "false" ]; then
+		if [ "$can_build_locally" = "true" ] && [ "$TERMUX_INSTALL_DEPS" = "false" ]; then
 			build_dependency=true
 		else
 			DEB_FILE_TO_INSTALL="${TERMUX_COMMON_CACHEDIR}-${DEP_ARCH}/${PKG}_${DEP_VERSION}_${DEP_ARCH}.deb"
 			if ! termux_download_deb_pac $PKG $DEP_ARCH $DEP_VERSION "$DEB_FILE_TO_INSTALL"; then
+				if [ "$can_build_locally" = "false" ]; then
+					termux_error_exit "Cannot build nor download $PKG@$DEP_VERSION"
+				fi
 				echo "Download of $PKG@$DEP_VERSION from $TERMUX_REPO_URL failed, building instead"
 				build_dependency=true
 			fi
@@ -80,7 +77,6 @@ termux_step_get_dependencies() {
 termux_run_build-package() {
 	TERMUX_BUILD_IGNORE_LOCK=true ./build-package.sh \
 		$(test "${TERMUX_INSTALL_DEPS}" = "true" && echo "-i") \
-		$(test "${TERMUX_FORCE_BUILD_DEPENDENCIES}" = "true" && echo "-F") \
 		"${PKG_DIR}"
 }
 
