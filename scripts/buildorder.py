@@ -115,9 +115,8 @@ class TermuxPackage(object):
     deps: Set[str]
 
     "A main package definition represented by a directory with a build.sh file."
-    def __init__(self, dir_path, fast_build_mode):
+    def __init__(self, dir_path):
         self.dir = dir_path
-        self.fast_build_mode = fast_build_mode
         self.name = os.path.basename(self.dir)
         self.pkgs_cache = []
 
@@ -164,21 +163,19 @@ class TermuxPackage(object):
         is_root = dir_root == None
         if is_root:
             dir_root = self.dir
-        if is_root or not self.fast_build_mode or not self.separate_subdeps:
+        if is_root or not self.separate_subdeps:
             for subpkg in self.subpkgs:
                 if f"{self.name}-static" != subpkg.name:
-                    self.deps.add(subpkg.name)
+                    # self.deps.add(subpkg.name)
                     self.deps |= subpkg.deps
             self.deps -= self.antideps
             self.deps.discard(self.name)
-            if not self.fast_build_mode or self.dir == dir_root:
+            if self.dir == dir_root:
                 self.deps.difference_update([subpkg.name for subpkg in self.subpkgs])
         for dependency_name in sorted(self.deps):
             if dependency_name not in self.pkgs_cache:
                 self.pkgs_cache.append(dependency_name)
                 dependency_package = pkgs_map[dependency_name]
-                if dependency_package.dir != dir_root and not self.fast_build_mode:
-                    continue
                 result += dependency_package.recursive_dependencies(pkgs_map, dir_root)
                 if dependency_package.accept_dep_scr or dependency_package.dir != dir_root:
                     result += [dependency_package]
@@ -221,9 +218,8 @@ class TermuxSubPackage:
                 result += [dependency_package]
         return unique_everseen(result)
 
-def read_packages_from_directories(directories, fast_build_mode, full_buildmode):
-    """Construct a map from package name to TermuxPackage.
-    Subpackages are mapped to the parent package if fast_build_mode is false."""
+def read_packages_from_directories(directories, full_buildmode):
+    """Construct a map from package name to TermuxPackage."""
     pkgs_map = {}
     all_packages = []
     subpkg_name_to_parent_package: dict[str, TermuxPackage] = {}
@@ -242,7 +238,7 @@ def read_packages_from_directories(directories, fast_build_mode, full_buildmode)
         for pkgdir_name in sorted(os.listdir(package_dir)):
             dir_path = package_dir + '/' + pkgdir_name
             if os.path.isfile(dir_path + '/build.sh'):
-                new_package = TermuxPackage(package_dir + '/' + pkgdir_name, fast_build_mode)
+                new_package = TermuxPackage(package_dir + '/' + pkgdir_name)
 
                 if termux_arch in new_package.excluded_arches:
                     continue
@@ -269,11 +265,7 @@ def read_packages_from_directories(directories, fast_build_mode, full_buildmode)
                                 new_package.deps.add(dep)
                     else:
                         all_packages.append(subpkg)
-                        if fast_build_mode:
-                            pkgs_map[subpkg.name] = subpkg
-                        else:
-                            pkgs_map[subpkg.name] = new_package
-
+                        pkgs_map[subpkg.name] = subpkg
 
     for pkg in all_packages:
         for dependency_name in pkg.deps.copy():
@@ -404,7 +396,7 @@ def generate_full_buildorder(pkgs_map):
 
     return build_order
 
-def generate_target_buildorder(target_path, pkgs_map, fast_build_mode):
+def generate_target_buildorder(target_path, pkgs_map):
     "Generate a build order for building the dependencies of the specified package."
     if target_path.endswith('/'):
         target_path = target_path[:-1]
@@ -412,8 +404,7 @@ def generate_target_buildorder(target_path, pkgs_map, fast_build_mode):
     package_name = os.path.basename(target_path)
     package = pkgs_map[package_name]
     # Do not depend on any sub package
-    if fast_build_mode:
-        package.deps.difference_update([subpkg.name for subpkg in package.subpkgs])
+    package.deps.difference_update([subpkg.name for subpkg in package.subpkgs])
     return package.recursive_dependencies(pkgs_map)
 
 def main():
@@ -421,14 +412,11 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description='Generate order in which to build dependencies for a package. Generates')
-    parser.add_argument('-i', default=False, action='store_true',
-                        help='Generate dependency list for fast-build mode. This includes subpackages in output since these can be downloaded.')
     parser.add_argument('package', nargs='?',
                         help='Package to generate dependency list for.')
     parser.add_argument('package_dirs', nargs='*',
                         help='Directories with packages. Can for example point to "../community-packages/packages". Note that the packages suffix is no longer added automatically if not present.')
     args = parser.parse_args()
-    fast_build_mode = args.i
     package = args.package
     packages_directories = args.package_dirs
 
@@ -449,12 +437,12 @@ def main():
             die('Not a directory: ' + package)
         if not os.path.relpath(os.path.dirname(package), '.') in packages_directories:
             packages_directories.insert(0, os.path.dirname(package))
-    pkgs_map = read_packages_from_directories(packages_directories, fast_build_mode, full_buildorder)
+    pkgs_map = read_packages_from_directories(packages_directories, full_buildorder)
 
     if full_buildorder:
         build_order = generate_full_buildorder(pkgs_map)
     else:
-        build_order = generate_target_buildorder(package, pkgs_map, fast_build_mode)
+        build_order = generate_target_buildorder(package, pkgs_map)
 
     for pkg in build_order:
         pkg_name = pkg.name

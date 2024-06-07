@@ -42,7 +42,7 @@ termux_extract_dep_info() {
 			   [ "$TERMUX_PKG_VERSION" != "${TERMUX_PKG_VERSION/-/}" ]; then
 			TERMUX_PKG_VERSION+="-$TERMUX_PKG_REVISION"
 		fi
-		echo -n "${TERMUX_ARCH} ${TERMUX_PKG_VERSION} "
+		echo -n "${TERMUX_ARCH} ${TERMUX_PKG_VERSION}"
 	)
 }
 

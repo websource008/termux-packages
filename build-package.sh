@@ -370,7 +370,6 @@ _show_usage() {
 	echo "  -f Force build even if package has already been built."
 	echo "  -F Force build even if package and its dependencies have already been built."
 	[ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && echo "  -i Download and extract dependencies instead of building them."
-	echo "  -I Download and extract dependencies instead of building them, keep existing $TERMUX_BASE_DIR files."
 	echo "  -L The package and its dependencies will be based on the same library."
 	echo "  -q Quiet build."
 	echo "  -w Install dependencies without version binding."
@@ -407,22 +406,10 @@ while (($# >= 1)); do
 		-i)
 			if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
 				termux_error_exit "./build-package.sh: option '-i' is not available for on-device builds"
-			elif [ "$TERMUX_PREFIX" != "/data/data/com.termux/files/usr" ]; then
-				termux_error_exit "./build-package.sh: option '-i' is available only when TERMUX_APP_PACKAGE is 'com.termux'"
-			else
-				export TERMUX_INSTALL_DEPS=true
 			fi
-			;;
-		-I)
-			if [ "$TERMUX_PREFIX" != "/data/data/com.termux/files/usr" ]; then
-				termux_error_exit "./build-package.sh: option '-I' is available only when TERMUX_APP_PACKAGE is 'com.termux'"
-			else
-				export TERMUX_INSTALL_DEPS=true
-				export TERMUX_NO_CLEAN=true
-			fi
+			export TERMUX_INSTALL_DEPS=true
 			;;
 		-q) export TERMUX_QUIET_BUILD=true;;
-		-w) export TERMUX_WITHOUT_DEPVERSION_BINDING=true;;
 		-o)
 			if [ $# -ge 2 ]; then
 				shift 1
@@ -476,7 +463,6 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 					${TERMUX_FORCE_BUILD+-f} ${TERMUX_INSTALL_DEPS+-i} ${TERMUX_IS_DISABLED+-D} \
 					${TERMUX_DEBUG_BUILD+-d} ${TERMUX_OUTPUT_DIR+-o $TERMUX_OUTPUT_DIR} \
 					${TERMUX_FORCE_BUILD_DEPENDENCIES+-F} \
-					${TERMUX_WITHOUT_DEPVERSION_BINDING+-w} \
 					"${PACKAGE_LIST[i]}"
 			done
 			exit

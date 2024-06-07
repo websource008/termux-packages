@@ -16,18 +16,17 @@ fi
 
 # Read settings from .termuxrc if existing
 test -f "$HOME"/.termuxrc && . "$HOME"/.termuxrc
-: ${TERMUX_TOPDIR:="$HOME/.termux-build"}
-: ${TERMUX_ARCH:="aarch64"}
-: ${TERMUX_DEBUG_BUILD:=""}
-: ${TERMUX_INSTALL_DEPS:="-s"}
-# Set TERMUX_INSTALL_DEPS to -s unless set to -i
+: "${TERMUX_TOPDIR:="$HOME/.termux-build"}"
+: "${TERMUX_ARCH:="aarch64"}"
+: "${TERMUX_DEBUG_BUILD:=""}"
+: "${TERMUX_INSTALL_DEPS:=""}"
 
 _show_usage() {
 	echo "Usage: ./build-all.sh [-a ARCH] [-d] [-i] [-o DIR]"
 	echo "Build all packages."
 	echo "  -a The architecture to build for: aarch64(default), arm, i686, x86_64 or all."
 	echo "  -d Build with debug symbols."
-	echo "  -i Build dependencies."
+	echo "  -i Install dependencies."
 	echo "  -o Specify deb directory. Default: debs/."
 	exit 1
 }

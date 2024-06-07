@@ -7,18 +7,19 @@ def get_pkg_hash_from_Packages(Packages_file, package, version, hash_type="SHA25
         package_list = Packages.read().split('\n\n')
     for pkg in package_list:
         if pkg.split('\n')[0] == "Package: "+package:
+            filename = None
+            pkghash = None
             for line in pkg.split('\n'):
                 # Assuming Filename: comes before Version:
                 if line.startswith('Filename:'):
-                    print(line.split(" ")[1] + " ")
+                    filename = line.split(" ")[1]
                 elif line.startswith('Version:'):
-                    if os.getenv('TERMUX_WITHOUT_DEPVERSION_BINDING') != 'true' and line != 'Version: '+version:
-                        # Seems the repo contains the wrong version, or several versions
-                        # We can't use this one so continue looking
-                        break
+                    if line == 'Version: '+version:
+                        print(filename + " " + pkghash)
+                        return
                 elif line.startswith(hash_type):
-                    print(line.split(" ")[1])
-                    package_list.clear()
+                    pkghash = line.split(" ")[1]
+    print("null null")
 
 def get_Packages_hash_from_Release(Release_file, arch, component, hash_type="SHA256"):
     string_to_find = component+'/binary-'+arch+'/Packages'

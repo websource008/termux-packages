@@ -4,14 +4,9 @@ termux_step_setup_build_folders() {
 	# that.
 	[ -d "$TERMUX_PKG_BUILDDIR" ] && chmod +w -R "$TERMUX_PKG_BUILDDIR" || true
 	[ -d "$TERMUX_PKG_SRCDIR" ] && chmod +w -R "$TERMUX_PKG_SRCDIR" || true
-	if [ "$TERMUX_INSTALL_DEPS" = true ] && \
-		   [ "$TERMUX_PKG_METAPACKAGE" = false ] && \
-		   [ "$TERMUX_NO_CLEAN" = false ] && \
-		   [ "$TERMUX_ON_DEVICE_BUILD" = false ]; then
-		# Remove all previously extracted/built files from
-		# $TERMUX_PREFIX:
-		rm -fr $TERMUX_PREFIX
-		rm -f $TERMUX_BUILT_PACKAGES_DIRECTORY/*
+	if [ "$TERMUX_ON_DEVICE_BUILD" = false ]; then
+		# Remove all previously extracted/built files from $TERMUX_PREFIX:
+		rm -fr "$TERMUX_PREFIX"
 	fi
 
 	# Cleanup old build state:

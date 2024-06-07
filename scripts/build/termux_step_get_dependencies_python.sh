@@ -16,7 +16,9 @@ termux_step_get_dependencies_python() {
 		fi
 		for i in ${pip_pkgs//, / } ; do
 			local name_python_module=$(echo "$i" | sed "s/<=/ /; s/>=/ /; s/</ /; s/>/ /; s/'//g" | awk '{printf $1}')
+			echo "#### name_python_module=$name_python_module (from $i)"
 			local name_python_module_termux=$(echo "$name_python_module" | grep 'python-' || echo "python-$name_python_module")
+			echo "#### name_python_module_termux=$name_python_module_termux"
 			[ ! "$TERMUX_QUIET_BUILD" = true ] && echo "Installing the dependency python module $i if necessary..."
 			if $pip show "$name_python_module" &>/dev/null && ([ "$TERMUX_FORCE_BUILD_DEPENDENCIES" = "false" ] || termux_check_package_in_built_packages_list "$name_python_module_termux"); then
 				[ ! "$TERMUX_QUIET_BUILD" = true ] && echo "Skipping the already installed dependency python module $i"

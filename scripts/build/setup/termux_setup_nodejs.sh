@@ -21,9 +21,7 @@ termux_setup_nodejs() {
 		export PATH=$NODEJS_FOLDER/bin:$PATH
 	else
 		local NODEJS_PKG_VERSION=$(bash -c ". $TERMUX_SCRIPTDIR/packages/nodejs/build.sh; echo \$TERMUX_PKG_VERSION")
-		if ([ ! -e "$TERMUX_BUILT_PACKAGES_DIRECTORY/nodejs" ] ||
-		    [ "$(cat "$TERMUX_BUILT_PACKAGES_DIRECTORY/nodejs")" != "$NODEJS_PKG_VERSION" ]) &&
-		   [[ "$(dpkg-query -W -f '${db:Status-Status}\n' nodejs 2>/dev/null)" != "installed" ]]; then
+		if [[ "$(dpkg-query -W -f '${db:Status-Status}\n' nodejs 2>/dev/null)" != "installed" ]]; then
 			echo "Package 'nodejs' is not installed."
 			echo "You can install it with"
 			echo
