@@ -4,7 +4,7 @@
 #
 # .\scripts\run-docker.ps1 ./build-package.sh -a arm dash
 
-Set-Variable -Name IMAGE_NAME -Value "ghcr.io/termux/package-builder"
+Set-Variable -Name IMAGE_NAME -Value "ghcr.io/termux-play-store/package-builder"
 Set-Variable -Name CONTAINER_NAME -Value "termux-package-builder"
 
 Write-Output "Running container ${CONTAINER_NAME} from image ${IMAGE_NAME}..."

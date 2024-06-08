@@ -3,7 +3,7 @@ name: Packages
 on:
   push:
     branches:
-    - master
+    - main
     - dev
     - 'dev/**'
     paths:
@@ -166,7 +166,7 @@ jobs:
               fi
             fi
             cd ./scripts
-            docker build -t ghcr.io/termux/package-builder:latest .
+            docker build -t ghcr.io/termux-play-store/package-builder:latest .
             cd ..
           fi
         fi
