@@ -18,14 +18,12 @@ fi
 test -f "$HOME"/.termuxrc && . "$HOME"/.termuxrc
 : "${TERMUX_TOPDIR:="$HOME/.termux-build"}"
 : "${TERMUX_ARCH:="aarch64"}"
-: "${TERMUX_DEBUG_BUILD:=""}"
 : "${TERMUX_INSTALL_DEPS:=""}"
 
 _show_usage() {
-	echo "Usage: ./build-all.sh [-a ARCH] [-d] [-i] [-o DIR]"
+	echo "Usage: ./build-all.sh [-a ARCH] [-i] [-o DIR]"
 	echo "Build all packages."
 	echo "  -a The architecture to build for: aarch64(default), arm, i686, x86_64 or all."
-	echo "  -d Build with debug symbols."
 	echo "  -i Install dependencies."
 	echo "  -o Specify deb directory. Default: debs/."
 	exit 1
@@ -34,7 +32,6 @@ _show_usage() {
 while getopts :a:hdio: option; do
 case "$option" in
 	a) TERMUX_ARCH="$OPTARG";;
-	d) TERMUX_DEBUG_BUILD='-d';;
 	i) TERMUX_INSTALL_DEPS='-i';;
 	o) TERMUX_OUTPUT_DIR="$(realpath -m "$OPTARG")";;
 	h) _show_usage;;
@@ -68,7 +65,15 @@ exec >	>(tee -a "$BUILDALL_DIR"/ALL.out)
 exec 2> >(tee -a "$BUILDALL_DIR"/ALL.err >&2)
 trap 'echo ERROR: See $BUILDALL_DIR/${PKG}.err' ERR
 
+# Read lines from build order file first before building,
+# so builds reading from stdin cannot interfere.
+PKG_DIRS=()
 while read -r PKG PKG_DIR; do
+	PKG_DIRS+=( "$PKG_DIR" )
+done < "${BUILDORDER_FILE}"
+
+for PKG_DIR in "${PKG_DIRS[@]}"; do
+	PKG=$(basename $PKG_DIR)
 	# Check build status (grepping is a bit crude, but it works)
 	if [ -e "$BUILDSTATUS_FILE" ] && grep "^$PKG\$" "$BUILDSTATUS_FILE" >/dev/null; then
 		echo "Skipping $PKG"
@@ -77,7 +82,7 @@ while read -r PKG PKG_DIR; do
 
 	echo -n "Building $PKG... "
 	BUILD_START=$(date "+%s")
-	bash -x "$BUILDSCRIPT" -a "$TERMUX_ARCH" $TERMUX_DEBUG_BUILD \
+	bash -x "$BUILDSCRIPT" -a "$TERMUX_ARCH" \
 		${TERMUX_OUTPUT_DIR+-o $TERMUX_OUTPUT_DIR} $TERMUX_INSTALL_DEPS "$PKG_DIR" \
 		> "$BUILDALL_DIR"/"${PKG}".out 2> "$BUILDALL_DIR"/"${PKG}".err
 	BUILD_END=$(date "+%s")
@@ -86,7 +91,7 @@ while read -r PKG PKG_DIR; do
 
 	# Update build status
 	echo "$PKG" >> "$BUILDSTATUS_FILE"
-done<"${BUILDORDER_FILE}"
+done
 
 # Update build status
 # rm -f "$BUILDSTATUS_FILE"
