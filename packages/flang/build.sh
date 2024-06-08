@@ -12,7 +12,7 @@ TERMUX_PKG_HOSTBUILD=true
 # `flang-new` should be rebuilt when libllvm bumps version.
 # See https://github.com/termux/termux-packages/issues/19362
 TERMUX_PKG_DEPENDS="libc++, libllvm (= $TERMUX_PKG_VERSION), clang (= $TERMUX_PKG_VERSION), lld (= $TERMUX_PKG_VERSION), mlir (= $TERMUX_PKG_VERSION)"
-TERMUX_PKG_BUILD_DEPENDS="libllvm-static"
+TERMUX_PKG_BUILD_DEPENDS="libllvm-static, llvm-tools, llvmgold, libpolly"
 
 # Upstream doesn't support 32-bit arches well. See https://github.com/llvm/llvm-project/issues/57621.
 TERMUX_PKG_BLACKLISTED_ARCHES="arm, i686"
@@ -66,8 +66,6 @@ termux_step_pre_configure() {
 	TERMUX_PKG_EXTRA_CONFIGURE_ARGS+=" -DLLVM_HOST_TRIPLE=$LLVM_DEFAULT_TARGET_TRIPLE"
 	TERMUX_SRCDIR_SAVE=$TERMUX_PKG_SRCDIR
 	TERMUX_PKG_SRCDIR=$TERMUX_PKG_SRCDIR/flang
-	# Avoid the possible OOM
-	TERMUX_MAKE_PROCESSES=1
 }
 
 termux_step_post_configure() {
