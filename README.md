@@ -6,7 +6,7 @@ The plan is to get back to a single repository for Termux packages, this is a tr
 
 It's currently mostly interesting if you are a developer looking into the changes necessary to make Termux compatible with the Google Play requirements.
 
-Otherwise, please work on [https://github.com/termux/termux-packages](https://github.com/termux/termux-packages) instead - this repository 
+Otherwise, please work on [https://github.com/termux/termux-packages](https://github.com/termux/termux-packages) instead - this repository regularly merges in changes from there.
 
 # Overview of changes
 - The `termux-exec` package has been adopted to not `execve(2)` downloaded files directly, but instead execute `/system/bink/linker64 file-to-execute`.
