@@ -1,31 +1,19 @@
-# Termux packages
+# Termux packages for the current Google Play build of Termux
 
-![GitHub repo size](https://img.shields.io/github/repo-size/termux/termux-packages)
-[![Packages last build status](https://github.com/termux/termux-packages/workflows/Packages/badge.svg)](https://github.com/termux/termux-packages/actions)
-[![Docker image status](https://github.com/termux/termux-packages/workflows/Docker%20image/badge.svg)](https://hub.docker.com/r/termux/package-builder)
-[![Repology metadata](https://github.com/termux/repology-metadata/workflows/Repology%20metadata/badge.svg)](https://repology.org/repository/termux)
-[![Join the chat at https://gitter.im/termux/termux](https://badges.gitter.im/termux/termux.svg)](https://gitter.im/termux/termux)
-[![Join the Termux discord server](https://img.shields.io/discord/641256914684084234.svg?label=&logo=discord&logoColor=ffffff&color=5865F2)](https://discord.gg/HXpF69X)
+This repository contains the packages used in the [current Termux build](https://play.google.com/store/apps/details?id=com.termux&hl=en) on Google Play.
 
-[![Repository status](https://repology.org/badge/repository-big/termux.svg)](https://repology.org/repository/termux)
+The plan is to get back to a single repository for Termux packages, this is a transitional repo while the main Termux package repository is not ready for the Google Play requirements.
 
-<img src=".github/static/hosted-by-hetzner.png" alt="Hosted by Hetzner" width="128px"></img>
+It's currently mostly interesting if you are a developer looking into the changes necessary to make Termux compatible with the Google Play requirements.
 
-This project contains scripts and patches to build packages for the [Termux](https://github.com/termux/termux-app)
-Android application.
+Otherwise, please work on [https://github.com/termux/termux-packages](https://github.com/termux/termux-packages) instead - this repository 
 
-Quick how-to about Termux package management is available at [Package Management](https://github.com/termux/termux-packages/wiki/Package-Management). It also has info on how to fix **`repository is under maintenance or down`** errors when running `apt` or `pkg` commands.
+# Overview of changes
+- The `termux-exec` package has been adopted to not `execve(2)` downloaded files directly, but instead execute `/system/bink/linker64 file-to-execute`.
+- Some packages have been patched to work with the above.
+- The required Android version has been bumped, dropping the need of things like `libandroid-spawn`.
+- Some unrelated changes to the build system for simplicity.
+- Some packages that did not build has been removed.
+- The `x11-packages` and `root-packages` does not exit yet.
 
-## Contributing
-
-Read [CONTRIBUTING.md](/CONTRIBUTING.md) and [Developer's Wiki](https://github.com/termux/termux-packages/wiki) for more details.
-
-## Contacts
-
-General mailing list: https://groups.io/g/termux
-
-Developer mailing list: https://groups.io/g/termux-dev
-
-General chat: https://gitter.im/termux/termux or #termux on IRC/libera.chat.
-
-Developer chat: https://gitter.im/termux/dev.
+More information will follow.
