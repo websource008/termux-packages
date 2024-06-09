@@ -82,9 +82,15 @@ for PKG_DIR in "${PKG_DIRS[@]}"; do
 
 	echo -n "Building $PKG... "
 	BUILD_START=$(date "+%s")
+	STDOUT_TO="$BUILDALL_DIR"/"${PKG}".out
+	STDERR_TO="$BUILDALL_DIR"/"${PKG}".err
+	if [ "$PKG" = "lit" ] || [ "$PKG" = "luvit" ]; then
+		# Work around https://github.com/luvit/lit/issues/292
+		STDERR_TO=/dev/tty
+	fi
 	bash -x "$BUILDSCRIPT" -a "$TERMUX_ARCH" \
 		${TERMUX_OUTPUT_DIR+-o $TERMUX_OUTPUT_DIR} $TERMUX_INSTALL_DEPS "$PKG_DIR" \
-		> "$BUILDALL_DIR"/"${PKG}".out 2> "$BUILDALL_DIR"/"${PKG}".err
+		> "$STDOUT_TO" 2> "$STDERR_TO"
 	BUILD_END=$(date "+%s")
 	BUILD_SECONDS=$(( BUILD_END - BUILD_START ))
 	echo "done in $BUILD_SECONDS"
