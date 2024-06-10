@@ -10,7 +10,7 @@ TERMUX_PKG_GIT_BRANCH=master
 TERMUX_PKG_AUTO_UPDATE=false
 # clang is for libclang-cpp.so
 TERMUX_PKG_DEPENDS="clang, libc++, libllvm"
-TERMUX_PKG_BUILD_DEPENDS="rapidjson, libllvm-static"
+TERMUX_PKG_BUILD_DEPENDS="rapidjson, libllvm-static, llvm-tools, llvmgold, mlir, libpolly"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -DUSE_SYSTEM_RAPIDJSON=ON
 "
