@@ -8,6 +8,7 @@ TERMUX_PKG_SHA256=f93c3af5295340d08106c7c0dcfb85e4f85057dfd14587aa8817beb31aff88
 TERMUX_PKG_DEPENDS="krb5, libandroid-execinfo, libbsd, libcap, libcrypt, libgnutls, libicu, libpopt, libtalloc, libtasn1, libtirpc, ncurses, openssl, readline, tdb-tools, zlib"
 TERMUX_PKG_BUILD_DEPENDS="e2fsprogs"
 TERMUX_PKG_BUILD_IN_SRC=true
+TERMUX_MAKE_PROCESSES=1
 
 # These files are already present in the package tdb-tools
 TERMUX_PKG_RM_AFTER_INSTALL="
