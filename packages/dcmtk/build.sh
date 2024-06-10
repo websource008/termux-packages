@@ -11,7 +11,7 @@ TERMUX_PKG_SHA256=17705dcdb2047d1266bb4e92dbf4aa6d4967819e8e3e94f39b7df697661b48
 TERMUX_PKG_AUTO_UPDATE=false
 TERMUX_PKG_DEPENDS="libc++, libpng, libtiff, libxml2, openssl, zlib"
 # As of 3.6.7, libsndfile and openjpeg are detected but not linked against
-TERMUX_PKG_BUILD_DEPENDS="libsndfile, openjpeg"
+TERMUX_PKG_BUILD_DEPENDS="libsndfile, openjpeg, openjpeg-tools"
 TERMUX_PKG_BUILD_IN_SRC=true
 # TODO: Verify the below
 #   - DCMTK_FIXED_ICONV_CONVERSION_FLAGS: The output printed by the test program
