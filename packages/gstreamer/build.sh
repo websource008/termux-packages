@@ -7,6 +7,7 @@ TERMUX_PKG_SRCURL=https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${TE
 TERMUX_PKG_SHA256=52c93bc48e03533aa676fd8c15eb6b5fc326c68db311c50bcc0a865f31a6c653
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="glib"
+TERMUX_PKG_BUILD_DEPENDS="glib-cross"
 TERMUX_PKG_BREAKS="gstreamer-dev"
 TERMUX_PKG_REPLACES="gstreamer-dev"
 TERMUX_PKG_DISABLE_GIR=false
