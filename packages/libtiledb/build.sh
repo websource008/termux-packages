@@ -3,6 +3,7 @@ TERMUX_PKG_DESCRIPTION="A powerful engine for storing and accessing dense and sp
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="2.24.0"
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://github.com/TileDB-Inc/TileDB/archive/refs/tags/${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=21cd9ebe25ab0999927f375e7e92169e35e64dcceb7d17c91d0f310f9246ae1b
 TERMUX_PKG_AUTO_UPDATE=true
