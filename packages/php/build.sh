@@ -3,8 +3,7 @@ TERMUX_PKG_DESCRIPTION="Server-side, HTML-embedded scripting language"
 TERMUX_PKG_LICENSE="PHP-3.01"
 TERMUX_PKG_LICENSE_FILE=LICENSE
 TERMUX_PKG_MAINTAINER="@termux"
-# Please revbump php-* extensions along with "minor" bump (e.g. 8.1.x to 8.2.0)
-TERMUX_PKG_VERSION=8.3.8
+TERMUX_PKG_VERSION="8.3.8"
 TERMUX_PKG_SRCURL=https://github.com/php/php-src/archive/php-${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=0f14f28d6f8d9ab35c618ee39f0dc9c9441a4242443fca2733d68ef27f6c6290
 TERMUX_PKG_AUTO_UPDATE=false
@@ -21,6 +20,12 @@ TERMUX_PKG_SERVICE_SCRIPT=("php-fpm" "mkdir -p $TERMUX_ANDROID_HOME/.php\nif [ -
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 ac_cv_func_res_nsearch=no
 ac_cv_phpdbg_userfaultfd_writefault=no
+php_cv_lib_gd_gdImageCreateFromPng=yes
+php_cv_lib_gd_gdImageCreateFromAvif=yes
+php_cv_lib_gd_gdImageCreateFromWebp=yes
+php_cv_lib_gd_gdImageCreateFromJpeg=yes
+php_cv_lib_gd_gdImageCreateFromBmp=yes
+php_cv_lib_gd_gdImageCreateFromTga=yes
 --enable-bcmath
 --enable-calendar
 --enable-exif
