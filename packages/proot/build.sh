@@ -14,8 +14,8 @@ TERMUX_PKG_SUGGESTS="proot-distro"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_EXTRA_MAKE_ARGS="-C src"
 
-# Install loader in libexec instead of extracting it every time
-export PROOT_UNBUNDLE_LOADER=$TERMUX_PREFIX/libexec/proot
+# Use a loader bundled with the Termux app so that it can be executed.
+export PROOT_UNBUNDLE_LOADER=${TERMUX_PREFIX%/usr}/applib
 
 termux_step_pre_configure() {
 	CPPFLAGS+=" -DARG_MAX=131072"
@@ -29,4 +29,15 @@ termux_step_post_make_install() {
 		$TERMUX_PKG_BUILDER_DIR/termux-chroot \
 		> $TERMUX_PREFIX/bin/termux-chroot
 	chmod 700 $TERMUX_PREFIX/bin/termux-chroot
+
+	# Loader is bundled with the android app itself instead so that it can be executed:
+	local file
+	for file in loader loader32; do
+		if [ "$file" = "loader32" ] && [ "$TERMUX_ARCH" = "arm" ]; then
+			continue
+		fi
+		mv $PROOT_UNBUNDLE_LOADER/$file \
+			$TERMUX_OUTPUT_DIR/libproot-$file-$TERMUX_ARCH-$TERMUX_PKG_VERSION-$TERMUX_PKG_REVISION.so
+	done
+	rm -Rf $PROOT_UNBUNDLE_LOADER
 }
