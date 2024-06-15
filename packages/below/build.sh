@@ -42,7 +42,7 @@ termux_step_pre_configure() {
 	done
 
 	if [ "$TERMUX_ON_DEVICE_BUILD" = "false" ]; then
-		export CLANG=/usr/bin/clang-16
+		export CLANG=/usr/bin/clang-17
 	fi
 }
 

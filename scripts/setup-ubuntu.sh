@@ -148,9 +148,9 @@ PACKAGES+=" composer"
 
 # Needed by package rust.
 PACKAGES+=" libssl-dev" # Needed to build Rust
-PACKAGES+=" llvm-16-dev"
-PACKAGES+=" llvm-16-tools"
-PACKAGES+=" clang-16"
+PACKAGES+=" llvm-17-dev"
+PACKAGES+=" llvm-17-tools"
+PACKAGES+=" clang-17"
 
 # Needed for package smalltalk.
 PACKAGES+=" libsigsegv-dev"
@@ -293,7 +293,7 @@ $SUDO cp $(dirname "$(realpath "$0")")/llvm-snapshot.gpg.key /etc/apt/trusted.gp
 $SUDO chmod a+r /etc/apt/trusted.gpg.d/apt.llvm.org.asc
 {
 	echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy main"
-	echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
+	echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-17 main"
 } | $SUDO tee /etc/apt/sources.list.d/apt-llvm-org.list > /dev/null
 
 $SUDO apt-get -yq update
