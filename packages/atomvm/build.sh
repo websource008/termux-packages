@@ -19,7 +19,7 @@ termux_step_host_build() {
 	termux_setup_cmake
 	termux_setup_ninja
 	cmake -G Ninja "$TERMUX_PKG_SRCDIR" $TERMUX_PKG_EXTRA_CONFIGURE_ARGS
-	ninja -j $TERMUX_MAKE_PROCESSES PackBEAM
+	ninja -j $TERMUX_PKG_MAKE_PROCESSES PackBEAM
 }
 
 termux_step_post_configure() {

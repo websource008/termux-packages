@@ -7,7 +7,7 @@ TERMUX_PKG_SRCURL=https://www.kermitproject.org/ftp/kermit/archives/gku${TERMUX_
 TERMUX_PKG_SHA256=19f9ac00d7b230d0a841928a25676269363c2925afc23e62704cde516fc1abbd
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_BUILD_IN_SRC=true
-TERMUX_MAKE_PROCESSES=1
+TERMUX_PKG_MAKE_PROCESSES=1
 
 termux_step_post_get_source() {
 	local file filename

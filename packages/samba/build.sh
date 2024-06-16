@@ -8,7 +8,7 @@ TERMUX_PKG_SHA256=f93c3af5295340d08106c7c0dcfb85e4f85057dfd14587aa8817beb31aff88
 TERMUX_PKG_DEPENDS="krb5, libandroid-execinfo, libbsd, libcap, libcrypt, libgnutls, libicu, libpopt, libtalloc, libtasn1, libtirpc, ncurses, openssl, readline, tdb-tools, zlib"
 TERMUX_PKG_BUILD_DEPENDS="e2fsprogs"
 TERMUX_PKG_BUILD_IN_SRC=true
-TERMUX_MAKE_PROCESSES=1
+TERMUX_PKG_MAKE_PROCESSES=1
 
 # These files are already present in the package tdb-tools
 TERMUX_PKG_RM_AFTER_INSTALL="
@@ -95,7 +95,7 @@ EOF
 	USING_SYSTEM_COMPILE_ET=1 COMPILE_ET=/usr/bin/compile_et \
 	CFLAGS="$CFLAGS" LINKFLAGS="$CFLAGS $LDFLAGS" \
 	./buildtools/bin/waf configure \
-		--jobs="$TERMUX_MAKE_PROCESSES" \
+		--jobs="$TERMUX_PKG_MAKE_PROCESSES" \
 		--bundled-libraries='!asn1_compile,!compile_et' \
 		--cross-compile \
 		--cross-answers=cross-answers.txt \
@@ -146,11 +146,11 @@ EOF
 
 
 termux_step_make() {
-	./buildtools/bin/waf build --jobs="$TERMUX_MAKE_PROCESSES"
+	./buildtools/bin/waf build --jobs="$TERMUX_PKG_MAKE_PROCESSES"
 }
 
 termux_step_make_install() {
-	./buildtools/bin/waf install --jobs="$TERMUX_MAKE_PROCESSES"
+	./buildtools/bin/waf install --jobs="$TERMUX_PKG_MAKE_PROCESSES"
 }
 
 termux_step_post_make_install() {
