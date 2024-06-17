@@ -8,6 +8,7 @@ TERMUX_PKG_HOSTBUILD_DIR=/tmp/termux-hostbuild-dir
 TERMUX_PKG_CACHEDIR=/tmp/termux-pkg-cachedir
 TERMUX_PKG_BUILDER_DIR=/tmp/termux-pkg-builder-dir
 TERMUX_PKG_BUILDDIR=/tmp/termux-pkg-builddir
+TERMUX_PKG_MAKE_PROCESSES=1
 TERMUX_PKG_NAME=TODO
 TERMUX_PKG_TMPDIR=/tmp/termux-pkg-tmpdir
 TERMUX_DEBUG_BUILD=false
