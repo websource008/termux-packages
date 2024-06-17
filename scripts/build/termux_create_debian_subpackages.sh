@@ -112,6 +112,7 @@ termux_create_debian_subpackages() {
 		test ! -z "$TERMUX_SUBPKG_REPLACES" && echo "Replaces: $TERMUX_SUBPKG_REPLACES" >> control
 		test ! -z "$TERMUX_SUBPKG_PROVIDES" && echo "Provides: $TERMUX_SUBPKG_PROVIDES" >> control
 		test ! -z "$TERMUX_SUBPKG_SUGGESTS" && echo "Suggests: $TERMUX_SUBPKG_SUGGESTS" >> control
+		test ! -z "$TERMUX_PKG_REPO_METADATA" && echo "Termux-Repo: $TERMUX_PKG_REPO_METADATA" >> control
 		echo "Description: $TERMUX_SUBPKG_DESCRIPTION" >> control
 
 		for f in $TERMUX_SUBPKG_CONFFILES; do echo "$TERMUX_PREFIX/$f" >> conffiles; done

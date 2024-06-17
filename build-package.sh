@@ -451,6 +451,13 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 			termux_error_exit "No build.sh script at package dir $TERMUX_PKG_BUILDER_DIR!"
 		fi
 
+		TERMUX_PKG_BUILDER_ENCLOSING_DIR=$(dirname "$TERMUX_PKG_BUILDER_DIR")
+		TERMUX_PKG_BUILDER_ENCLOSING_DIR=${TERMUX_PKG_BUILDER_ENCLOSING_DIR##*/}
+		TERMUX_PKG_REPO_METADATA=""
+		if [ "$TERMUX_PKG_BUILDER_ENCLOSING_DIR" != "packages" ]; then
+			TERMUX_PKG_REPO_METADATA="$TERMUX_PKG_BUILDER_ENCLOSING_DIR"
+		fi
+
 		termux_step_setup_variables
 		termux_step_handle_buildarch
 
