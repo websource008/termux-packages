@@ -3,6 +3,7 @@ TERMUX_PKG_DESCRIPTION="System header and library files from the Android NDK nee
 TERMUX_PKG_LICENSE="NCSA"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION=$TERMUX_NDK_VERSION
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://dl.google.com/android/repository/android-ndk-r${TERMUX_PKG_VERSION}-linux.zip
 TERMUX_PKG_SHA256=eefeafe7ccf177de7cc57158da585e7af119bb7504a63604ad719e4b2a328b54
 TERMUX_PKG_AUTO_UPDATE=false
@@ -15,7 +16,6 @@ include/GLES2
 include/GLES3
 include/KHR/khrplatform.h
 include/execinfo.h
-include/iconv.h
 include/sys/capability.h
 include/sys/sem.h
 include/sys/shm.h
