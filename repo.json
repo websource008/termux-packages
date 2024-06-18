@@ -1,9 +1,14 @@
 {
-  "pkg_format": "debian",
   "packages": {
     "name": "termux-main",
     "distribution": "stable",
     "component": "main",
     "url": "https://termux.net"
+  },
+  "root-packages": {
+    "name": "termux-root",
+    "distribution": "root",
+    "component": "main",
+    "url": "https://root-packages.termux.net"
   }
 }

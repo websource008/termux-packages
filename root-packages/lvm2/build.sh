@@ -4,7 +4,8 @@ TERMUX_PKG_LICENSE="GPL-2.0, LGPL-2.1, BSD 2-Clause"
 TERMUX_PKG_LICENSE_FILE="COPYING, COPYING.BSD, COPYING.LIB"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="2.03.24"
-TERMUX_PKG_SRCURL=https://mirrors.kernel.org/sourceware/lvm2/releases/LVM2.${TERMUX_PKG_VERSION}.tgz
+TERMUX_PKG_SRCURL=https://sourceware.org/pub/lvm2/LVM2.2.03.24.tgz
+# https://mirrors.kernel.org/sourceware/lvm2/releases/LVM2.${TERMUX_PKG_VERSION}.tgz
 TERMUX_PKG_SHA256=593c5503ba00faab1c6e0b4a597b9605ec7b5881845c04bf412ebf9d1bbfa13c
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="libaio, libblkid, readline"

@@ -10,4 +10,6 @@ TERMUX_PKG_BUILD_IN_SRC=true
 
 termux_step_pre_configure() {
 	CPPFLAGS+=" -Dindex=strchr -Drindex=strrchr"
+	# From https://bugs.gentoo.org/914637 to fix build with current toolchain:
+	LDFLAGS+=" -Wl,--undefined-version"
 }

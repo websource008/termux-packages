@@ -70,7 +70,7 @@ check_package() { # path
 	done
 }
 
-for path in "${TERMUX_SCRIPTDIR}"/packages/*; do
+for path in "${TERMUX_SCRIPTDIR}"/*packages/*; do
 (
 	check_package "$path"
 )
