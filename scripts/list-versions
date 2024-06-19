@@ -70,8 +70,10 @@ check_package() { # path
 	done
 }
 
-for path in "${TERMUX_SCRIPTDIR}"/*packages/*; do
-(
-	check_package "$path"
-)
+for dir in $(jq --raw-output 'keys | .[]' "${TERMUX_SCRIPTDIR}"/repo.json); do
+	for path in "$dir"/*; do
+		(
+			check_package "$path"
+		)
+	done
 done
