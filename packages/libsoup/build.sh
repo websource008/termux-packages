@@ -10,6 +10,7 @@ TERMUX_PKG_SRCURL=https://download.gnome.org/sources/libsoup/${TERMUX_PKG_VERSIO
 TERMUX_PKG_SHA256=e4b77c41cfc4c8c5a035fcdc320c7bc6cfb75ef7c5a034153df1413fa1d92f13
 TERMUX_PKG_AUTO_UPDATE=false
 TERMUX_PKG_DEPENDS="brotli, glib, libpsl, libsqlite, libxml2, zlib"
+TERMUX_PKG_BUILD_DEPENDS="glib-cross"
 TERMUX_PKG_RECOMMENDS="glib-networking"
 TERMUX_PKG_BREAKS="libsoup-dev"
 TERMUX_PKG_REPLACES="libsoup-dev"
