@@ -5,7 +5,7 @@ TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="2.80.0"
 TERMUX_PKG_SRCURL=https://download.gnome.org/sources/glibmm/${TERMUX_PKG_VERSION%.*}/glibmm-${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=539b0a29e15a96676c4f0594541250566c5ca44da5d4d87a3732fa2d07909e4a
-TERMUX_PKG_DEPENDS="glib, libc++, libsigc++"
+TERMUX_PKG_DEPENDS="glib, libc++, libsigc++-3.0"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dbuild-examples=false
 "

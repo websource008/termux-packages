@@ -5,7 +5,7 @@ TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="2.52.0"
 TERMUX_PKG_SRCURL=https://download.gnome.org/sources/pangomm/${TERMUX_PKG_VERSION%.*}/pangomm-${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=34a134126a6484ff12f774358c36ecc44d0e9df094e1b83796d9774bb7d24947
-TERMUX_PKG_DEPENDS="glib, libc++, libcairomm, libglibmm, libsigc++, pango"
+TERMUX_PKG_DEPENDS="glib, libc++, libcairomm-1.16, libglibmm-2.68, libsigc++-3.0, pango"
 
 termux_step_post_massage() {
 	local _GUARD_FILE="lib/libpangomm-2.48.so"

@@ -8,7 +8,7 @@ TERMUX_PKG_REVISION=4
 TERMUX_PKG_SRCURL=https://github.com/love2d/love/archive/refs/tags/${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=6f55c265be5e03696c4770150c4388f5cffbdb3727606724cf88332baab429f7
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="freetype, game-music-emu, libandroid-spawn, libc++, libluajit, libmodplug, libogg, libtheora, libvorbis, mpg123, openal-soft, opengl, sdl2, zlib"
+TERMUX_PKG_DEPENDS="freetype, game-music-emu, libc++, libluajit, libmodplug, libogg, libtheora, libvorbis, mpg123, openal-soft, opengl, sdl2, zlib"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --enable-gme
 "
@@ -22,6 +22,5 @@ termux_step_pre_configure() {
 	export prefix=${_orig_prefix}
 
 	export OBJCXX="$CXX"
-	LDFLAGS+=" -landroid-spawn"
 	LDFLAGS+=" $($CC -print-libgcc-file-name)"
 }

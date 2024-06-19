@@ -67,7 +67,7 @@
      end
  
      -- package: libgit2
-@@ -139,5 +146,12 @@
+@@ -139,5 +146,10 @@
  
      if is_plat ("linux") and using_apt() then
          add_requires ("apt::libssl-dev", {alias="openssl"})
@@ -75,8 +75,6 @@
 +        add_requires("pkgconfig::libssl", {alias="openssl"})
      end
 +
-+    add_links("android-complex-math")
-+    add_links("android-spawn")
 +    add_links("android-wordexp")
 +    add_links("iconv")
  end

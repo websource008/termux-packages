@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION="3.0.20"
 TERMUX_PKG_REVISION=2
 TERMUX_PKG_SRCURL=https://download.videolan.org/pub/videolan/vlc/${TERMUX_PKG_VERSION}/vlc-${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=adc7285b4d2721cddf40eb5270cada2aaa10a334cb546fd55a06353447ba29b5
-TERMUX_PKG_DEPENDS="chromaprint, dbus, ffmpeg, fluidsynth, fontconfig, freetype, fribidi, glib, gst-plugins-base, gstreamer, harfbuzz, liba52, libandroid-shmem, libandroid-spawn, libaom, libarchive, libass, libbluray, libc++, libcaca, libcairo, libcddb, libdav1d, libdvbpsi, libdvdnav, libdvdread, libebml, libflac, libgcrypt, libgnutls, libgpg-error, libiconv, libidn, libjpeg-turbo, liblua52, libmad, libmatroska, libmpeg2, libnfs, libogg, libopus, libpng, librsvg, libsecret, libsoxr, libssh2, libtheora, libtwolame, libvorbis, libvpx, libx11, libx264, libx265, libxcb, libxml2, mpg123, ncurses, opengl, pulseaudio, qt5-qtbase, qt5-qtsvg, qt5-qtx11extras, samba, taglib, xcb-util-keysyms, zlib"
+TERMUX_PKG_DEPENDS="chromaprint, dbus, ffmpeg, fluidsynth, fontconfig, freetype, fribidi, glib, gst-plugins-base, gstreamer, harfbuzz, liba52, libandroid-shmem, libaom, libarchive, libass, libbluray, libc++, libcaca, libcairo, libcddb, libdav1d, libdvbpsi, libdvdnav, libdvdread, libebml, libflac, libgcrypt, libgnutls, libgpg-error, libiconv, libidn, libjpeg-turbo, liblua52, libmad, libmatroska, libmpeg2, libnfs, libogg, libopus, libpng, librsvg, libsecret, libsoxr, libssh2, libtheora, libtwolame, libvorbis, libvpx, libx11, libx264, libx265, libxcb, libxml2, mpg123, ncurses, opengl, pulseaudio, qt5-qtbase, qt5-qtsvg, qt5-qtx11extras, samba, taglib, xcb-util-keysyms, zlib"
 TERMUX_PKG_BUILD_DEPENDS="qt5-qtbase-cross-tools, xorgproto"
 TERMUX_PKG_CONFLICTS="vlc"
 TERMUX_PKG_REPLACES="vlc"
@@ -80,7 +80,7 @@ termux_step_pre_configure() {
 	autoreconf -fi
 
 	CFLAGS+=" -fcommon"
-	LDFLAGS+=" -landroid-shmem -landroid-spawn -lm"
+	LDFLAGS+=" -landroid-shmem -lm"
 	LDFLAGS+=" -Wl,-rpath=$TERMUX_PREFIX/lib/vlc"
 
 	local _libgcc="$($CC -print-libgcc-file-name)"
