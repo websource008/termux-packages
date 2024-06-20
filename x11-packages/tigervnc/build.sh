@@ -24,7 +24,7 @@ termux_step_post_get_source() {
 	termux_download \
 		"https://github.com/TigerVNC/tigervnc/commit/0c5a2b2e7759c2829c07186cfce4d24aa9b5274e.patch" \
 		"$TERMUX_PKG_CACHEDIR/${p}" \
-		1fd6858fbc7c67aa3ab82347c5b9dc54e3bb7a9386f373a155acbaca5d8db3c6
+		a1db4acbc8d82d80be62958ceb32d583bf3ef1b56b2587e70f71ff82ea87d961
 	echo "Applying ${p}"
 	cat "$TERMUX_PKG_CACHEDIR/${p}" | patch --silent -p1
 

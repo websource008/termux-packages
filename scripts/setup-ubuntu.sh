@@ -219,6 +219,7 @@ PACKAGES+=" unifdef"
 PACKAGES+=" xfce4-dev-tools"
 PACKAGES+=" xfonts-utils"
 PACKAGES+=" desktop-file-utils"
+PACKAGES+=" xutils-dev"
 
 # Needed by packages in science repository
 PACKAGES+=" protobuf-c-compiler"
