@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION="1.7.0"
 TERMUX_PKG_SRCURL=https://github.com/xkbcommon/libxkbcommon/archive/xkbcommon-${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=20d5e40dabd927f7a7f4342bebb1e8c7a59241283c978b800ae3bf60394eabc4
 TERMUX_PKG_DEPENDS="libxcb, libxml2, libwayland, xkeyboard-config"
-TERMUX_PKG_BUILD_DEPENDS="libwayland-protocols, xorg-util-macros"
+TERMUX_PKG_BUILD_DEPENDS="libwayland-protocols, xorg-util-macros, libwayland-cross-scanner"
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_UPDATE_VERSION_REGEXP='(?<=-).+'
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
