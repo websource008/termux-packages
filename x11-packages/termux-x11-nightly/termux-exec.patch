@@ -1,0 +1,11 @@
+diff -u -r ../src-orig/shell-loader/src/main/java/com/termux/x11/Loader.java ./shell-loader/src/main/java/com/termux/x11/Loader.java
+--- ../src-orig/shell-loader/src/main/java/com/termux/x11/Loader.java	2024-06-24 14:07:52.110235452 +0000
++++ ./shell-loader/src/main/java/com/termux/x11/Loader.java	2024-06-24 14:10:08.445584666 +0000
+@@ -24,6 +24,7 @@
+             android.util.Log.i(BuildConfig.logTag, "loading " + targetInfo.applicationInfo.sourceDir + "::" + BuildConfig.CLASS_ID + "::main of " + BuildConfig.APPLICATION_ID + " application (commit " + BuildConfig.COMMIT + ")");
+             Class<?> targetClass = Class.forName(BuildConfig.CLASS_ID, true,
+                     new dalvik.system.PathClassLoader(targetInfo.applicationInfo.sourceDir, null, ClassLoader.getSystemClassLoader()));
++            android.system.Os.setenv("LD_PRELOAD", "/data/data/com.termux/files/usr/lib/libtermux-exec.so", true);
+             targetClass.getMethod("main", String[].class).invoke(null, (Object) args);
+         } catch (AssertionError e) {
+             System.err.println(e.getMessage());
