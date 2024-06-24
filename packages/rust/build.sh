@@ -3,12 +3,14 @@ TERMUX_PKG_DESCRIPTION="Systems programming language focused on safety, speed an
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="1.79.0"
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://static.rust-lang.org/dist/rustc-${TERMUX_PKG_VERSION}-src.tar.xz
 TERMUX_PKG_SHA256=ab826e84b8d48ec6eda3370065034dea8c006f6a946d78a9ba12bcb50e6d3c7a
 _LLVM_MAJOR_VERSION=$(. $TERMUX_SCRIPTDIR/packages/libllvm/build.sh; echo $LLVM_MAJOR_VERSION)
 _LLVM_MAJOR_VERSION_NEXT=$((_LLVM_MAJOR_VERSION + 1))
 _LZMA_VERSION=$(. $TERMUX_SCRIPTDIR/packages/liblzma/build.sh; echo $TERMUX_PKG_VERSION)
 TERMUX_PKG_DEPENDS="clang, libc++, libllvm (<< ${_LLVM_MAJOR_VERSION_NEXT}), lld, openssl, zlib"
+TERMUX_PKG_BUILD_DEPENDS="wasi-libc"
 TERMUX_PKG_NO_STATICSPLIT=true
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_RM_AFTER_INSTALL="
@@ -22,6 +24,7 @@ lib/liblzma.so.${_LZMA_VERSION}
 lib/libtinfo.so.6
 lib/libz.so
 lib/libz.so.1
+share/wasi-sysroot
 "
 
 termux_pkg_auto_update() {
@@ -207,12 +210,18 @@ termux_step_make_install() {
 	$TERMUX_PKG_SRCDIR/x.py install --stage 1 --target i686-linux-android
 	$TERMUX_PKG_SRCDIR/x.py install --stage 1 --target x86_64-linux-android
 	$TERMUX_PKG_SRCDIR/x.py install --stage 1 std --target wasm32-unknown-unknown
+	$TERMUX_PKG_SRCDIR/x.py install --stage 1 std --target wasm32-wasi
+	$TERMUX_PKG_SRCDIR/x.py install --stage 1 std --target wasm32-wasip1
+	$TERMUX_PKG_SRCDIR/x.py install --stage 1 std --target wasm32-wasip2
 
 	$TERMUX_PKG_SRCDIR/x.py dist rustc-dev --host $CARGO_TARGET_NAME --target aarch64-linux-android
 	$TERMUX_PKG_SRCDIR/x.py dist rustc-dev --host $CARGO_TARGET_NAME --target armv7-linux-androideabi
 	$TERMUX_PKG_SRCDIR/x.py dist rustc-dev --host $CARGO_TARGET_NAME --target i686-linux-android
 	$TERMUX_PKG_SRCDIR/x.py dist rustc-dev --host $CARGO_TARGET_NAME --target x86_64-linux-android
 	$TERMUX_PKG_SRCDIR/x.py dist rustc-dev --host $CARGO_TARGET_NAME --target wasm32-unknown-unknown
+	$TERMUX_PKG_SRCDIR/x.py dist rustc-dev --host $CARGO_TARGET_NAME --target wasm32-wasi
+	$TERMUX_PKG_SRCDIR/x.py dist rustc-dev --host $CARGO_TARGET_NAME --target wasm32-wasip1
+	$TERMUX_PKG_SRCDIR/x.py dist rustc-dev --host $CARGO_TARGET_NAME --target wasm32-wasip2
 	fi
 
 	tar -xvf build/dist/rustc-dev-$TERMUX_PKG_VERSION-$CARGO_TARGET_NAME.tar.gz
