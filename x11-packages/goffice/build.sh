@@ -9,7 +9,7 @@ TERMUX_PKG_DEPENDS="gdk-pixbuf, glib, gtk3, libcairo, libgsf, librsvg, libspectr
 TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
---enable-introspection=yes
+--enable-introspection=no
 --with-lasem=no
 --without-long-double
 "

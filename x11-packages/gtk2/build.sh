@@ -20,7 +20,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-glibtest
 --disable-cups
 --disable-papi
---enable-introspection=yes
+--enable-introspection=no
 "
 
 ## 1. gtk-update-icon-cache is subpackage of 'gtk3'

@@ -11,7 +11,7 @@ TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner"
 TERMUX_PKG_DISABLE_GIR=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 LIBXKLAVIER=${TERMUX_PREFIX}/lib/libxklavier.so
---enable-introspection=yes
+--enable-introspection=no
 "
 
 termux_step_pre_configure() {

@@ -11,8 +11,8 @@ TERMUX_PKG_DEPENDS="atk, gdk-pixbuf, glib, gtk3, harfbuzz, libcairo, libxml2, pa
 TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner, valac"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
---enable-introspection=yes
---enable-vala=yes
+--enable-introspection=no
+--enable-vala=no
 "
 
 termux_step_pre_configure() {

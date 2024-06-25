@@ -14,8 +14,8 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dbackend-gtk3=enabled
 -Dbackend-gtk4=enabled
 -Dbackend-qt5=enabled
--Dintrospection=true
--Dvapi=true
+-Dintrospection=false
+-Dvapi=false
 -Ddocs=false
 -Dtests=false
 "

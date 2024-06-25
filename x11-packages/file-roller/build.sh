@@ -13,7 +13,7 @@ TERMUX_PKG_DISABLE_GIR=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Duse_native_appchooser=false
 -Dcpio=$TERMUX_PREFIX/bin/cpio
--Dintrospection=enabled
+-Dintrospection=disabled
 "
 
 termux_step_pre_configure() {

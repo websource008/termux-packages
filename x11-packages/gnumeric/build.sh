@@ -13,7 +13,7 @@ TERMUX_PKG_SUGGESTS="glpk"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 PYTHON=python
---enable-introspection=yes
+--enable-introspection=no
 --without-gda
 --without-psiconv
 --without-paradox

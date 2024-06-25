@@ -11,9 +11,9 @@ TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner, libwayland-cross-scanner, libwayland-pro
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Ddocs=false
--Dintrospection=true
+-Dintrospection=false
 -Dtests=false
--Dvapi=true
+-Dvapi=false
 "
 
 termux_step_pre_configure() {

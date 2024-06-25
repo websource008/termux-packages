@@ -12,7 +12,7 @@ TERMUX_PKG_RECOMMENDS="desktop-file-utils, hicolor-icon-theme"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --enable-gtk-doc-html=no
---enable-introspection=yes
+--enable-introspection=no
 --enable-vala=no
 --disable-dbusmenu-gtk3
 "

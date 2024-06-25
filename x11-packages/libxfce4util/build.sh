@@ -11,8 +11,8 @@ TERMUX_PKG_DEPENDS="glib"
 TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner, valac"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
---enable-introspection=yes
---enable-vala=yes
+--enable-introspection=no
+--enable-vala=no
 --enable-gtk-doc-html=no
 "
 

@@ -12,7 +12,7 @@ TERMUX_PKG_RECOMMENDS="eog-help"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dxmp=false
--Dintrospection=true
+-Dintrospection=false
 -Dlibportal=false
 "
 

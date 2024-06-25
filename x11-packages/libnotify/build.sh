@@ -7,11 +7,11 @@ TERMUX_PKG_SRCURL=https://ftp.gnome.org/pub/GNOME/sources/libnotify/${TERMUX_PKG
 TERMUX_PKG_SHA256=ee8f3ef946156ad3406fdf45feedbdcd932dbd211ab4f16f75eba4f36fb2f6c0
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="gdk-pixbuf, glib"
-TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner"
+TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner, glib-cross"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dtests=false
--Dintrospection=enabled
+-Dintrospection=disabled
 -Dgtk_doc=false"
 
 termux_step_pre_configure() {
@@ -21,4 +21,15 @@ termux_step_pre_configure() {
 		# Pre-installed headers affect GIR generation:
 		rm -rf "$TERMUX_PREFIX/include/libnotify"
 	fi
+
+        local _WRAPPER_BIN="${TERMUX_PKG_BUILDDIR}/_wrapper/bin"
+        mkdir -p "${_WRAPPER_BIN}"
+        if [[ "${TERMUX_ON_DEVICE_BUILD}" == "false" ]]; then
+                sed "s|^export PKG_CONFIG_LIBDIR=|export PKG_CONFIG_LIBDIR=${TERMUX_PREFIX}/opt/glib/cross/lib/x86_64-linux-gnu/pkgconfig:|" \
+                        "${TERMUX_STANDALONE_TOOLCHAIN}/bin/pkg-config" \
+                        > "${_WRAPPER_BIN}/pkg-config"
+                chmod +x "${_WRAPPER_BIN}/pkg-config"
+                export PKG_CONFIG="${_WRAPPER_BIN}/pkg-config"
+        fi
+        export PATH="${_WRAPPER_BIN}:${PATH}"
 }

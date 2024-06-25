@@ -10,7 +10,7 @@ TERMUX_PKG_DEPENDS="atk, dconf, gdk-pixbuf, glib, gtk3, harfbuzz, libcairo, libx
 TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner, iso-codes"
 TERMUX_PKG_DISABLE_GIR=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
---enable-introspection=yes
+--enable-introspection=no
 "
 
 termux_step_pre_configure() {

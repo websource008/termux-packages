@@ -14,7 +14,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dnautilus=false
 -Dps=enabled
 -Dgtk_doc=false
--Dintrospection=true
+-Dintrospection=false
 -Dgspell=disabled
 "
 

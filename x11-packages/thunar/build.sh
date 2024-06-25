@@ -12,7 +12,7 @@ TERMUX_PKG_RECOMMENDS="gvfs, hicolor-icon-theme, thunar-archive-plugin, tumbler"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --enable-gtk-doc-html=no
---enable-introspection=yes
+--enable-introspection=no
 "
 TERMUX_PKG_BUILD_IN_SRC=true
 

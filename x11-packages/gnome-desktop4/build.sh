@@ -12,7 +12,7 @@ TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Ddesktop_docs=false
 -Ddebug_tools=false
--Dintrospection=true
+-Dintrospection=false
 -Dbuild_gtk4=true
 -Dlegacy_library=false
 "

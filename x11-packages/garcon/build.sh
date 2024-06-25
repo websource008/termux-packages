@@ -13,7 +13,7 @@ TERMUX_PKG_REPLACES="libgarcon"
 TERMUX_PKG_PROVIDES="libgarcon"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
---enable-introspection=yes
+--enable-introspection=no
 "
 
 termux_step_pre_configure() {

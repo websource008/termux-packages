@@ -10,8 +10,8 @@ TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner, valac"
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
--Dintrospection=enabled
--Dvapi=true
+-Dintrospection=disabled
+-Dvapi=false
 -Dtests=false
 -Dexamples=true
 "

@@ -13,7 +13,7 @@ TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 with_gl_libname=libGL.so
---enable-introspection=yes
+--enable-introspection=no
 "
 
 termux_step_pre_configure() {

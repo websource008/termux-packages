@@ -12,8 +12,8 @@ TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner, valac"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Denable_tools=false
--Dwith_introspection=true
--Dwith_vapi=true
+-Dwith_introspection=false
+-Dwith_vapi=false
 -Denable_tests=false
 "
 

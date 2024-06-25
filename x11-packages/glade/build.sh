@@ -14,7 +14,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dgjs=disabled
 -Dpython=disabled
 -Dwebkit2gtk=disabled
--Dintrospection=true
+-Dintrospection=false
 "
 
 termux_step_pre_configure() {

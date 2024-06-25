@@ -11,7 +11,7 @@ TERMUX_PKG_DEPENDS="glib, gtk4, libadwaita, libcairo, pango"
 TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner, glib-cross"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
--Dintrospection=enabled
+-Dintrospection=disabled
 "
 
 termux_step_pre_configure() {

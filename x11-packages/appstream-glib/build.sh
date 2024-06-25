@@ -12,7 +12,7 @@ TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Drpm=false
 -Dgtk-doc=false
--Dintrospection=true
+-Dintrospection=false
 "
 
 termux_step_pre_configure() {

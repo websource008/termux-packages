@@ -10,7 +10,7 @@ TERMUX_PKG_DEPENDS="dbus, libxfce4util"
 TERMUX_PKG_BUILD_DEPENDS="g-ir-scanner"
 TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
---enable-introspection=yes
+--enable-introspection=no
 --enable-vala=no
 "
 

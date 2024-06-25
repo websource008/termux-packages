@@ -11,7 +11,7 @@ TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_MAKE_ARGS="V=1"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --enable-dbus=no
---enable-introspection=yes
+--enable-introspection=no
 "
 
 termux_step_pre_configure() {
