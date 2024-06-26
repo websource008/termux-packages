@@ -25,7 +25,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-collab-backend-tcp
 --disable-collab-backend-sugar
 --disable-collab-backend-service
---enable-introspection
+--disable-introspection
 --without-gtk2
 --with-goffice
 --without-redland
