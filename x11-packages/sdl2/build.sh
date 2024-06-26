@@ -12,6 +12,7 @@ TERMUX_PKG_CONFLICTS="libsdl2"
 TERMUX_PKG_REPLACES="libsdl2"
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
+ac_cv_func_shmat=no
 --disable-3dnow
 --disable-alsa
 --disable-assembly

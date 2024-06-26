@@ -6,6 +6,7 @@ TERMUX_PKG_VERSION="6.7.1"
 TERMUX_PKG_SRCURL="https://download.qt.io/official_releases/qt/${TERMUX_PKG_VERSION%.*}/${TERMUX_PKG_VERSION}/submodules/qtlanguageserver-everywhere-src-${TERMUX_PKG_VERSION}.tar.xz"
 TERMUX_PKG_SHA256=a0fcda1464760e10d9d78d4260e78c94f7ef51343193d8fd2cfef991a4fa94f9
 TERMUX_PKG_DEPENDS="libc++, qt6-qtbase"
+TERMUX_PKG_BUILD_DEPENDS="qt6-qtbase-cross-tools"
 TERMUX_PKG_HOSTBUILD=true
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_NO_STATICSPLIT=true

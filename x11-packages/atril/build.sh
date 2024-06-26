@@ -15,7 +15,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --enable-djvu
 --enable-dvi
 --enable-epub
---enable-introspection
+--disable-introspection
 --enable-pixbuf
 "
 

@@ -21,6 +21,8 @@ termux_step_pre_configure() {
 	sed -i 's/\(webkit2gtk-4\.\)0/\11/g' configure
 
 	_WX_RELEASE=$(awk '/^WX_RELEASE =/ { print $3 }' "$TERMUX_PKG_SRCDIR"/Makefile.in)
+
+	LDFLAGS+=" -Wl,--undefined-version"
 }
 
 termux_step_post_make_install() {

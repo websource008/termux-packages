@@ -13,3 +13,8 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-fpu-x86
 --disable-opengl
 "
+
+termux_step_pre_configure() {
+	# Avoid "error: ISO C++17 does not allow 'register' storage class specifier"
+	CXXFLAGS+=" -std=c++11"
+}

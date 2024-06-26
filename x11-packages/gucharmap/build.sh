@@ -12,8 +12,8 @@ TERMUX_PKG_DISABLE_GIR=false
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Ducd_path=$TERMUX_PREFIX/share/unicode-data
 -Ddocs=false
--Dgir=true
--Dvapi=true
+-Dgir=false
+-Dvapi=false
 "
 
 termux_step_pre_configure() {

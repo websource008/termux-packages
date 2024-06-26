@@ -6,6 +6,7 @@ TERMUX_PKG_VERSION="6.7.1"
 TERMUX_PKG_SRCURL="https://download.qt.io/official_releases/qt/${TERMUX_PKG_VERSION%.*}/${TERMUX_PKG_VERSION}/submodules/qtshadertools-everywhere-src-${TERMUX_PKG_VERSION}.tar.xz"
 TERMUX_PKG_SHA256=e585e3a985b2e2bad8191a84489a04e69c3defc6022a8e746aad22a1f17910c2
 TERMUX_PKG_DEPENDS="libc++, qt6-qtbase"
+TERMUX_PKG_BUILD_DEPENDS="qt6-qtbase-cross-tools"
 TERMUX_PKG_HOSTBUILD=true
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_NO_STATICSPLIT=true
