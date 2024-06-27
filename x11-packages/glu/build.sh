@@ -7,6 +7,7 @@ TERMUX_PKG_VERSION=9.0.3
 TERMUX_PKG_SRCURL=https://mesa.freedesktop.org/archive/glu/glu-$TERMUX_PKG_VERSION.tar.xz
 TERMUX_PKG_SHA256=bd43fe12f374b1192eb15fe20e45ff456b9bc26ab57f0eee919f96ca0f8a330f
 TERMUX_PKG_DEPENDS="libc++, opengl"
+TERMUX_PKG_BUILD_DEPENDS="libglvnd-dev"
 TERMUX_PKG_CONFLICTS="libglu"
 TERMUX_PKG_REPLACES="libglu"
 
