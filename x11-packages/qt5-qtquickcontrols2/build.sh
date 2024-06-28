@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION=5.15.10
 TERMUX_PKG_SRCURL="https://download.qt.io/official_releases/qt/5.15/${TERMUX_PKG_VERSION}/submodules/qtquickcontrols2-everywhere-opensource-src-${TERMUX_PKG_VERSION}.tar.xz"
 TERMUX_PKG_SHA256=97954c92fee9031ec31341812ccf53afb3c132e2b271bcef1174367fa002fc8e
 TERMUX_PKG_DEPENDS="libc++, qt5-qtbase, qt5-qtdeclarative"
-TERMUX_PKG_BUILD_DEPENDS="qt5-qtbase-cross-tools"
+TERMUX_PKG_BUILD_DEPENDS="qt5-qtbase-cross-tools, qt5-qtdeclarative-cross-tools"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_NO_STATICSPLIT=true
 
