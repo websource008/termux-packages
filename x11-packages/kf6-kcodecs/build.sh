@@ -7,7 +7,7 @@ TERMUX_PKG_SRCURL="https://download.kde.org/stable/frameworks/${TERMUX_PKG_VERSI
 TERMUX_PKG_SHA256=6902531afc3d47d543feb971c2bc04901af265e6730a477af4400073b22ec6ec
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="libc++, qt6-qtbase"
-TERMUX_PKG_BUILD_DEPENDS="extra-cmake-modules, qt6-qttools"
+TERMUX_PKG_BUILD_DEPENDS="extra-cmake-modules, qt6-qttools, qt6-qttools-cross-tools"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -DCMAKE_SYSTEM_NAME=Linux
 "
