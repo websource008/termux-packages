@@ -14,7 +14,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dgtk_doc=false
 -Dhelp=true
 -Dplugins_python=enabled
--Dplugins_vala=enabled
+-Dplugins_vala=disabled
 -Dtests=disabled
 "
 
