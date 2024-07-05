@@ -3,11 +3,10 @@ TERMUX_PKG_DESCRIPTION="An implementation of iconv()"
 TERMUX_PKG_LICENSE="LGPL-2.1, GPL-3.0"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION=1.17
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://ftp.gnu.org/pub/gnu/libiconv/libiconv-$TERMUX_PKG_VERSION.tar.gz
 TERMUX_PKG_SHA256=8f74213b56238c85a50a5329f77e06198771e70dd9a739779f4c02f65d971313
-
-# <iconv.h> provided by the NDK
-TERMUX_PKG_RM_AFTER_INSTALL="include/iconv.h"
+TERMUX_PKG_CONFLICTS="ndk-sysroot (<< 26d-2)"
 
 # Enable extra encodings (such as CP437) needed by some programs:
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="--enable-extra-encodings"
