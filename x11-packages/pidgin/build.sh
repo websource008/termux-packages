@@ -16,4 +16,5 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-avahi
 --disable-perl
 --disable-nm
+--disable-tk
 "
