@@ -39,6 +39,7 @@ termux_step_pre_configure() {
 		for a in "\$@"; do
 			case "\${a}" in
 				--target=*|--gcc-toolchain=*|--sysroot=* ) ;;
+				-fno-openmp-implicit-rpath ) ;;
 				-fopenmp|-static-openmp ) ;;
 				-Wl,--fix-cortex-a8|-Wl,-z,nocopyreloc ) ;;
 				* ) args+=("\${a}") ;;

@@ -1,0 +1,21 @@
+diff -u -r ../rhythmbox-3.4.7/lib/libmediaplayerid/meson.build ./lib/libmediaplayerid/meson.build
+--- ../rhythmbox-3.4.7/lib/libmediaplayerid/meson.build	2023-04-16 04:44:48.000000000 +0000
++++ ./lib/libmediaplayerid/meson.build	2024-07-06 21:49:08.662821278 +0000
+@@ -26,17 +26,3 @@
+   dependencies: common_deps,
+   include_directories: include_directories('.'),
+ )
+-
+-mpid_gir = gnome.generate_gir(mediaplayerid_lib,
+-  dependencies: common_deps,
+-  extra_args: [
+-    '--library-path=@0@/../../lib/libmediaplayerid'.format(meson.current_build_dir()),
+-  ],
+-  sources: mpid_sources + mpid_headers,
+-  namespace: 'MPID',
+-  nsversion: '3.0',
+-  identifier_prefix: 'MPID',
+-  symbol_prefix: 'mpid_',
+-  includes: ['GObject-2.0'],
+-  install: true,
+-)

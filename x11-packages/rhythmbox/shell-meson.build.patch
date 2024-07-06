@@ -1,0 +1,31 @@
+diff -u -r ../rhythmbox-3.4.7/shell/meson.build ./shell/meson.build
+--- ../rhythmbox-3.4.7/shell/meson.build	2023-04-16 04:44:48.000000000 +0000
++++ ./shell/meson.build	2024-07-06 21:50:49.773578274 +0000
+@@ -103,27 +103,6 @@
+   include_directories: rhythmbox_core_include_directories,
+ )
+ 
+-rb_gir = gnome.generate_gir(librhythmbox_core,
+-  dependencies: common_deps,
+-  link_with: [],
+-  extra_args: [ '--accept-unprefixed'],
+-  sources: lib_headers + lib_sources + 
+-    backends_sources + backends_headers +
+-    metadata_sources + metadata_headers +
+-    podcast_sources + podcast_headers +
+-    rhythmdb_sources + rhythmdb_headers +
+-    shell_sources + shell_headers +
+-    sources_sources + sources_headers +
+-    widgets_sources + widgets_headers,
+-  namespace: 'RB',
+-  nsversion: '3.0',
+-  identifier_prefix: 'RB',
+-  symbol_prefix: 'rb_',
+-  includes: ['GObject-2.0', 'Gio-2.0', 'Gtk-3.0', 'Gst-1.0',
+-    'GstPbutils-1.0', 'libxml2-2.0', mpid_gir[0]],
+-  install: true,
+-)
+-
+ rhythmbox_dependencies = [rhythmbox_core_dep]
+ if enable_python
+   rhythmbox_dependencies += [pygobject]
