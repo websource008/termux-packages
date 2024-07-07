@@ -110,6 +110,10 @@ source "$TERMUX_SCRIPTDIR/scripts/build/setup/termux_setup_rust.sh"
 # shellcheck source=scripts/build/setup/termux_setup_swift.sh
 source "$TERMUX_SCRIPTDIR/scripts/build/setup/termux_setup_swift.sh"
 
+# Utility function to setup a current xmake build system.
+# shellcheck source=scripts/build/setup/termux_setup_xmake.sh
+source "$TERMUX_SCRIPTDIR/scripts/build/setup/termux_setup_xmake.sh"
+
 # Utility function to setup a current ninja build system.
 # shellcheck source=scripts/build/setup/termux_setup_ninja.sh
 source "$TERMUX_SCRIPTDIR/scripts/build/setup/termux_setup_ninja.sh"
