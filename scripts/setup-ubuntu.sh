@@ -278,6 +278,9 @@ PACKAGES+=" libcurl4-openssl-dev"
 # Required by openjdk and other java packages
 PACKAGES+=" openjdk-21-jdk-headless"
 
+# Required by openjdk-21
+PACKAGES+=" openjdk-21-jre openjdk-21-jdk"
+
 # Required by qt5-qtwebengine
 PACKAGES+=" libnss3 libnss3:i386 libnss3-dev"
 PACKAGES+=" libwebp7 libwebp7:i386 libwebp-dev"
