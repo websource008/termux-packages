@@ -278,6 +278,15 @@ PACKAGES+=" libcurl4-openssl-dev"
 # Required by openjdk and other java packages
 PACKAGES+=" openjdk-21-jdk-headless"
 
+# Required by qt5-qtwebengine
+PACKAGES+=" libnss3 libnss3:i386 libnss3-dev"
+PACKAGES+=" libwebp7 libwebp7:i386 libwebp-dev"
+PACKAGES+=" libwebpdemux2 libwebpdemux2:i386"
+PACKAGES+=" libwebpmux3 libwebpmux3:i386"
+
+# Required by wine-stable
+PACKAGES+=" libfreetype-dev:i386"
+
 # Required by CGCT
 PACKAGES+=" libdebuginfod-dev"
 
