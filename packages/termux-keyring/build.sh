@@ -11,7 +11,9 @@ TERMUX_PKG_ESSENTIAL=true
 termux_step_make_install() {
 	local GPG_SHARE_DIR="$TERMUX_PREFIX/share/termux-keyring"
 
-	mkdir -p $GPG_SHARE_DIR
+	# Delete all existing termux-keyring keys
+	rm -rf "$GPG_SHARE_DIR"
+	mkdir -p "$GPG_SHARE_DIR"
 
 	install -Dm600 $TERMUX_PKG_BUILDER_DIR/termux-packages.gpg $GPG_SHARE_DIR
 
