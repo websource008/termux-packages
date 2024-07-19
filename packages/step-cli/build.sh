@@ -2,9 +2,9 @@ TERMUX_PKG_HOMEPAGE=https://smallstep.com/cli
 TERMUX_PKG_DESCRIPTION="An easy-to-use CLI tool for building, operating, and automating Public Key Infrastructure (PKI) systems and workflows"
 TERMUX_PKG_LICENSE="Apache-2.0"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="0.27.1"
+TERMUX_PKG_VERSION="0.27.2"
 TERMUX_PKG_SRCURL=https://github.com/smallstep/cli/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=d185217e6ed89ffe99b910b9a968b8ee2a17d473cc70c7f2a33c1bfbda438729
+TERMUX_PKG_SHA256=957aa5bc6527fa75ec0ccd85950de3b3370403297d41a8356a572179ba805e35
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_BUILD_IN_SRC=true
 
