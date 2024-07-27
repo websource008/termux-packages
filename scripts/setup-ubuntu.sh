@@ -137,6 +137,7 @@ PACKAGES+=" libc-ares-dev"
 PACKAGES+=" libicu-dev"
 # (for 32-bit arm builds):
 PACKAGES+=" libc-ares-dev:i386 libssl-dev:i386 zlib1g-dev:i386"
+PACKAGES+=" libsqlite3-dev:i386"
 
 # Needed by php.
 PACKAGES+=" re2c"
