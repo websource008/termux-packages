@@ -29,8 +29,10 @@ PACKAGES+=" golang"
 PACKAGES+=" gperf"
 PACKAGES+=" help2man"
 PACKAGES+=" libtool"
+PACKAGES+=" llvm-tools"		# Needed to build rust
 PACKAGES+=" m4"
 PACKAGES+=" make"			# Used for all Makefile-based projects.
+PACKAGES+=" ndk-multilib"		# Needed to build rust
 PACKAGES+=" ninja"			# Used by default to build all CMake projects.
 PACKAGES+=" perl"
 PACKAGES+=" pkg-config"
@@ -51,5 +53,5 @@ export TERMUX_SCRIPTDIR=$(dirname "$(realpath "$0")")/../
 source "$TERMUX_PREFIX/bin/termux-setup-package-manager" || true
 
 apt update
-apt dist-upgrade -y
-apt install -y $PACKAGES
+yes | apt dist-upgrade
+yes | apt install $PACKAGES
