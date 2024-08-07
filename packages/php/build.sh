@@ -4,6 +4,7 @@ TERMUX_PKG_LICENSE="PHP-3.01"
 TERMUX_PKG_LICENSE_FILE=LICENSE
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="8.3.8"
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://github.com/php/php-src/archive/php-${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=0f14f28d6f8d9ab35c618ee39f0dc9c9441a4242443fca2733d68ef27f6c6290
 TERMUX_PKG_AUTO_UPDATE=false
@@ -11,7 +12,7 @@ TERMUX_PKG_AUTO_UPDATE=false
 TERMUX_PKG_HOSTBUILD=true
 # Build the native php without xml support as we only need phar:
 TERMUX_PKG_EXTRA_HOSTBUILD_CONFIGURE_ARGS="--disable-libxml --disable-dom --disable-simplexml --disable-xml --disable-xmlreader --disable-xmlwriter --without-pear --disable-sqlite3 --without-libxml --without-sqlite3 --without-pdo-sqlite"
-TERMUX_PKG_DEPENDS="libbz2, libc++, libcurl, libffi, libgd, libgmp, libicu, libresolv-wrapper, libsqlite, libxml2, libxslt, libzip, oniguruma, openssl, pcre2, readline, tidy, zlib"
+TERMUX_PKG_DEPENDS="libbz2, libc++, libcurl, libffi, libgmp, libicu, libresolv-wrapper, libsqlite, libxml2, libxslt, libzip, oniguruma, openssl, pcre2, readline, tidy, zlib"
 TERMUX_PKG_CONFLICTS="php-mysql, php-dev"
 TERMUX_PKG_REPLACES="php-mysql, php-dev"
 TERMUX_PKG_RM_AFTER_INSTALL="php/php/fpm"
@@ -49,7 +50,7 @@ php_cv_lib_gd_gdImageCreateFromTga=yes
 --with-mysql-sock=$TERMUX_PREFIX/tmp/mysqld.sock
 --with-apxs2=$TERMUX_PKG_TMPDIR/apxs-wrapper.sh
 --enable-fpm
---enable-gd
+--enable-gd=shared,$TERMUX_PREFIX
 --with-external-gd
 --with-external-pcre
 --with-zip
@@ -85,7 +86,12 @@ termux_step_host_build() {
 termux_step_pre_configure() {
 	export PATH=$TERMUX_PKG_HOSTBUILD_DIR/_patchelf/src:$PATH
 
-	LDFLAGS+=" -lresolv_wrapper -llog $($CC -print-libgcc-file-name)"
+	# warning: static library libclang_rt.builtins-aarch64-android.a is not portable
+	local _libgcc_file="$($CC -print-libgcc-file-name)"
+	local _libgcc_path="$(dirname $_libgcc_file)"
+	local _libgcc_name="$(basename $_libgcc_file)"
+	LDFLAGS+=" -lresolv_wrapper -llog -L$_libgcc_path -l:$_libgcc_name -lm"
+
 	export PATH=$PATH:$TERMUX_PKG_HOSTBUILD_DIR/sapi/cli/
 	export NATIVE_PHP_EXECUTABLE=$TERMUX_PKG_HOSTBUILD_DIR/sapi/cli/php
 	export NATIVE_MINILUA_EXECUTABLE=$TERMUX_PKG_HOSTBUILD_DIR/ext/opcache/minilua
