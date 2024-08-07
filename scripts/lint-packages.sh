@@ -216,7 +216,7 @@ lint_package() {
 
 		# Certain fields may be API-specific.
 		# Using API 24 here.
-		TERMUX_PKG_API_LEVEL=28
+		TERMUX_PKG_API_LEVEL=29
 
 		. "$package_script"
 
@@ -279,14 +279,14 @@ lint_package() {
 		echo -n "TERMUX_PKG_API_LEVEL: "
 
 			if grep -qP '^[1-9][0-9]$' <<< "$TERMUX_PKG_API_LEVEL"; then
-				if (( TERMUX_PKG_API_LEVEL < 28 || TERMUX_PKG_API_LEVEL > 28 )); then
-					echo "INVALID (allowed: number in range 28 - 28)"
+				if (( TERMUX_PKG_API_LEVEL < 29 || TERMUX_PKG_API_LEVEL > 29 )); then
+					echo "INVALID (allowed: number in range 29 - 29)"
 					pkg_lint_error=true
 				else
 					echo "PASS"
 				fi
 			else
-				echo "INVALID (allowed: number in range 28 - 28)"
+				echo "INVALID (allowed: number in range 29 - 29)"
 				pkg_lint_error=true
 			fi
 		fi

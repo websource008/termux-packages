@@ -4,7 +4,7 @@ termux_step_setup_variables() {
 	: "${TERMUX_DEBUG_BUILD:="false"}"
 	: "${TERMUX_INSTALL_DEPS:="false"}"
 	: "${TERMUX_PKG_MAKE_PROCESSES:="$(nproc)"}"
-	: "${TERMUX_PKG_API_LEVEL:="28"}"
+	: "${TERMUX_PKG_API_LEVEL:="29"}"
 	: "${TERMUX_CONTINUE_BUILD:="false"}"
 	: "${TERMUX_QUIET_BUILD:="false"}"
 	: "${TERMUX_TOPDIR:="$HOME/.termux-build"}"
