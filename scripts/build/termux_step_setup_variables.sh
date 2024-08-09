@@ -10,6 +10,7 @@ termux_step_setup_variables() {
 	: "${TERMUX_TOPDIR:="$HOME/.termux-build"}"
 
 	TERMUX_PACKAGE_FORMAT="debian"
+	export TERMUX_PACKAGE_LIBRARY="bionic"
 
 	if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
 		# On-device builds without termux-exec are unsupported.

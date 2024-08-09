@@ -14,6 +14,7 @@ TERMUX_PKG_BUILD_DEPENDS="protobuf-static, python, vulkan-headers, vulkan-loader
 TERMUX_PKG_PYTHON_COMMON_DEPS="wheel, pybind11"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
+-DNCNN_AVX=OFF
 -DNCNN_BUILD_BENCHMARK=OFF
 -DNCNN_BUILD_EXAMPLES=OFF
 -DNCNN_BUILD_TESTS=OFF
@@ -60,6 +61,7 @@ termux_step_pre_configure() {
 	termux_setup_protobuf
 
 	CXXFLAGS+=" -std=c++17"
+	LDFLAGS+=" -fopenmp -static-openmp"
 	LDFLAGS+=" $("${TERMUX_SCRIPTDIR}/packages/libprotobuf/interface_link_libraries.sh")"
 	LDFLAGS+=" -lutf8_range -lutf8_validity"
 	LDFLAGS+=" -landroid -ljnigraphics -llog"
