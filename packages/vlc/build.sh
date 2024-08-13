@@ -3,14 +3,11 @@ TERMUX_PKG_DESCRIPTION="A popular libre and open source media player and multime
 TERMUX_PKG_LICENSE="GPL-2.0, LGPL-2.1"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="3.0.21"
-TERMUX_PKG_REVISION=2
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://download.videolan.org/pub/videolan/vlc/${TERMUX_PKG_VERSION}/vlc-${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=24dbbe1d7dfaeea0994d5def0bbde200177347136dbfe573f5b6a4cee25afbb0
-TERMUX_PKG_DEPENDS="chromaprint, dbus, ffmpeg, fluidsynth, fontconfig, freetype, fribidi, glib, gst-plugins-base, gstreamer, harfbuzz, liba52, libandroid-shmem, libaom, libarchive, libass, libbluray, libc++, libcaca, libcairo, libcddb, libdav1d, libdvbpsi, libdvdnav, libdvdread, libebml, libflac, libgcrypt, libgnutls, libgpg-error, libiconv, libidn, libjpeg-turbo, liblua52, libmad, libmatroska, libmpeg2, libnfs, libogg, libopus, libpng, librsvg, libsecret, libsoxr, libssh2, libtheora, libtwolame, libvorbis, libvpx, libx11, libx264, libx265, libxcb, libxml2, mpg123, ncurses, opengl, pulseaudio, qt5-qtbase, qt5-qtsvg, qt5-qtx11extras, samba, taglib, xcb-util-keysyms, zlib"
-TERMUX_PKG_BUILD_DEPENDS="qt5-qtbase-cross-tools, xorgproto"
-TERMUX_PKG_CONFLICTS="vlc"
-TERMUX_PKG_REPLACES="vlc"
-TERMUX_PKG_BUILD_IN_SRC=true
+TERMUX_PKG_DEPENDS="chromaprint, dbus, ffmpeg, fluidsynth, fontconfig, freetype, fribidi, glib, gst-plugins-base, gstreamer, harfbuzz, liba52, libandroid-shmem, libaom, libarchive, libass, libbluray, libc++, libcaca, libcairo, libcddb, libdav1d, libdvbpsi, libdvdnav, libdvdread, libebml, libflac, libgcrypt, libgnutls, libgpg-error, libiconv, libidn, libjpeg-turbo, liblua52, libmad, libmatroska, libmpeg2, libnfs, libogg, libopus, libpng, librsvg, libsecret, libsoxr, libssh2, libtheora, libtwolame, libvorbis, libvpx, libx11, libx264, libx265, libxcb, libxml2, mpg123, ncurses, pulseaudio, samba, taglib, zlib"
+TERMUX_PKG_BUILD_DEPENDS="xorgproto"
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-static
@@ -59,6 +56,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-samplerate
 --disable-kai
 --disable-chromecast
+--disable-qt
 --disable-skins2
 --disable-srt
 --disable-goom
