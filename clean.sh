@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # clean.sh - clean everything.
 set -e -u
 
@@ -7,6 +7,7 @@ TERMUX_SCRIPTDIR=$(cd "$(realpath "$(dirname "$0")")"; pwd)
 # Store pid of current process in a file for docker__run_docker_exec_trap
 . "$TERMUX_SCRIPTDIR/scripts/utils/docker/docker.sh"; docker__create_docker_exec_pid_file
 
+. "$TERMUX_SCRIPTDIR/scripts/properties.sh"
 
 # Checking if script is running on Android with 2 different methods.
 # Needed for safety to prevent execution of potentially dangerous
@@ -17,7 +18,7 @@ else
 	TERMUX_ON_DEVICE_BUILD=false
 fi
 
-if [ "$(id -u)" = "0" ] && $TERMUX_ON_DEVICE_BUILD; then
+if [ "$(id -u)" = "0" ] && [[ "$TERMUX_ON_DEVICE_BUILD" == "true" ]]; then
 	echo "On-device execution of this script as root is disabled."
 	exit 1
 fi
@@ -44,11 +45,13 @@ fi
 		chmod +w -R "$TERMUX_TOPDIR" || true
 	fi
 
-	if $TERMUX_ON_DEVICE_BUILD; then
-		# For on-device build cleanup /data shouldn't be erased.
-		rm -Rf "$TERMUX_TOPDIR"
-	else
-		find /data -mindepth 1 ! -regex '^/data/data/com.termux/cgct\(/.*\)?' -delete 2> /dev/null || true
-		rm -Rf "$TERMUX_TOPDIR"
+	# For on-device build cleanup /data shouldn't be erased.
+	if [[ "$TERMUX_ON_DEVICE_BUILD" == "false" ]]; then
+		if [[ ! "$TERMUX_BASE_DIR" =~ ^(/[^/]+)+$ ]]; then
+			echo "TERMUX_BASE_DIR '$TERMUX_BASE_DIR' is not an absolute path under rootfs '/'." 1>&2
+			exit 1
+		fi
 	fi
+
+	rm -Rf "$TERMUX_TOPDIR"
 } 5< "$TERMUX_BUILD_LOCK_FILE"
