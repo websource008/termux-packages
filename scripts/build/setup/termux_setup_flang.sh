@@ -51,6 +51,7 @@ f12815f039a4997b59503f1bd6dcd0b0441040ec40bd8813aa29643ee4982a97  package-instal
 		tar xf "$__cache_dir"/package-install.tar.bz2 --strip-components=4
 		tar xf "$__cache_dir"/package-flang-host.tar.bz2 --strip-components=1
 		cp -Rf $TERMUX_STANDALONE_TOOLCHAIN/sysroot $FLANG_FOLDER_TMP/
+		chmod -R u+w $FLANG_FOLDER_TMP
 
 		tar xf "$__cache_dir"/package-flang-aarch64.tar.bz2 --strip-components=1 \
 			-C "$FLANG_FOLDER_TMP"/sysroot/usr/lib/aarch64-linux-android
