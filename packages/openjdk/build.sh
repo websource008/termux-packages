@@ -3,6 +3,7 @@ TERMUX_PKG_DESCRIPTION="Java development kit and runtime"
 TERMUX_PKG_LICENSE="GPL-2.0"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION=21.0.4
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://github.com/openjdk/jdk21u/archive/refs/tags/jdk-${TERMUX_PKG_VERSION}-ga.tar.gz
 TERMUX_PKG_SHA256=9223a0f1db1b7ee0ca480e010d6473a8be72eaae93d883fd31ef9ba6dcc41014
 TERMUX_PKG_AUTO_UPDATE=true
@@ -79,6 +80,8 @@ termux_step_make_install() {
 	cp -r build/linux-${TERMUX_ARCH/i686/x86}-server-release/images/jdk/* \
 		$TERMUX_PREFIX/lib/jvm/java-21-openjdk/
 	find $TERMUX_PREFIX/lib/jvm/java-21-openjdk/ -name "*.debuginfo" -delete
+
+	rm -Rf $TERMUX_PREFIX/lib/jvm/java-21-openjdk/demo/
 
 	# Dependent projects may need JAVA_HOME.
 	mkdir -p $TERMUX_PREFIX/lib/jvm/java-21-openjdk/etc/profile.d
