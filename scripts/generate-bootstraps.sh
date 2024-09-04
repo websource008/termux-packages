@@ -47,6 +47,8 @@ for cmd in ar awk curl grep gzip find sed tar xargs xz zip jq; do
 	fi
 done
 
+TERMUX_BUILD_BOOTSTRAPS=false
+
 # Download package lists from remote repository.
 read_package_list_deb() {
 	local architecture
@@ -107,12 +109,47 @@ pull_package() {
 	local package_tmpdir="${BOOTSTRAP_PKGDIR}/${package_name}"
 	mkdir -p "$package_tmpdir"
 
+	local built_package_deb=""
+
 	if [ ${TERMUX_PACKAGE_MANAGER} = "apt" ]; then
+		if [ "${TERMUX_BUILD_BOOTSTRAPS}" = true ]; then
+			if [ ! -d packages/$package_name ]; then
+				local parent_package_path=$(find . -name $package_name.subpackage.sh)
+				local package_to_build=$(basename $(dirname $parent_package_path))
+				echo "INFO: Package $package_name was a subpackage, building parent package $package_to_build"
+			else
+				local package_to_build="$package_name"
+			fi
+
+			if [[ -v "PACKAGE_METADATA[$package_to_build]" ]]; then
+				echo "INFO: Package $package_to_build is already built"
+			else
+				./build-package.sh -a "$package_arch" "$package_to_build"
+			fi
+
+			# Scan through built .deb files:
+			local f
+			for f in output/*.deb; do
+				local control=$(ar p $f control.tar.xz | tar xJOf - ./control)
+				local deb_package_name=$(echo $control | grep 'Package: ' | cut -d ' ' -f 2)
+				PACKAGE_METADATA["$deb_package_name"]="$control"
+				if [ "$package_name" = "$deb_package_name" ]; then
+					built_package_deb="$f"
+				fi
+			done
+			if [ -z "$built_package_deb" ]; then
+				echo "ERROR: Could not find built package for $package_name"
+				exit 1
+			fi
+		fi
+
 		local package_url
 		package_url="$REPO_BASE_URL/$(echo "${PACKAGE_METADATA[${package_name}]}" | grep -i "^Filename:" | awk '{ print $2 }')"
-		if [ "${package_url}" = "$REPO_BASE_URL" ] || [ "${package_url}" = "${REPO_BASE_URL}/" ]; then
-			echo "[!] Failed to determine URL for package '$package_name'."
-			exit 1
+		if [ "${TERMUX_BUILD_BOOTSTRAPS}" != true ]; then
+			if [ "${package_url}" = "$REPO_BASE_URL" ] || [ "${package_url}" = "${REPO_BASE_URL}/" ]; then
+				echo "[!] Failed to determine URL for package '$package_name'."
+				exit 1
+			fi
 		fi
 
 		local package_dependencies
@@ -134,8 +171,13 @@ pull_package() {
 		fi
 
 		if [ ! -e "$package_tmpdir/package.deb" ]; then
-			echo "[*] Downloading '$package_name'..."
-			curl --fail --location --output "$package_tmpdir/package.deb" "$package_url"
+			if [ "$TERMUX_BUILD_BOOTSTRAPS" = true ]; then
+				echo "[*] Putting '$package_name' deb into place..."
+				cp "$built_package_deb" "$package_tmpdir/package.deb"
+			else
+				echo "[*] Downloading '$package_name'..."
+				curl --fail --location --output "$package_tmpdir/package.deb" "$package_url"
+			fi
 
 			echo "[*] Extracting '$package_name'..."
 			(cd "$package_tmpdir"
@@ -267,6 +309,9 @@ show_usage() {
 	echo "                             Multiple packages should be passed as"
 	echo "                             comma-separated list."
 	echo
+	echo " -b, --build                 Build packages from source instead instead"
+	echo "                             of downloading them from the repository."
+	echo
 	echo " --pm MANAGER                Set up a package manager in bootstrap."
 	echo "                             It can only be apt."
 	echo
@@ -305,6 +350,9 @@ while (($# > 0)); do
 				show_usage
 				exit 1
 			fi
+			;;
+		-b|--build)
+			TERMUX_BUILD_BOOTSTRAPS=true
 			;;
 		--pm)
 			if [ $# -gt 1 ] && [ -n "$2" ] && [[ $2 != -* ]]; then
@@ -396,9 +444,20 @@ EOF
 	unset PACKAGE_METADATA
 	declare -A PACKAGE_METADATA
 	if [ ${TERMUX_PACKAGE_MANAGER} = "apt" ]; then
-		read_package_list_deb "$package_arch"
+		if [ "${TERMUX_BUILD_BOOTSTRAPS}" != true ]; then
+			read_package_list_deb "$package_arch"
+		fi
 	else
 		download_db_packages_pac
+	fi
+
+	if [ "$TERMUX_BUILD_BOOTSTRAPS" = true ]; then
+		# Scan through previously built .deb files:
+		for f in output/*.deb; do
+			control=$(ar p "$f" control.tar.xz | tar xJOf - ./control)
+			deb_package_name=$(echo "$control" | grep 'Package: ' | cut -d ' ' -f 2)
+			PACKAGE_METADATA["$deb_package_name"]="$control"
+		done
 	fi
 
 	# Package manager.
@@ -406,33 +465,23 @@ EOF
 
 	# Core utilities.
 	pull_package bash # Used by `termux-bootstrap-second-stage.sh`
-	pull_package bzip2
 	pull_package command-not-found
-	pull_package coreutils
 	pull_package curl
 	pull_package dash
-	pull_package diffutils
 	pull_package findutils
 	pull_package gawk
-	pull_package grep
-	pull_package gzip
-	pull_package less
 	pull_package procps
 	pull_package psmisc
-	pull_package sed
 	pull_package tar
 	pull_package termux-exec
-	pull_package termux-keyring
 	pull_package termux-tools
 	pull_package util-linux
-	pull_package xz-utils
 
 	# Additional.
 	pull_package ed
 	pull_package debianutils
 	pull_package dos2unix
 	pull_package inetutils
-	pull_package lsof
 	pull_package nano
 	pull_package net-tools
 	pull_package patch
