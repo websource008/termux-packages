@@ -353,6 +353,8 @@ while (($# > 0)); do
 			;;
 		-b|--build)
 			TERMUX_BUILD_BOOTSTRAPS=true
+			# Ensure newly built packages:
+			rm -Rf output/
 			;;
 		--pm)
 			if [ $# -gt 1 ] && [ -n "$2" ] && [[ $2 != -* ]]; then
@@ -449,15 +451,6 @@ EOF
 		fi
 	else
 		download_db_packages_pac
-	fi
-
-	if [ "$TERMUX_BUILD_BOOTSTRAPS" = true ]; then
-		# Scan through previously built .deb files:
-		for f in output/*.deb; do
-			control=$(ar p "$f" control.tar.xz | tar xJOf - ./control)
-			deb_package_name=$(echo "$control" | grep 'Package: ' | cut -d ' ' -f 2)
-			PACKAGE_METADATA["$deb_package_name"]="$control"
-		done
 	fi
 
 	# Package manager.
