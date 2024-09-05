@@ -7,7 +7,7 @@
 FROM ubuntu:22.04
 
 # Fix locale to avoid warnings:
-ENV LANG en_US.UTF-8
+ENV LANG=en_US.UTF-8
 
 # Needed for setup:
 COPY ./llvm-snapshot.gpg.key ./properties.sh ./setup-android-sdk.sh ./setup-ubuntu.sh /tmp/
