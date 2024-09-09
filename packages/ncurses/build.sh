@@ -8,21 +8,27 @@ TERMUX_PKG_MAINTAINER="@termux"
 # is checked in termux_step_pre_configure(), so the build will fail on a mistake.
 # Using this simplifies things (no need to avoid downloading and applying patches manually),
 # and uses github is a high available hosting.
-_SNAPSHOT_COMMIT=801929d34ab7fda3ca77ef59484b34a127adf8d3
-TERMUX_PKG_VERSION=(6.5.20240519
+_SNAPSHOT_COMMIT=a480458efb0662531287f0c75116c0e91fe235cb
+TERMUX_PKG_VERSION=(6.5.20240831
                     9.31
-                    0.34.1
+                    15
+                    0.36.2
                     0.13.2)
-TERMUX_PKG_REVISION=7
 TERMUX_PKG_SRCURL=(https://github.com/ThomasDickey/ncurses-snapshots/archive/${_SNAPSHOT_COMMIT}.tar.gz
                    https://fossies.org/linux/misc/rxvt-unicode-${TERMUX_PKG_VERSION[1]}.tar.bz2
-                   https://github.com/kovidgoyal/kitty/releases/download/v${TERMUX_PKG_VERSION[2]}/kitty-${TERMUX_PKG_VERSION[2]}.tar.xz
-                   https://github.com/alacritty/alacritty/archive/refs/tags/v${TERMUX_PKG_VERSION[3]}.tar.gz)
-TERMUX_PKG_SHA256=(3b0409a769d157a5d4e2bdc9ba336946e1f160f16ab47938a9813bbd96b7559b
+                   https://github.com/thestinger/termite/archive/v${TERMUX_PKG_VERSION[2]}.tar.gz
+                   https://github.com/kovidgoyal/kitty/releases/download/v${TERMUX_PKG_VERSION[3]}/kitty-${TERMUX_PKG_VERSION[3]}.tar.xz
+                   https://github.com/alacritty/alacritty/archive/refs/tags/v${TERMUX_PKG_VERSION[4]}.tar.gz)
+TERMUX_PKG_SHA256=(ec6122c3b8ab930d1477a1dbfd90299e9f715555a98b6e6805d5ae1b0d72becd
                    aaa13fcbc149fe0f3f391f933279580f74a96fd312d6ed06b8ff03c2d46672e8
-                   9f6dbb30c018976e14bd959e8db6e5c34055b50f3729bff000bb4e86e283c03e
+                   3ae9ebef28aad081c6c11351f086776e2fd9547563b2f900732b41c376bec05a
+                   16db7fba5541f322ecc35f15755bc5dc0b4ab3d02156778317f541c44447fb62
                    e9a54aabc92bbdc25ab1659c2e5a1e9b76f27d101342c8219cc98a730fd46d90)
 TERMUX_PKG_AUTO_UPDATE=false
+
+# ncurses-utils: tset/reset/clear are moved to package 'ncurses'.
+TERMUX_PKG_BREAKS="ncurses-dev, ncurses-utils (<< 6.1.20190511-4)"
+TERMUX_PKG_REPLACES="ncurses-dev, ncurses-utils (<< 6.1.20190511-4)"
 
 # --disable-stripping to disable -s argument to install which does not work when cross compiling:
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
@@ -113,6 +119,7 @@ termux_step_post_make_install() {
 	cp $TERMUX_PKG_TMPDIR/full-terminfo/x/xterm{,-color,-new,-16color,-256color,+256color} $TI/x/
 
 	tic -x -o $TI $TERMUX_PKG_SRCDIR/rxvt-unicode-${TERMUX_PKG_VERSION[1]}/doc/etc/rxvt-unicode.terminfo
-	tic -x -o $TI $TERMUX_PKG_SRCDIR/kitty-${TERMUX_PKG_VERSION[2]}/terminfo/kitty.terminfo
-	tic -x -o $TI $TERMUX_PKG_SRCDIR/alacritty-${TERMUX_PKG_VERSION[3]}/extra/alacritty.info
+	tic -x -o $TI $TERMUX_PKG_SRCDIR/termite-${TERMUX_PKG_VERSION[2]}/termite.terminfo
+	tic -x -o $TI $TERMUX_PKG_SRCDIR/kitty-${TERMUX_PKG_VERSION[3]}/terminfo/kitty.terminfo
+	tic -x -o $TI $TERMUX_PKG_SRCDIR/alacritty-${TERMUX_PKG_VERSION[4]}/extra/alacritty.info
 }
