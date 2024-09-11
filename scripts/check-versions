@@ -64,8 +64,11 @@ for arch in supported_arches:
             else:
                 remote_version = m.group(2)
                 if current_package not in name_to_local_version:
+                    name_to_report = current_package
+                    if current_is_static:
+                        name_to_report += "-static"
                     print(
-                        f"{current_package} {arch} Delete {entry} - published package not in local"
+                        f"{name_to_report} {arch} Delete {entry} - published package not in local"
                     )
                 else:
                     local_version = name_to_local_version[current_package]
