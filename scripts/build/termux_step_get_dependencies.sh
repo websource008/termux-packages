@@ -23,7 +23,7 @@ termux_step_get_dependencies() {
 		read DEP_ARCH DEP_VERSION <<< $(termux_extract_dep_info $PKG "${PKG_DIR}")
 
 		local can_build_locally=true
-		if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ] && ! package__is_package_on_device_build_supported "$PKG_DIR"; then
+		if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ] && ! termux_package__is_package_on_device_build_supported "$PKG_DIR"; then
 			echo "Building dependency $PKG on device is not supported. It will be downloaded..."
 			can_build_locally=false
 		fi
