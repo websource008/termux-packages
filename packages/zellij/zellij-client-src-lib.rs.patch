@@ -1,0 +1,17 @@
+diff -u -r ../zellij-0.40.1/zellij-client/src/lib.rs ./zellij-client/src/lib.rs
+--- ../zellij-0.40.1/zellij-client/src/lib.rs	2024-05-02 07:02:03.000000000 +0000
++++ ./zellij-client/src/lib.rs	2024-09-16 11:12:18.149846503 +0000
+@@ -112,7 +112,12 @@
+ }
+ 
+ fn spawn_server(socket_path: &Path, debug: bool) -> io::Result<()> {
+-    let mut cmd = Command::new(current_exe()?);
++    let current_exe_path = if let Ok(env_variable) = std::env::var("TERMUX_EXEC__PROC_SELF_EXE") {
++        env_variable.into()
++    } else {
++        current_exe()?
++    };
++    let mut cmd = Command::new(current_exe_path);
+     cmd.arg("--server");
+     cmd.arg(socket_path);
+     if debug {
