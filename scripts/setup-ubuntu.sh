@@ -133,9 +133,8 @@ PACKAGES+=" ruby"
 
 # Needed by host build of package nodejs.
 PACKAGES+=" libc-ares-dev"
+PACKAGES+=" libc-ares-dev:i386"
 PACKAGES+=" libicu-dev"
-# (for 32-bit arm builds):
-PACKAGES+=" libc-ares-dev:i386 libssl-dev:i386 zlib1g-dev:i386"
 PACKAGES+=" libsqlite3-dev:i386"
 
 # Needed by php.
@@ -162,6 +161,8 @@ PACKAGES+=" tcl"
 # Needed by package swi-prolog.
 PACKAGES+=" openssl"
 PACKAGES+=" zlib1g-dev"
+PACKAGES+=" libssl-dev:i386"
+PACKAGES+=" zlib1g-dev:i386"
 
 # For swift.
 PACKAGES+=" lld"
@@ -224,10 +225,11 @@ PACKAGES+=" python3-xcbgen"
 PACKAGES+=" sassc"
 PACKAGES+=" texlive-extra-utils"
 PACKAGES+=" unifdef"
+PACKAGES+=" wayland-scanner++"
 PACKAGES+=" xfce4-dev-tools"
 PACKAGES+=" xfonts-utils"
-PACKAGES+=" desktop-file-utils"
 PACKAGES+=" xutils-dev"
+PACKAGES+=" desktop-file-utils"
 
 # Needed by packages in science repository
 PACKAGES+=" protobuf-c-compiler"
@@ -256,6 +258,12 @@ PACKAGES+=" fontforge-nox"
 PACKAGES+=" guile-3.0"
 PACKAGES+=" python3-fontforge"
 PACKAGES+=" texlive-metapost"
+
+# Needed by package motif.
+PACKAGES+=" libfl-dev"
+PACKAGES+=" libxft-dev"
+PACKAGES+=" libxt-dev"
+PACKAGES+=" xbitmaps"
 
 # Needed by proxmark3/proxmark3-git
 PACKAGES+=" gcc-arm-none-eabi"
