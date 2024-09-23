@@ -7,7 +7,7 @@ TERMUX_PKG_VERSION="3.11"
 TERMUX_PKG_SRCURL=https://download.netsurf-browser.org/netsurf/releases/source-full/netsurf-all-${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=4dea880ff3c2f698bfd62c982b259340f9abcd7f67e6c8eb2b32c61f71644b7b
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_DEPENDS="gdk-pixbuf, glib, gtk3, libcairo, libcurl, libexpat, libiconv, libjpeg-turbo, libpng, librsvg, libwebp, openssl, pango, zlib"
+TERMUX_PKG_DEPENDS="gdk-pixbuf, glib, gtk3, libcairo, libcurl, libexpat, libjpeg-turbo, libpng, librsvg, libwebp, openssl, pango, zlib"
 TERMUX_PKG_BUILD_IN_SRC=true
 
 termux_step_pre_configure() {
