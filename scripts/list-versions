@@ -65,7 +65,12 @@ check_package() { # path
 		if [ -f $subpkg_file ]; then
 			local subpkg_name=$(basename $subpkg_file)
 			local subpkg_name=${subpkg_name%.subpackage.sh}
-			echo "${subpkg_name}<-${pkg}=$TERMUX_PKG_VERSION"
+			(
+				. $subpkg_file
+				if [[ "${TERMUX_SUBPKG_EXCLUDED_ARCHES-}" != *"$TERMUX_HOST_PLATFORM"* ]]; then
+					echo "${subpkg_name}<-${pkg}=$TERMUX_PKG_VERSION"
+				fi
+			)
 		fi
 	done
 }
