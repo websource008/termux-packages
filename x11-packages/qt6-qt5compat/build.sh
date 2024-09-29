@@ -6,6 +6,7 @@ TERMUX_PKG_VERSION="6.7.2"
 TERMUX_PKG_SRCURL="https://download.qt.io/official_releases/qt/${TERMUX_PKG_VERSION%.*}/${TERMUX_PKG_VERSION}/submodules/qt5compat-everywhere-src-${TERMUX_PKG_VERSION}.tar.xz"
 TERMUX_PKG_SHA256=8826b5189efc4d9bdb64fdb1aa89d0fdf4e53c60948ed7995621ed046e38c003
 TERMUX_PKG_DEPENDS="libc++, libicu, qt6-qtbase, qt6-qtdeclarative, qt6-shadertools"
+TERMUX_PKG_BUILD_DEPENDS="qt6-qttools-cross-tools"
 TERMUX_PKG_HOSTBUILD=true
 TERMUX_PKG_NO_STATICSPLIT=true
 TERMUX_PKG_AUTO_UPDATE=true
