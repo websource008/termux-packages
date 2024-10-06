@@ -22,7 +22,7 @@ TERMUX_ON_DEVICE_BUILD=false
 _show_usage() {
 > echo "Usage: $0 [-a ARCH]"
 > echo "List versions of local package definitions."
-> echo "  -a The architecture to build for: aarch64(default) or x86_64"
+> echo "  -a The architecture to build for: aarch64(default), x86_64 or arm"
 > exit 1
 }
 
@@ -35,7 +35,7 @@ while getopts :a:hdio: option; do
 done
 shift $((OPTIND-1))
 if [ "$#" -ne 0 ]; then _show_usage; fi
-if [[ ! "$TERMUX_HOST_PLATFORM" =~ ^(aarch64|x86_64)$ ]]; then
+if [[ ! "$TERMUX_HOST_PLATFORM" =~ ^(aarch64|x86_64|arm)$ ]]; then
 	echo "ERROR: Invalid arch '$TERMUX_ARCH'" 1>&2
 	exit 1
 fi
