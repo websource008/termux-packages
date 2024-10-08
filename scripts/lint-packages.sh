@@ -279,14 +279,14 @@ lint_package() {
 		echo -n "TERMUX_PKG_API_LEVEL: "
 
 			if grep -qP '^[1-9][0-9]$' <<< "$TERMUX_PKG_API_LEVEL"; then
-				if (( TERMUX_PKG_API_LEVEL < 29 || TERMUX_PKG_API_LEVEL > 29 )); then
-					echo "INVALID (allowed: number in range 29 - 29)"
+				if (( TERMUX_PKG_API_LEVEL < 24 )); then
+					echo "INVALID (allowed: number in range >= 24)"
 					pkg_lint_error=true
 				else
 					echo "PASS"
 				fi
 			else
-				echo "INVALID (allowed: number in range 29 - 29)"
+				echo "INVALID (allowed: number in range >= 24)"
 				pkg_lint_error=true
 			fi
 		fi
