@@ -20,3 +20,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -DBUILD_WSI_XLIB_SUPPORT=ON
 -DVULKAN_HEADERS_INSTALL_DIR=${TERMUX_PREFIX}
 "
+
+termux_step_pre_configure() {
+	termux_setup_wayland_cross_pkg_config_wrapper
+}

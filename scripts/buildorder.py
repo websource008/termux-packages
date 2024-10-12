@@ -181,6 +181,13 @@ class TermuxPackage(object):
                 result += dependency_package.recursive_dependencies(pkgs_map, dir_root)
                 if dependency_package.accept_dep_scr or dependency_package.dir != dir_root:
                     result += [dependency_package]
+
+                # Add -cross- subpackages:
+                if isinstance(dependency_package, TermuxPackage):
+                    for s in dependency_package.subpkgs:
+                        if '-cross' in s.name:
+                            result += [s]
+
         return unique_everseen(result)
 
 class TermuxSubPackage:
