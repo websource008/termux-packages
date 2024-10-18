@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e -u
 
+PREFIX=/prefix
 TERMUX_HOST_PLATFORM=aarch64
 TERMUX_ARCH_BITS=64
 TERMUX_PKG_SRCDIR=/tmp/termux-src
