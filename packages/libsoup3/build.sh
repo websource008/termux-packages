@@ -3,6 +3,7 @@ TERMUX_PKG_DESCRIPTION="HTTP client and server library"
 TERMUX_PKG_LICENSE="LGPL-2.0"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="3.4.4"
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://download.gnome.org/sources/libsoup/${TERMUX_PKG_VERSION%.*}/libsoup-${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=291c67725f36ed90ea43efff25064b69c5a2d1981488477c05c481a3b4b0c5aa
 TERMUX_PKG_DEPENDS="brotli, glib, libnghttp2, libpsl, libsqlite, zlib"
