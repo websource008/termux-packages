@@ -6,6 +6,7 @@ TERMUX_PKG_VERSION=2.5.0
 TERMUX_PKG_SRCURL=git+https://github.com/pytorch/audio
 # FFMPEG
 TERMUX_PKG_DEPENDS="libc++, python, python-pip, python-torch"
+TERMUX_PKG_BUILD_DEPENDS="protobuf-dev"
 TERMUX_PKG_PYTHON_COMMON_DEPS="wheel, setuptools"
 
 termux_step_pre_configure() {
