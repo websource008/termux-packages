@@ -7,7 +7,7 @@ termux_step_setup_toolchain() {
 	# toolchain
 	if [ "${TERMUX_NDK_VERSION}" = "27c" ]; then
 		TERMUX_STANDALONE_TOOLCHAIN+="-v1"
-		termux_setup_toolchain_27b
+		termux_setup_toolchain_27c
 	else
 		termux_error_exit "We do not have a setup_toolchain function for NDK version $TERMUX_NDK_VERSION"
 	fi
