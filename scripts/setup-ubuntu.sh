@@ -263,9 +263,6 @@ PACKAGES+=" libxft-dev"
 PACKAGES+=" libxt-dev"
 PACKAGES+=" xbitmaps"
 
-# Needed by proxmark3/proxmark3-git
-PACKAGES+=" gcc-arm-none-eabi"
-
 # Needed by pypy
 PACKAGES+=" qemu-user-static"
 
@@ -307,6 +304,9 @@ PACKAGES+=" swig"
 
 # Needed by binutils-cross
 PACKAGES+=" libzstd-dev"
+
+# Needed by tree-sitter-c
+PACKAGES+=" tree-sitter-cli"
 
 # Do not require sudo if already running as root.
 SUDO="sudo"
