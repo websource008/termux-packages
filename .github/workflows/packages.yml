@@ -37,7 +37,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 1000
-        persist-credentials: false
     - name: Gather build summary
       id: build-info
       env:
