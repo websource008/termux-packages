@@ -5,7 +5,6 @@ TERMUX_PKG_MAINTAINER="Komo @mbekkomo"
 TERMUX_PKG_VERSION=1.37.1
 TERMUX_PKG_SRCURL=https://github.com/janet-lang/janet/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=85a87115fb7b59a3fb4dab7d291627ce109eecdcf84b403ec8787ef54082519f
-TERMUX_PKG_DEPENDS="libandroid-spawn"
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_HOSTBUILD=true
 TERMUX_PKG_BUILD_IN_SRC=true
@@ -28,7 +27,6 @@ termux_step_make() {
 	cat >> config.mk <<-EOF
 	PREFIX=${TERMUX_PREFIX}
 	CFLAGS=${CPPFLAGS} ${CFLAGS}
-	LDFLAGS=${LDFLAGS} -landroid-spawn
 	LIBJANET_LDFLAGS=\$(LDFLAGS)
 	EOF
 
