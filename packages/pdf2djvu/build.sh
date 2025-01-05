@@ -10,6 +10,7 @@ TERMUX_PKG_DEPENDS="djvulibre, libc++, poppler"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-xmp
+--disable-openmp
 "
 
 termux_step_pre_configure() {
