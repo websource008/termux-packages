@@ -19,6 +19,7 @@ jobs:
     strategy:
       matrix:
         arch:
+          - arm
           - aarch64
           - x86_64
     if: github.repository == 'termux-play-store/termux-packages'
