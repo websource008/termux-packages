@@ -21,5 +21,5 @@ termux_step_pre_configure() {
 	LDFLAGS+=" -landroid-execinfo"
 
 	# This is to allow the build script find the `moc` on cross-build host
-	# export PATH="${TERMUX_PREFIX}/opt/qt/cross/bin:${PATH}"
+	export PATH="${TERMUX_PREFIX}/opt/qt/cross/bin:${PATH}"
 }

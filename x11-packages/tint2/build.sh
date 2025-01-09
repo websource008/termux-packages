@@ -11,5 +11,5 @@ TERMUX_PKG_DEPENDS="gdk-pixbuf, glib, gtk3, imlib2, libandroid-shmem, libandroid
 TERMUX_PKG_BUILD_IN_SRC=true
 
 termux_step_pre_configure() {
-	LDFLAGS+=" -landroid-shmem -landroid-wordexp"
+	LDFLAGS+=" -landroid-shmem -landroid-wordexp -lm"
 }

@@ -10,6 +10,7 @@ TERMUX_PKG_SHA256=887e9b5ee7b8115d35099c730372b4158fd3e215955a06d68e20928b339646
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="libpng, opengl, pulseaudio, sdl, zlib"
 TERMUX_PKG_BUILD_IN_SRC=true
+TERMUX_PKG_BLACKLISTED_ARCHES="arm"
 
 termux_pkg_auto_update() {
 	# Get latest release tag:
