@@ -13,7 +13,7 @@ trap 'rm -rf $BOOTSTRAP_TMPDIR' EXIT
 # By default, bootstrap archives will be built for all architectures
 # supported by Termux application.
 # Override with option '--architectures'.
-TERMUX_ARCHITECTURES=("aarch64" "x86_64")
+TERMUX_ARCHITECTURES=("arm" "aarch64" "x86_64")
 
 # The supported termux package managers.
 TERMUX_PACKAGE_MANAGERS=("apt")
