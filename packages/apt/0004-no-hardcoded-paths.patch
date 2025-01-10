@@ -103,33 +103,6 @@ diff -uNr apt-2.1.11/apt-pkg/deb/dpkgpm.cc apt-2.1.11.mod/apt-pkg/deb/dpkgpm.cc
  	 Args[1] = "-c";
  	 Args[2] = Opts->Value.c_str();
  	 Args[3] = 0;
-@@ -2456,10 +2456,10 @@
-    }
- 
-    // attach dmesg log (to learn about segfaults)
--   if (FileExists("/bin/dmesg"))
-+   if (FileExists("@TERMUX_PREFIX@/bin/dmesg"))
-    {
-       fprintf(report, "Dmesg:\n");
--      FILE *log = popen("/bin/dmesg","r");
-+      FILE *log = popen("@TERMUX_PREFIX@/bin/dmesg","r");
-       if(log != NULL)
-       {
- 	 char buf[1024];
-@@ -2470,11 +2470,11 @@
-    }
- 
-    // attach df -l log (to learn about filesystem status)
--   if (FileExists("/bin/df"))
-+   if (FileExists("@TERMUX_PREFIX@/bin/df"))
-    {
- 
-       fprintf(report, "Df:\n");
--      FILE *log = popen("/bin/df -l -x squashfs","r");
-+      FILE *log = popen("@TERMUX_PREFIX@/bin/df","r");
-       if(log != NULL)
-       {
- 	 char buf[1024];
 diff -uNr apt-2.1.11/apt-pkg/init.cc apt-2.1.11.mod/apt-pkg/init.cc
 --- apt-2.1.11/apt-pkg/init.cc	2020-10-21 12:53:18.000000000 +0300
 +++ apt-2.1.11.mod/apt-pkg/init.cc	2020-11-05 15:33:08.863245537 +0200
@@ -166,64 +139,3 @@ diff -uNr apt-2.1.11/cmdline/apt-dump-solver.cc apt-2.1.11.mod/cmdline/apt-dump-
  	 return 0;
        }
     }
-diff -uNr apt-2.1.11/cmdline/apt-key.in apt-2.1.11.mod/cmdline/apt-key.in
---- apt-2.1.11/cmdline/apt-key.in	2020-10-21 12:53:18.000000000 +0300
-+++ apt-2.1.11.mod/cmdline/apt-key.in	2020-11-05 15:43:52.271502576 +0200
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!@TERMUX_PREFIX@/bin/sh
- 
- set -e
- unset GREP_OPTIONS GPGHOMEDIR CURRENTTRAP
-@@ -356,7 +356,7 @@
- 	if accessible_file_exists "$TRUSTEDFILE" && is_supported_keyring "$TRUSTEDFILE"; then
- 	    $ACTION "$TRUSTEDFILE" "$@"
- 	fi
--	local TRUSTEDPARTS="/etc/apt/trusted.gpg.d"
-+	local TRUSTEDPARTS="@TERMUX_PREFIX@/etc/apt/trusted.gpg.d"
- 	eval "$(apt-config shell TRUSTEDPARTS Dir::Etc::TrustedParts/d)"
- 	if [ -d "$TRUSTEDPARTS" ]; then
- 	    TRUSTEDPARTS="$(readlink -f "$TRUSTEDPARTS")"
-@@ -535,7 +535,7 @@
- 	merge_all_trusted_keyrings_into_pubring
- 	FORCED_KEYRING="${GPGHOMEDIR}/forcedkeyid.gpg"
- 	TRUSTEDFILE="${FORCED_KEYRING}"
--	echo "#!/bin/sh
-+	echo "#!@TERMUX_PREFIX@/bin/sh
- exec sh '($(escape_shell "${GPG}")' --keyring '$(escape_shell "${TRUSTEDFILE}")' \"\$@\"" > "${GPGHOMEDIR}/gpg.1.sh"
- 	GPG="${GPGHOMEDIR}/gpg.1.sh"
- 	# ignore error as this "just" means we haven't found the forced keyid and the keyring will be empty
-@@ -547,13 +547,13 @@
- 	else
- 	   touch "${GPGHOMEDIR}/pubring.gpg" "${GPGHOMEDIR}/pubring.orig.gpg"
- 	fi
--	echo "#!/bin/sh
-+	echo "#!@TERMUX_PREFIX@/bin/sh
- exec sh '$(escape_shell "${GPG}")' --keyring '$(escape_shell "${GPGHOMEDIR}/pubring.gpg")' \"\$@\"" > "${GPGHOMEDIR}/gpg.1.sh"
- 	GPG="${GPGHOMEDIR}/gpg.1.sh"
-     else
- 	TRUSTEDFILE="$(dearmor_filename "$FORCED_KEYRING")"
- 	create_new_keyring "$TRUSTEDFILE"
--	echo "#!/bin/sh
-+	echo "#!@TERMUX_PREFIX@/bin/sh
- exec sh '$(escape_shell "${GPG}")' --keyring '$(escape_shell "${TRUSTEDFILE}")' \"\$@\"" > "${GPGHOMEDIR}/gpg.1.sh"
- 	GPG="${GPGHOMEDIR}/gpg.1.sh"
-     fi
-@@ -653,7 +653,7 @@
- done
- 
- if [ -z "$TRUSTEDFILE" ]; then
--   TRUSTEDFILE="/etc/apt/trusted.gpg"
-+   TRUSTEDFILE="@TERMUX_PREFIX@/etc/apt/trusted.gpg"
-    eval $(apt-config shell TRUSTEDFILE Apt::GPGV::TrustedKeyring)
-    eval $(apt-config shell TRUSTEDFILE Dir::Etc::Trusted/f)
- fi
-@@ -697,7 +697,7 @@
-     create_gpg_home
- 
-     # now tell gpg that it shouldn't try to maintain this trustdb file
--    echo "#!/bin/sh
-+    echo "#!@TERMUX_PREFIX@/bin/sh
- exec '$(escape_shell "${GPG_EXE}")' --ignore-time-conflict --no-options --no-default-keyring \\
- --homedir '$(escape_shell "${GPGHOMEDIR}")' --no-auto-check-trustdb --trust-model always \"\$@\"" > "${GPGHOMEDIR}/gpg.0.sh"
-     GPG_SH="${GPGHOMEDIR}/gpg.0.sh"
