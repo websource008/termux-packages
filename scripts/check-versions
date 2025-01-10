@@ -14,7 +14,7 @@ PACKAGE_PATTERN = re.compile(r"^(Package|Version): (.*)$", re.MULTILINE)
 
 # packages_path = os.environ['HOME'] + '/src/termux-packages'
 # if not os.path.isdir(packages_path): sys.exit(packages_path + '" does not exist')
-supported_arches = ["aarch64", "x86_64"]
+supported_arches = ["aarch64", "x86_64", "arm"]
 
 subpkg_to_parent_pkg = {}
 
