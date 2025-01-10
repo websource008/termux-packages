@@ -350,8 +350,6 @@ while (($# > 0)); do
 			;;
 		-b|--build)
 			TERMUX_BUILD_BOOTSTRAPS=true
-			# Ensure newly built packages:
-			rm -Rf output/
 			;;
 		--pm)
 			if [ $# -gt 1 ] && [ -n "$2" ] && [[ $2 != -* ]]; then
@@ -409,6 +407,11 @@ if [ -z "$REPO_BASE_URL" ]; then
 fi
 
 for package_arch in "${TERMUX_ARCHITECTURES[@]}"; do
+	# Ensure newly built packages:
+	if [ "$TERMUX_BUILD_BOOTSTRAPS" = true ]; then
+		rm -Rf output/
+	fi
+
 	PATH_DB_PACKAGES="$BOOTSTRAP_TMPDIR/main_${package_arch}.json"
 	BOOTSTRAP_ROOTFS="$BOOTSTRAP_TMPDIR/rootfs-${package_arch}"
 	BOOTSTRAP_PKGDIR="$BOOTSTRAP_TMPDIR/packages-${package_arch}"
