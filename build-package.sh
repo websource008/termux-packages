@@ -338,7 +338,7 @@ _show_usage() {
 	echo "Build a package by creating a .deb file in the debs/ folder."
 	echo
 	echo "Available options:"
-	[ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && echo "  -a The architecture to build for: aarch64(default), arm, i686, x86_64 or all."
+	[ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && echo "  -a The architecture to build for: aarch64(default), arm, x86_64 or all."
 	echo "  -d Build with debug symbols."
 	echo "  -F Force build even if package and its dependencies have already been built."
 	[ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && echo "  -i Download dependencies instead of building them."
@@ -426,7 +426,7 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 
 		# Handle 'all' arch:
 		if [ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && [ -n "${TERMUX_ARCH+x}" ] && [ "${TERMUX_ARCH}" = 'all' ]; then
-			for arch in 'aarch64' 'x86_64'; do
+			for arch in 'aarch64' 'x86_64' 'arm'; do
 				env TERMUX_ARCH="$arch" TERMUX_BUILD_IGNORE_LOCK=true ./build-package.sh \
 					${TERMUX_INSTALL_DEPS+-i} \
 					${TERMUX_DEBUG_BUILD+-d} ${TERMUX_OUTPUT_DIR+-o $TERMUX_OUTPUT_DIR} \
