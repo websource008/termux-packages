@@ -20,6 +20,21 @@ TERMUX_PYTHON_HOME=/tmp/termux-python-home
 TERMUX_SCRIPTDIR=$(dirname "$(realpath "$0")")/..
 TERMUX_ON_DEVICE_BUILD=false
 
+# hack for dotnet
+mkdir -p $TERMUX_PKG_TMPDIR
+echo a > $TERMUX_PKG_TMPDIR/aspnetcore-runtime-dbg.txt
+echo a > $TERMUX_PKG_TMPDIR/aspnetcore-targeting-pack.txt
+echo a > $TERMUX_PKG_TMPDIR/dotnet-apphost-pack.txt
+echo a > $TERMUX_PKG_TMPDIR/dotnet-host.txt
+echo a > $TERMUX_PKG_TMPDIR/dotnet-hostfxr.txt
+echo a > $TERMUX_PKG_TMPDIR/dotnet-runtime.txt
+echo a > $TERMUX_PKG_TMPDIR/dotnet-runtime-dbg.txt
+echo a > $TERMUX_PKG_TMPDIR/dotnet-sdk.txt
+echo a > $TERMUX_PKG_TMPDIR/dotnet-sdk-dbg.txt
+echo a > $TERMUX_PKG_TMPDIR/dotnet-targeting-pack.txt
+echo a > $TERMUX_PKG_TMPDIR/dotnet-templates.txt
+echo a > $TERMUX_PKG_TMPDIR/netstandard-targeting-pack-2.1.txt
+
 _show_usage() {
 > echo "Usage: $0 [-a ARCH]"
 > echo "List versions of local package definitions."

@@ -206,8 +206,8 @@ termux_setup_toolchain_27c() {
 
 	grep -lrw $_TERMUX_TOOLCHAIN_TMPDIR/sysroot/usr/include/c++/v1 -e '<version>' | xargs -n 1 sed -i 's/<version>/\"version\"/g'
 
-	# Make toolchain read-only to avoid build scripts modifying it
-	chmod -R u-w $_TERMUX_TOOLCHAIN_TMPDIR
+	# Make toolchain read-only to avoid build scripts modifying it (breaks tinygo)
+	# chmod -R u-w $_TERMUX_TOOLCHAIN_TMPDIR
 
 	mv $_TERMUX_TOOLCHAIN_TMPDIR $TERMUX_STANDALONE_TOOLCHAIN
 }
