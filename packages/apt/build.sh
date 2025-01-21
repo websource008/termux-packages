@@ -2,9 +2,9 @@ TERMUX_PKG_HOMEPAGE=https://packages.debian.org/apt
 TERMUX_PKG_DESCRIPTION="Front-end for the dpkg package manager"
 TERMUX_PKG_LICENSE="GPL-2.0"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="2.9.23"
+TERMUX_PKG_VERSION="2.9.24"
 TERMUX_PKG_SRCURL=https://deb.debian.org/debian/pool/main/a/apt/apt_${TERMUX_PKG_VERSION}.tar.xz
-TERMUX_PKG_SHA256=b77fc5ac92a88645b2a3bda43c2c9b69d29ccbc5564f8fa25bc8f46ae09aa0dd
+TERMUX_PKG_SHA256=d9aa7a1877b41ac5eb8412abb63c6e6ff4f6e0b97a8fa6ec29ba086b2bd288b7
 # apt-key requires utilities from coreutils, findutils, gpgv, grep, sed.
 TERMUX_PKG_DEPENDS="coreutils, dpkg, findutils, gpgv, grep, libc++, libgnutls, liblzma, sed, termux-keyring, termux-licenses, xxhash"
 TERMUX_PKG_BUILD_DEPENDS="docbook-xsl"
