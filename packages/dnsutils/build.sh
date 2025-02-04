@@ -20,7 +20,6 @@ lt_cv_prog_compiler_pic_works=yes
 termux_step_pre_configure() {
 	_RESOLV_CONF=$TERMUX_PREFIX/etc/resolv.conf
 	CFLAGS+=" $CPPFLAGS -DRESOLV_CONF=\\\"$_RESOLV_CONF\\\""
-	LDFLAGS+=" -landroid-glob"
 }
 
 termux_step_post_configure() {
