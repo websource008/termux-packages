@@ -1,4 +1,4 @@
-termux_setup_toolchain_27c() {
+termux_setup_toolchain_23c() {
 	export CFLAGS=""
 	export CPPFLAGS=""
 	export LDFLAGS="-L${TERMUX_PREFIX}/lib"
@@ -84,10 +84,14 @@ termux_setup_toolchain_27c() {
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS+=" -I${TERMUX_PREFIX}/include"
 
+	# If libandroid-support is declared as a dependency, link to it explicitly:
+	if [ "$TERMUX_PKG_DEPENDS" != "${TERMUX_PKG_DEPENDS/libandroid-support/}" ]; then
+		LDFLAGS+=" -Wl,--no-as-needed,-landroid-support,--as-needed"
+	fi
+
 	export GOOS=android
 	export CGO_ENABLED=1
 	export GO_LDFLAGS="-extldflags=-pie"
-	export CGO_LDFLAGS="${LDFLAGS/ -Wl,-z,relro,-z,now/}"
 	export CGO_CFLAGS="-I$TERMUX_PREFIX/include"
 
 	export CARGO_TARGET_NAME="${TERMUX_ARCH}-linux-android"
@@ -132,6 +136,9 @@ termux_setup_toolchain_27c() {
 	fi
 	cp $NDK/toolchains/llvm/prebuilt/linux-x86_64 $_TERMUX_TOOLCHAIN_TMPDIR -r
 
+	# Remove android-support header wrapping not needed on android-21:
+	rm -Rf $_TERMUX_TOOLCHAIN_TMPDIR/sysroot/usr/local
+
 	for HOST_PLAT in aarch64-linux-android armv7a-linux-androideabi i686-linux-android x86_64-linux-android; do
 		cp $_TERMUX_TOOLCHAIN_TMPDIR/bin/$HOST_PLAT$TERMUX_PKG_API_LEVEL-clang \
 			$_TERMUX_TOOLCHAIN_TMPDIR/bin/$HOST_PLAT-clang
@@ -140,7 +147,7 @@ termux_setup_toolchain_27c() {
 
 		cp $_TERMUX_TOOLCHAIN_TMPDIR/bin/$HOST_PLAT$TERMUX_PKG_API_LEVEL-clang \
 			$_TERMUX_TOOLCHAIN_TMPDIR/bin/$HOST_PLAT-cpp
-		sed -i 's|"$bin_dir/clang"|& -E|' \
+		sed -i 's/clang/clang -E/' \
 			$_TERMUX_TOOLCHAIN_TMPDIR/bin/$HOST_PLAT-cpp
 
 		cp $_TERMUX_TOOLCHAIN_TMPDIR/bin/$HOST_PLAT-clang \
@@ -188,13 +195,15 @@ termux_setup_toolchain_27c() {
 	# Remove <sys/capability.h> because it is provided by libcap.
 	# Remove <sys/shm.h> from the NDK in favour of that from the libandroid-shmem.
 	# Remove <sys/sem.h> as it doesn't work for non-root.
+	# Remove <glob.h> as we currently provide it from libandroid-glob.
+	# Remove <iconv.h> as it's provided by libiconv.
+	# Remove <spawn.h> as it's only for future (later than android-27).
 	# Remove <zlib.h> and <zconf.h> as we build our own zlib.
 	# Remove unicode headers provided by libicu.
 	# Remove KHR/khrplatform.h provided by mesa.
 	# Remove EGL, GLES, GLES2, and GLES3 provided by mesa.
-	# Remove execinfo provided by libandroid-execinfo.
 	# Remove NDK vulkan headers.
-	rm usr/include/{sys/{capability,shm,sem},{zlib,zconf},KHR/khrplatform,execinfo}.h
+	rm usr/include/{sys/{capability,shm,sem},{glob,iconv,spawn,zlib,zconf},KHR/khrplatform}.h
 	rm usr/include/unicode/{char16ptr,platform,ptypes,putil,stringoptions,ubidi,ubrk,uchar,uconfig,ucpmap,udisplaycontext,uenum,uldnames,ulocdata,uloc,umachine,unorm2,urename,uscript,ustring,utext,utf16,utf8,utf,utf_old,utypes,uvernum,uversion}.h
 	rm -Rf usr/include/vulkan
 	rm -Rf usr/include/{EGL,GLES{,2,3}}
@@ -210,9 +219,5 @@ termux_setup_toolchain_27c() {
 	done
 
 	grep -lrw $_TERMUX_TOOLCHAIN_TMPDIR/sysroot/usr/include/c++/v1 -e '<version>' | xargs -n 1 sed -i 's/<version>/\"version\"/g'
-
-	# Make toolchain read-only to avoid build scripts modifying it (breaks tinygo)
-	# chmod -R u-w $_TERMUX_TOOLCHAIN_TMPDIR
-
 	mv $_TERMUX_TOOLCHAIN_TMPDIR $TERMUX_STANDALONE_TOOLCHAIN
 }
