@@ -2,9 +2,9 @@ TERMUX_PKG_HOMEPAGE=https://packages.debian.org/apt
 TERMUX_PKG_DESCRIPTION="Front-end for the dpkg package manager"
 TERMUX_PKG_LICENSE="GPL-2.0"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="2.9.24"
+TERMUX_PKG_VERSION="2.9.28"
 TERMUX_PKG_SRCURL=https://deb.debian.org/debian/pool/main/a/apt/apt_${TERMUX_PKG_VERSION}.tar.xz
-TERMUX_PKG_SHA256=d9aa7a1877b41ac5eb8412abb63c6e6ff4f6e0b97a8fa6ec29ba086b2bd288b7
+TERMUX_PKG_SHA256=69efe05f475656a721510dfb2584a1f1f083c39c10192d6a0db30da3d18af536
 # apt-key requires utilities from coreutils, findutils, gpgv, grep, sed.
 TERMUX_PKG_DEPENDS="coreutils, dpkg, findutils, gpgv, grep, libc++, libgnutls, liblzma, sed, termux-keyring, termux-licenses, xxhash"
 TERMUX_PKG_BUILD_DEPENDS="docbook-xsl"
@@ -15,7 +15,7 @@ TERMUX_PKG_SUGGESTS="gnupg"
 TERMUX_PKG_ESSENTIAL=true
 
 TERMUX_PKG_CONFFILES="
-etc/apt/sources.list
+etc/apt/sources.list.d/termux.sources
 "
 
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
@@ -74,10 +74,15 @@ termux_step_pre_configure() {
 }
 
 termux_step_post_make_install() {
+	mkdir -p "$TERMUX_PREFIX"/etc/apt/sources.list.d
 	{
 		echo "# The main termux repository"
-		echo "deb https://termux.net stable main"
-	} > $TERMUX_PREFIX/etc/apt/sources.list
+		echo "Components: main"
+		echo "Signed-By: $TERMUX_PREFIX/etc/apt/trusted.gpg.d/termux-packages.gpg"
+		echo "Suites: stable"
+		echo "Types: deb"
+		echo "URIs: https://termux.net"
+	} > $TERMUX_PREFIX/etc/apt/sources.list.d/termux.sources
 
 	# apt-transport-tor
 	ln -sfr $TERMUX_PREFIX/lib/apt/methods/http $TERMUX_PREFIX/lib/apt/methods/tor
