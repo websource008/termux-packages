@@ -347,6 +347,7 @@ _show_usage() {
 	echo "  -F Force build even if package and its dependencies have already been built."
 	[ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && echo "  -i Download dependencies instead of building them."
 	echo "  -q Quiet build."
+	echo "  -Q Loud build -- set -x debug output."
 	echo "  -o Specify directory where to put built packages. Default: output/."
 	exit 1
 }
@@ -381,6 +382,7 @@ while (($# >= 1)); do
 			export TERMUX_INSTALL_DEPS=true
 			;;
 		-q) export TERMUX_QUIET_BUILD=true;;
+		-Q) set -x;;
 		-o)
 			if [ $# -ge 2 ]; then
 				shift 1
