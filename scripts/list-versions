@@ -22,6 +22,7 @@ TERMUX_ON_DEVICE_BUILD=false
 
 # hack for dotnet
 mkdir -p $TERMUX_PKG_TMPDIR
+echo a > $TERMUX_PKG_TMPDIR/aspnetcore-runtime.txt
 echo a > $TERMUX_PKG_TMPDIR/aspnetcore-runtime-dbg.txt
 echo a > $TERMUX_PKG_TMPDIR/aspnetcore-targeting-pack.txt
 echo a > $TERMUX_PKG_TMPDIR/dotnet-apphost-pack.txt
