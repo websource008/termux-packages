@@ -182,6 +182,10 @@ source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_setup_build_folders.sh"
 # shellcheck source=scripts/build/termux_step_start_build.sh
 source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_start_build.sh"
 
+# Cleans up files from already built packages. Not to be overridden by packages.
+# shellcheck source=scripts/build/termux_step_start_build.sh
+source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_cleanup_packages.sh"
+
 # Download or build dependencies. Not to be overridden by packages.
 # shellcheck source=scripts/build/termux_step_create_timestamp_file.sh
 source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_create_timestamp_file.sh"
@@ -479,6 +483,7 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 			termux_step_setup_build_folders
 		fi
 
+		termux_step_cleanup_packages
 		termux_step_start_build
 
 		if [ "$TERMUX_CONTINUE_BUILD" == "false" ]; then
