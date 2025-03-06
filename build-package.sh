@@ -399,6 +399,7 @@ while (($# >= 1)); do
 			fi
 			;;
 		-c) TERMUX_CONTINUE_BUILD=true;;
+		-C) TERMUX_CLEANUP_BUILT_PACKAGES_ON_LOW_DISK_SPACE=true;;
 		-*) termux_error_exit "./build-package.sh: illegal option '$1'";;
 		*) PACKAGE_LIST+=("$1");;
 	esac
