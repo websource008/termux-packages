@@ -50,7 +50,7 @@ termux_setup_python_pip() {
 
 		if [ ! -d "$TERMUX_PYTHON_CROSSENV_PREFIX" ]; then
 			cd "$TERMUX_PYTHON_CROSSENV_SRCDIR"
-			python${TERMUX_PYTHON_VERSION} -m crossenv \
+			/usr/bin/python${TERMUX_PYTHON_VERSION} -m crossenv \
                 		"$TERMUX_PREFIX/bin/python${TERMUX_PYTHON_VERSION}" \
 				"${TERMUX_PYTHON_CROSSENV_PREFIX}"
 		fi
@@ -63,6 +63,6 @@ termux_setup_python_pip() {
 			export SETUPTOOLS_USE_DISTUTILS=stdlib
 		fi
 
-		export PATH="${PATH}:${TERMUX_PYTHON_CROSSENV_PREFIX}/build/bin"
+		export PATH="${TERMUX_PYTHON_CROSSENV_PREFIX}/build/bin:${PATH}"
 	fi
 }
