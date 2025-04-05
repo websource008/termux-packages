@@ -46,19 +46,27 @@ jobs:
       run: |
         if [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
           BASE_COMMIT=$(jq --raw-output .pull_request.base.sha "$GITHUB_EVENT_PATH")
-          OLD_COMMIT=$(jq --raw-output .commits[0].id "$GITHUB_EVENT_PATH")
-          HEAD_COMMIT=$(jq --raw-output .commits[-1].id "$GITHUB_EVENT_PATH")
+          # We are intentionally not using .commits[0].id and .commits[-1].id as github seems to
+          # only send 20 commits in the payload for github action runs instead of the 2048 documented
+          # limit. Perhaps 2048 is the limit just for webhooks, where they haven't documented
+          # properly that the limit for github actions is only 20:
+          #
+          # https://docs.github.com/en/webhooks/webhook-events-and-payloads#push
+          OLD_COMMIT=$(jq --raw-output .before "$GITHUB_EVENT_PATH")
+          HEAD_COMMIT=$(jq --raw-output .after "$GITHUB_EVENT_PATH")
           if [ "$BASE_COMMIT" = "null" ]; then
-            if [ "$OLD_COMMIT" = "$HEAD_COMMIT" ]; then
-              # Single-commit push.
-              echo "Processing commit: ${HEAD_COMMIT}"
-              CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "${HEAD_COMMIT}")
-            else
-              # Multi-commit push.
-              OLD_COMMIT="${OLD_COMMIT}~1"
-              echo "Processing commit range: ${OLD_COMMIT}..${HEAD_COMMIT}"
-              CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "${OLD_COMMIT}" "${HEAD_COMMIT}")
+            if ! git log "$OLD_COMMIT" 2> /dev/null; then
+              if [ "$(git branch --show-current)" = "master" ]; then
+                echo "Force push detected on master branch. Unable to proceed."
+                exit 1
+              else
+                echo "::warning:: Force push detected on non-master branch. Trying to proceed at any cost but may not work as expected."
+                OLD_COMMIT=$(jq --raw-output .commits[0].id "$GITHUB_EVENT_PATH")
+                echo "::warning:: OLD_COMMIT is set to $OLD_COMMIT which may not be correct if you have pushed more than 20 commits."
+              fi
             fi
+            echo "Processing commit range: ${OLD_COMMIT}..${HEAD_COMMIT}"
+            CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "${OLD_COMMIT}" "${HEAD_COMMIT}")
           else
             # Pull requests.
             echo "Processing pull request #$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH"): ${BASE_COMMIT}..HEAD"
@@ -153,18 +161,26 @@ jobs:
           fi
         done
 
-        declare -a packages
+        declare -a packages=()
         for repo_path in $(jq --raw-output 'del(.pkg_format) | keys | .[]' repo.json); do
           repo=$(jq --raw-output '.["'${repo_path}'"].name' repo.json)
-          if [ -f ./built_${repo}_packages.txt ]; then
-            packages="$packages $(cat ./built_${repo}_packages.txt | tr '\n' ' ')"
+          if [ -f "./built_${repo}_packages.txt" ]; then
+            packages+=($(cat "./built_${repo}_packages.txt"))
           fi
         done
 
+        echo "packages: ${packages[*]}"
+
         docker='true'
-        [ -n "$packages" ] && if grep -qP "(^|\\s)${packages// /($|\\s)|(^|\\s)}($|\\s)" ./scripts/big-pkgs.list; then
-          docker='false'
+        if [[ "${#packages[@]}" -gt 0 ]]; then
+          for pkg in "${packages[@]}"; do
+            if grep -qFx "$pkg" ./scripts/big-pkgs.list; then
+              docker='false'
+              break
+            fi
+          done
         fi
+
         echo "docker-build=$docker" >> $GITHUB_OUTPUT
         if [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
           # Build local Docker image if setup scripts were changed.
@@ -183,30 +199,22 @@ jobs:
 
     - name: Lint packages
       run: |
-        declare -a package_recipes
+        declare -a package_recipes=()
         for repo_path in $(jq --raw-output 'del(.pkg_format) | keys | .[]' repo.json); do
           repo=$(jq --raw-output '.["'${repo_path}'"].name' repo.json)
-          if [ -f ./built_${repo}_packages.txt ]; then
-            package_recipes="$package_recipes $(cat ./built_${repo}_packages.txt | repo_path=${repo_path} awk '{print ENVIRON["repo_path"]"/"$1"/build.sh"}')"
+          if [ -f "./built_${repo}_packages.txt" ]; then
+            package_recipes+=($(cat "./built_${repo}_packages.txt" | repo_path="${repo_path}" awk '{print ENVIRON["repo_path"]"/"$1"/build.sh"}'))
           fi
         done
 
-        if [ -n "$package_recipes" ]; then
-          ./scripts/lint-packages.sh $package_recipes
+        if [[ "${#package_recipes[@]}" -gt 0 ]]; then
+          ./scripts/lint-packages.sh "${package_recipes[@]}"
         fi
 
     - name: Free additional disk space (if needed)
       env:
         DOCKER_BUILD: ${{ steps.build-info.outputs.docker-build }}
       run: |
-        declare -a packages
-        for repo_path in $(jq --raw-output 'del(.pkg_format) | keys | .[]' repo.json); do
-          repo=$(jq --raw-output '.["'${repo_path}'"].name' repo.json)
-          if [ -f ./built_${repo}_packages.txt ]; then
-            packages="$packages $(cat ./built_${repo}_packages.txt | tr '\n' ' ')"
-          fi
-        done
-
         if [ "$DOCKER_BUILD" == 'false' ]; then
           ./scripts/setup-ubuntu.sh
           sudo apt install ninja-build
@@ -221,18 +229,22 @@ jobs:
       env:
         DOCKER_BUILD: ${{ steps.build-info.outputs.docker-build }}
       run: |
-        declare -a packages
+        declare -a packages=()
         for repo_path in $(jq --raw-output 'del(.pkg_format) | keys | .[]' repo.json); do
           repo=$(jq --raw-output '.["'${repo_path}'"].name' repo.json)
-          if [ -f ./built_${repo}_packages.txt ]; then
-            packages="$packages $(cat ./built_${repo}_packages.txt | tr '\n' ' ')"
+          if [ -f "./built_${repo}_packages.txt" ]; then
+            packages+=($(cat "./built_${repo}_packages.txt"))
           fi
         done
 
-        if [ "$DOCKER_BUILD" == 'false' ]; then
-          NDK=$ANDROID_NDK ANDROID_HOME=$ANDROID_SDK_ROOT ./build-package.sh -I -C -a ${{ matrix.target_arch }} $packages
-        elif [ -n "$packages" ]; then
-          ./scripts/run-docker.sh ./build-package.sh -i -a ${{ matrix.target_arch }} $packages
+        echo "packages: ${packages[*]}"
+
+        if [[ "${#packages[@]}" -gt 0 ]]; then
+          if [ "$DOCKER_BUILD" == 'false' ]; then
+            NDK="$ANDROID_NDK" ANDROID_HOME="$ANDROID_SDK_ROOT" ./build-package.sh -I -C -a "${{ matrix.target_arch }}" "${packages[@]}"
+          else
+            ./scripts/run-docker.sh ./build-package.sh -I -C -a "${{ matrix.target_arch }}" "${packages[@]}"
+          fi
         fi
 
     - name: Generate build artifacts
@@ -250,10 +262,12 @@ jobs:
 
           # Move only debs from built_packages into debs/ folder before
           # creating an archive.
-          while read -r pkg; do
-            # Match both $pkg.deb and $pkg-static.deb.
-            find output \( -name "$pkg_*.deb" -o -name "$pkg-static_*.deb" \) -type f -print0 | xargs -0r mv -t debs/
-          done < <(cat ./debs/built_${repo}_packages.txt)
+          if [ -f "./debs/built_${repo}_packages.txt" ] && [ -d "output" ]; then
+            while read -r pkg; do
+              # Match both $pkg.deb and $pkg-static.deb.
+              find output \( -name "$pkg_*.deb" -o -name "$pkg-static_*.deb" \) -type f -print0 | xargs -0r mv -t debs/
+            done < <(cat "./debs/built_${repo}_packages.txt")
+          fi
         done
 
         # Files containing certain symbols (e.g. ":") will cause failure in actions/upload-artifact.

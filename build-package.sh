@@ -304,15 +304,22 @@ source "$TERMUX_SCRIPTDIR/scripts/build/termux_create_debian_subpackages.sh"
 # shellcheck source=scripts/build/termux_step_massage.sh
 source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_massage.sh"
 
+# Function to run strip symbols during termux_step_massage
+# shellcheck source=scripts/build/termux_step_strip_elf_symbols.sh
+source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_strip_elf_symbols.sh"
+
+# Function to run termux-elf-cleaner during termux_step_massage
+# shellcheck source=scripts/build/termux_step_elf_cleaner.sh
+source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_elf_cleaner.sh"
+
 # Hook for packages after massage step
 termux_step_post_massage() {
 	return
 }
 
-# Hook function to create {pre,post}install, {pre,post}rm-scripts and similar
-termux_step_create_debscripts() {
-	return
-}
+# Function to create {pre,post}install, {pre,post}rm-scripts and similar
+# shellcheck source=scripts/build/termux_step_create_debscripts.sh
+source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_create_debscripts.sh"
 
 # Create the build deb file. Not to be overridden by package scripts.
 # shellcheck source=scripts/build/termux_step_create_debian_package.sh
@@ -409,8 +416,8 @@ unset -f _show_usage
 
 # Dependencies should be used from repo only if they are built for
 # same package name.
-if [ "$TERMUX_REPO_PACKAGE" != "$TERMUX_APP_PACKAGE" ]; then
-	echo "Ignoring -i option to download dependencies since repo package name ($TERMUX_REPO_PACKAGE) does not equal app package name ($TERMUX_APP_PACKAGE)"
+if [ "$TERMUX_REPO_APP__PACKAGE_NAME" != "$TERMUX_APP_PACKAGE" ]; then
+	echo "Ignoring -i option to download dependencies since repo package name ($TERMUX_REPO_APP__PACKAGE_NAME) does not equal app package name ($TERMUX_APP_PACKAGE)"
 	TERMUX_INSTALL_DEPS=false
 fi
 
@@ -479,10 +486,6 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 
 		termux_step_setup_variables
 		termux_step_handle_buildarch
-
-		if [ "$TERMUX_CONTINUE_BUILD" == "false" ]; then
-			termux_step_setup_build_folders
-		fi
 
 		termux_step_cleanup_packages
 		termux_step_start_build

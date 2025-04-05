@@ -45,7 +45,7 @@ fi
 		chmod +w -R "$TERMUX_TOPDIR" || true
 	fi
 
-	# For on-device build cleanup /data shouldn't be erased.
+	# For on-device build cleanup Termux app data directory shouldn't be erased.
 	if [[ "$TERMUX_ON_DEVICE_BUILD" == "false" ]]; then
 		if [[ ! "$TERMUX_BASE_DIR" =~ ^(/[^/]+)+$ ]]; then
 			echo "TERMUX_BASE_DIR '$TERMUX_BASE_DIR' is not an absolute path under rootfs '/'." 1>&2
