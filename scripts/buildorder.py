@@ -50,8 +50,6 @@ def parse_build_file_dependencies_with_vars(path, vars, parent_pkg=None):
                 # Split also on '|' to dependencies with '|', as in 'nodejs | nodejs-current':
                 for dependency_value in re.split(',|\\|', dependencies_string):
                     # Replace parenthesis to ignore version qualifiers as in "gcc (>= 5.0)":
-                    if ':' in dependency_value:
-                        sys.exit('Invalid dependency: ' + dependency_value + ' for package ' + path)
                     dependency_value = re.sub(r'\(.*?\)', '', dependency_value).strip()
                     arch = os.getenv('TERMUX_ARCH')
                     if arch is None:
@@ -93,7 +91,7 @@ def parse_build_file_excluded_arches(path):
 
     with open(path, encoding="utf-8") as build_script:
         for line in build_script:
-            if line.startswith(('TERMUX_PKG_BLACKLISTED_ARCHES', 'TERMUX_SUBPKG_EXCLUDED_ARCHES')):
+            if line.startswith(('TERMUX_PKG_EXCLUDED_ARCHES', 'TERMUX_SUBPKG_EXCLUDED_ARCHES')):
                 arches_string = line.split('ARCHES=')[1]
                 for char in "\"'\n":
                     arches_string = arches_string.replace(char, '')

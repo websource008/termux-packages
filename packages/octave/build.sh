@@ -35,7 +35,7 @@ ac_cv_func_setgrent=no
 ac_cv_func_setpwent=no
 ac_cv_func_setpwuid=no
 "
-TERMUX_PKG_BLACKLISTED_ARCHES="arm, i686"
+TERMUX_PKG_EXCLUDED_ARCHES="arm, i686"
 
 termux_step_pre_configure() {
 	termux_setup_flang
