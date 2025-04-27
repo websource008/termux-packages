@@ -81,13 +81,13 @@ source "$TERMUX_SCRIPTDIR/scripts/build/setup/termux_setup_dotnet.sh"
 # shellcheck source=scripts/build/setup/termux_setup_flang.sh
 source "$TERMUX_SCRIPTDIR/scripts/build/setup/termux_setup_flang.sh"
 
-# Utility function for setting up GHC toolchain.
+# Utility function to setup a GHC cross-compiler toolchain targeting Android.
 # shellcheck source=scripts/build/setup/termux_setup_ghc.sh
 source "$TERMUX_SCRIPTDIR/scripts/build/setup/termux_setup_ghc.sh"
 
-# Utility function to setup a GHC cross-compiler toolchain targeting Android.
-# shellcheck source=scripts/build/setup/termux_setup_ghc_cross_compiler.sh
-source "$TERMUX_SCRIPTDIR/scripts/build/setup/termux_setup_ghc_cross_compiler.sh"
+# Utility function to setup GHC iserv to cross-compile haskell-template.
+# shellcheck source=scripts/build/setup/termux_setup_ghc_iserv.sh
+source "$TERMUX_SCRIPTDIR/scripts/build/setup/termux_setup_ghc_iserv.sh"
 
 # Utility function to setup cabal-install (may be used by ghc toolchain).
 # shellcheck source=scripts/build/setup/termux_setup_cabal.sh.
@@ -109,6 +109,10 @@ source "$TERMUX_SCRIPTDIR/scripts/build/setup/termux_setup_gn.sh"
 # Utility function for golang-using packages to setup a go toolchain.
 # shellcheck source=scripts/build/setup/termux_setup_golang.sh
 source "$TERMUX_SCRIPTDIR/scripts/build/setup/termux_setup_golang.sh"
+
+# Utility function for setting up LDC cross environment.
+# shellcheck source=scripts/build/setup/termux_setup_ldc.sh
+source "$TERMUX_SCRIPTDIR/scripts/build/setup/termux_setup_ldc.sh"
 
 # Utility function for python packages to setup a python.
 # shellcheck source=scripts/build/setup/termux_setup_python_pip.sh
@@ -258,9 +262,9 @@ source "$TERMUX_SCRIPTDIR/scripts/build/configure/termux_step_configure_cmake.sh
 # shellcheck source=scripts/build/configure/termux_step_configure_meson.sh
 source "$TERMUX_SCRIPTDIR/scripts/build/configure/termux_step_configure_meson.sh"
 
-# Setup configure args and run haskell build system. This function is called from termux_step_configure.
-# shellcheck source=scripts/build/configure/termux_step_configure_haskell_build.sh
-source "$TERMUX_SCRIPTDIR/scripts/build/configure/termux_step_configure_haskell_build.sh"
+# Setup configure args and run cabal. This function is called from termux_step_configure
+# shellcheck source=scripts/build/configure/termux_step_configure_cabal.sh
+source "$TERMUX_SCRIPTDIR/scripts/build/configure/termux_step_configure_cabal.sh"
 
 # Configure the package
 # shellcheck source=scripts/build/configure/termux_step_configure.sh

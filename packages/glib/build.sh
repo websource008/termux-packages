@@ -2,10 +2,9 @@ TERMUX_PKG_HOMEPAGE=https://developer.gnome.org/glib/
 TERMUX_PKG_DESCRIPTION="Library providing core building blocks for libraries and applications written in C"
 TERMUX_PKG_LICENSE="LGPL-2.1"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="2.84.0"
-TERMUX_PKG_REVISION=1
+TERMUX_PKG_VERSION="2.84.1"
 TERMUX_PKG_SRCURL=https://download.gnome.org/sources/glib/${TERMUX_PKG_VERSION%.*}/glib-${TERMUX_PKG_VERSION}.tar.xz
-TERMUX_PKG_SHA256=f8823600cb85425e2815cfad82ea20fdaa538482ab74e7293d58b3f64a5aff6a
+TERMUX_PKG_SHA256=2b4bc2ec49611a5fc35f86aca855f2ed0196e69e53092bab6bb73396bf30789a
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="libffi, libiconv, pcre2, resolv-conf, zlib"
 TERMUX_PKG_BREAKS="glib-dev"
@@ -106,6 +105,7 @@ termux_step_pre_configure() {
 		TERMUX_PKG_BUILDER_DIR="$TERMUX_SCRIPTDIR/packages/gobject-introspection"
 		TERMUX_PKG_BUILDDIR="$TERMUX_PKG_TMPDIR/gobject-introspection-build"
 		TERMUX_PKG_SRCDIR="$TERMUX_PKG_TMPDIR/gobject-introspection-src"
+		LDFLAGS+=" -L${_PREFIX}/lib"
 		mkdir -p "$TERMUX_PKG_BUILDDIR" "$TERMUX_PKG_SRCDIR"
 		# Sourcing another build script for nested build
 		. "$TERMUX_PKG_BUILDER_DIR/build.sh"
@@ -129,6 +129,7 @@ termux_step_pre_configure() {
 	termux_setup_gir
 
 	# The package will be built with using gobject-introspection we built before...
+	export TERMUX_MESON_ENABLE_SOVERSION=1
 }
 
 termux_step_post_make_install() {
@@ -138,6 +139,24 @@ termux_step_post_make_install() {
 		sed "s|\${bindir}|${TERMUX_PREFIX}/opt/glib/cross/bin|g" \
 			"${TERMUX_PREFIX}/lib/pkgconfig/${pc}" \
 			> "${TERMUX_PREFIX}/opt/glib/cross/lib/x86_64-linux-gnu/pkgconfig/${pc}"
+	done
+}
+
+termux_step_post_massage() {
+	# Do not forget to bump revision of reverse dependencies and rebuild them
+	# after SOVERSION is changed.
+	local _SOVERSION_GUARD_FILES=(
+		'lib/libgio-2.0.so.0'
+		'lib/libgirepository-2.0.so.0'
+		'lib/libglib-2.0.so.0'
+		'lib/libgmodule-2.0.so.0'
+		'lib/libgobject-2.0.so.0'
+		'lib/libgthread-2.0.so.0'
+	)
+
+	local f
+	for f in "${_SOVERSION_GUARD_FILES[@]}"; do
+		[ -e "${f}" ] || termux_error_exit "SOVERSION guard check failed."
 	done
 }
 
