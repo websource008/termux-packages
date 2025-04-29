@@ -51,6 +51,9 @@ fi
 			echo "TERMUX_BASE_DIR '$TERMUX_BASE_DIR' is not an absolute path under rootfs '/'." 1>&2
 			exit 1
 		fi
+
+		# Remove list of built packages.
+		rm -Rf "/data/data/.built-packages"
 	fi
 
 	rm -Rf "$TERMUX_TOPDIR"
