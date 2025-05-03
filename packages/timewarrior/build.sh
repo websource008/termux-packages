@@ -9,3 +9,11 @@ TERMUX_PKG_DEPENDS="libc++"
 
 # Installation of man pages is broken as of version 1.4.3.
 TERMUX_PKG_RM_AFTER_INSTALL="share/man"
+
+termux_step_pre_configure() {
+	if [ "$TERMUX_ARCH" = arm ]; then
+		# timewarrior/src/src/libshared/src/Datetime.cpp:3793:12: error:
+		# non-constant-expression cannot be narrowed from type 'int64_t' (aka 'long long') to 'time_t'
+		CPPFLAGS+=" -Wno-c++11-narrowing"
+	fi
+}
