@@ -25,6 +25,18 @@ termux_step_start_build() {
 		# "0" is the default revision, so only include it if the upstream versions contains "-" itself
 		TERMUX_PKG_FULLVERSION+="-$TERMUX_PKG_REVISION"
 	fi
+	# full format version for pacman
+	local TERMUX_PKG_VERSION_EDITED=${TERMUX_PKG_VERSION//-/.}
+	local INCORRECT_SYMBOLS=$(echo $TERMUX_PKG_VERSION_EDITED | grep -o '[0-9][a-z]')
+	if [ -n "$INCORRECT_SYMBOLS" ]; then
+		local TERMUX_PKG_VERSION_EDITED=${TERMUX_PKG_VERSION_EDITED//${INCORRECT_SYMBOLS:0:1}${INCORRECT_SYMBOLS:1:1}/${INCORRECT_SYMBOLS:0:1}.${INCORRECT_SYMBOLS:1:1}}
+	fi
+	TERMUX_PKG_FULLVERSION_FOR_PACMAN="${TERMUX_PKG_VERSION_EDITED}"
+	if [ -n "$TERMUX_PKG_REVISION" ]; then
+		TERMUX_PKG_FULLVERSION_FOR_PACMAN+="-${TERMUX_PKG_REVISION}"
+	else
+		TERMUX_PKG_FULLVERSION_FOR_PACMAN+="-0"
+	fi
 
 	if [ "$TERMUX_DEBUG_BUILD" = "true" ]; then
 		if [ "$TERMUX_PKG_HAS_DEBUG" = "true" ]; then
@@ -37,15 +49,38 @@ termux_step_start_build() {
 		DEBUG=""
 	fi
 
+	if [ "$TERMUX_DEBUG_BUILD" = "false" ] && [ "$TERMUX_FORCE_BUILD" = "false" ]; then
+		if [ -e "$TERMUX_BUILT_PACKAGES_DIRECTORY/$TERMUX_PKG_NAME" ] &&
+			[ "$(cat "$TERMUX_BUILT_PACKAGES_DIRECTORY/$TERMUX_PKG_NAME")" = "$TERMUX_PKG_FULLVERSION" ]; then
+			echo "$TERMUX_PKG_NAME@$TERMUX_PKG_FULLVERSION built - skipping (rm $TERMUX_BUILT_PACKAGES_DIRECTORY/$TERMUX_PKG_NAME to force rebuild)"
+			exit 0
+		elif [ "$TERMUX_ON_DEVICE_BUILD" = "true" ] &&
+			([[ "$TERMUX_APP_PACKAGE_MANAGER" = "apt" && "$(dpkg-query -W -f '${db:Status-Status} ${Version}\n' "$TERMUX_PKG_NAME" 2>/dev/null)" = "installed $TERMUX_PKG_FULLVERSION" ]] ||
+			 [[ "$TERMUX_APP_PACKAGE_MANAGER" = "pacman" && "$(pacman -Q $TERMUX_PKG_NAME 2>/dev/null)" = "$TERMUX_PKG_NAME $TERMUX_PKG_FULLVERSION_FOR_PACMAN" ]]); then
+			echo "$TERMUX_PKG_NAME@$TERMUX_PKG_FULLVERSION installed - skipping"
+			exit 0
+		fi
+	fi
+
+	if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ] || [ "$TERMUX_ARCH_BITS" = "32" ]; then
+		TERMUX_PKG_BUILD_MULTILIB=false
+	fi
+	if [ "$TERMUX_PKG_BUILD_MULTILIB" = "true" ] && [ $(tr ' ' '\n' <<< "${TERMUX_PKG_EXCLUDED_ARCHES//,/}" | grep -c -e '^arm$' -e '^i686$') = "2" ]; then
+		TERMUX_PKG_BUILD_ONLY_MULTILIB=true
+	fi
+
 	echo "termux - building $TERMUX_PKG_NAME for arch $TERMUX_ARCH..."
 	test -t 1 && printf "\033]0;%s...\007" "$TERMUX_PKG_NAME"
 
 	# Avoid exporting PKG_CONFIG_LIBDIR until after termux_step_host_build.
-	export TERMUX_PKG_CONFIG_LIBDIR=$TERMUX_PREFIX/lib/pkgconfig:$TERMUX_PREFIX/share/pkgconfig
+	termux_step_setup_pkg_config_libdir
 
 	local TERMUX_PKG_BUILDDIR_ORIG="$TERMUX_PKG_BUILDDIR"
 	if [ "$TERMUX_PKG_BUILD_IN_SRC" = "true" ]; then
 		TERMUX_PKG_BUILDDIR=$TERMUX_PKG_SRCDIR
+	fi
+	if [ "$TERMUX_PKG_BUILD_MULTILIB" = "true" ] && [ "$TERMUX_PKG_BUILD_ONLY_MULTILIB" = "false" ] && ([ "$TERMUX_PKG_BUILD_IN_SRC" = "true" ] || [ "$TERMUX_PKG_MULTILIB_BUILDDIR" = "$TERMUX_PKG_BUILDDIR" ]); then
+		termux_error_exit "It is not possible to build 32-bit and 64-bit versions of a package in one place, the build location must be separate."
 	fi
 
 	if [ "$TERMUX_CONTINUE_BUILD" == "true" ]; then
@@ -69,6 +104,11 @@ termux_step_start_build() {
 
 	# Delete and re-create the directories used for building the package
 	termux_step_setup_build_folders
+
+	if [ "$TERMUX_PKG_BUILD_IN_SRC" = "true" ]; then
+		# Create a file for users to know that the build directory not containing any built files is expected behaviour
+		echo "Building in src due to TERMUX_PKG_BUILD_IN_SRC being set to true" > "$TERMUX_PKG_BUILDDIR_ORIG/BUILDING_IN_SRC.txt"
+	fi
 
 	if [ "$TERMUX_PACKAGE_LIBRARY" = "bionic" ]; then
 		if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
@@ -97,4 +137,8 @@ termux_step_start_build() {
 			fi
 		done
 	fi
+}
+
+termux_step_setup_pkg_config_libdir() {
+	export TERMUX_PKG_CONFIG_LIBDIR=$TERMUX__PREFIX__LIB_DIR/pkgconfig:$TERMUX_PREFIX/share/pkgconfig
 }
