@@ -21,9 +21,9 @@ termux_step_make_install() {
 	# java.lang.UnsatisfiedLinkError: /data/data/com.termux/files/usr/tmp/jansi-2.4.0-629e7b7df22258e7-libjansi.so:
 	# dlopen failed: library "libc.so.6" not found:
 	# needed by /data/data/com.termux/files/usr/tmp/jansi-2.4.0-629e7b7df22258e7-libjansi.so in namespace (default)
-	sed -i '$ i\JAVA_OPTS="$JAVA_OPTS -Dkotlin.colors.enabled=false"' $TERMUX_PREFIX/opt/kotlin/kotlinc/bin/kotlinc
+	sed -i '$ i\JAVA_OPTS="$JAVA_OPTS -Dkotlin.colors.enabled=false"' $TERMUX_PREFIX/opt/kotlin/bin/kotlinc
 
-	for i in $TERMUX_PREFIX/opt/kotlin/kotlinc/bin/*; do
+	for i in $TERMUX_PREFIX/opt/kotlin/bin/*; do
 		if [ ! -f "$i" ]; then
 			continue
 		fi
