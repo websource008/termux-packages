@@ -11,7 +11,7 @@ TERMUX_PKG_BUILD_DEPENDS="chromium-host-tools, libffi-static, mesa-dev"
 # TERMUX_PKG_DEPENDS+=", chromium-common"
 # TERMUX_PKG_SUGGESTS="chromium-headless, chromium-driver"
 # Chromium doesn't support i686 on Linux.
-TERMUX_PKG_EXCLUDED_ARCHES="i686"
+TERMUX_PKG_EXCLUDED_ARCHES="i686, x86_64"
 TERMUX_PKG_ON_DEVICE_BUILD_NOT_SUPPORTED=true
 
 SYSTEM_LIBRARIES="    fontconfig"
