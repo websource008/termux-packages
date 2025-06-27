@@ -57,6 +57,7 @@ termux_setup_meson() {
 	echo "ld = '$LD'" >> $TERMUX_MESON_CROSSFILE
 	echo "pkg-config = '$PKG_CONFIG'" >> $TERMUX_MESON_CROSSFILE
 	echo "strip = '$STRIP'" >> $TERMUX_MESON_CROSSFILE
+	echo "rust = ['rustc', '--target', '$CARGO_TARGET_NAME']" >> $TERMUX_MESON_CROSSFILE
 
 	echo '' >> $TERMUX_MESON_CROSSFILE
 	echo "[properties]" >> $TERMUX_MESON_CROSSFILE
