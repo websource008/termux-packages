@@ -19,6 +19,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-hdhomerun_static
 --disable-ffmpeg_static
 --disable-avahi
+--nowerror
 "
 
 termux_step_pre_configure() {
