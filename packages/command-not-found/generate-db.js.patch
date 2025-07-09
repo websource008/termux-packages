@@ -1,41 +1,54 @@
-diff -u -r ../command-not-found-2.4.0/generate-db.js ./generate-db.js
---- ../command-not-found-2.4.0/generate-db.js	2023-11-27 06:08:59.000000000 +0000
-+++ ./generate-db.js	2024-05-24 10:21:56.492095469 +0000
-@@ -2,12 +2,13 @@
- import { readFile, writeFile } from 'node:fs/promises';
--import { gunzip } from 'node:zlib';
- import { join } from 'node:path';
+Only in ../../src/: commands-aarch64-termux-root.h
+diff -u -r ./generate-db.js ../../src/generate-db.js
+--- ./generate-db.js	2025-07-01 08:12:10.000000000 +0000
++++ ../../src/generate-db.js	2025-07-05 10:24:11.158542740 +0000
+@@ -1,10 +1,11 @@
+ #!/usr/bin/env node
+ import { glob, readFile, writeFile } from "node:fs/promises";
+-import { gunzip } from "node:zlib";
 +import { exec } from 'node:child_process';
 +import { readFileSync } from 'node:fs';
- import { promisify } from 'node:util';
+ import { join } from "node:path";
+ import { promisify } from "node:util";
  
 -const gunzipAsync = promisify(gunzip);
 +const execAsync = promisify(exec);
  
- // TODO(@thunder-coding): Do not hardcode list of known architectures.
--const archs = ["aarch64", "arm", "i686", "x86_64"];
-+const archs = ["aarch64", "arm", "x86_64"];
- const { TERMUX_PKG_CACHEDIR, TERMUX_PREFIX } = process.env;
+ const { TERMUX_SCRIPTDIR, TERMUX_PREFIX, TERMUX_ARCH } = process.env;
  
- if (!TERMUX_PKG_CACHEDIR) {
-@@ -23,17 +25,11 @@
+@@ -140,22 +141,17 @@
  
- async function processRepo(repo) {
-   for (const arch of archs) {
--    const url = `${repo.url}/dists/${repo.distribution}/Contents-${arch}.gz`;
--    const response = await fetch(url);
-+    const command = `curl --silent ${repo.url}/dists/${repo.distribution}/Contents-${arch}.xz | xzcat -`;
+ async function processRepo(repo, repoPath, arch) {
+   // Fetch the Contents.gz file for the given architecture from the apt mirror
+-  const url = `${repo.url}/dists/${repo.distribution}/Contents-${arch}.gz`;
+-  const response = await fetch(url);
++  const command = `curl --silent ${repo.url}/dists/${repo.distribution}/Contents-${arch}.xz | xzcat -`;
++	console.log(command);
  
--    if (!response.ok) {
--      throw new Error(`${url} returned ${response.status}`);
--    }
+-  if (!response.ok) {
+-    throw new Error(`${url} returned ${response.status}`);
+-  }
 -
--    const data = await gunzipAsync(await response.arrayBuffer());
-+    const { error, stdout, stderr } = await execAsync(command, {maxBuffer: 100 * 1024 * 1024});
-     const binMap = {};
--    data
--      .toString()
-+    stdout
-       .split('\n')
-       .filter(line => line.startsWith(binPrefix))
-       .forEach(line => {
+-  // Since we are using a gzip file, we need to decompress it
+-  const data = await gunzipAsync(await response.arrayBuffer());
++  const { error, stdout, stderr } = await execAsync(command, {maxBuffer: 100 * 1024 * 1024});
+   // Convert to string and split by new lines
+   // Each line is of the format:
+   // "path/to/file package"
+   //
+   // Where `path/to/file` is the path to the file in the package, and `package`
+   // is the name of the package that provides this file.
+-  const lines = data.toString().split("\n");
++  const lines = stdout.split("\n");
+ 
+   // Stores mappings of binary names to package names
+   // The key is the binary name, and the value is an array of package names
+@@ -208,7 +204,7 @@
+ 
+         const packageName = fileMap.get(join(TERMUX_PREFIX.substring(1), path));
+         if (packageName === undefined) {
+-          console.error(`Package name not found for path: ${path}`);
++          console.error(`Package name not found for path: ${path} (resolved to): ` + join(TERMUX_PREFIX.substring(1), path) + ", command=" + command);
+           process.exit(1);
+         }
+         if (!binMap.has(packageName)) {
