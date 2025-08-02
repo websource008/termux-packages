@@ -18,5 +18,6 @@ termux_step_pre_configure() {
 		patch --silent -p1 < "$patch"
 	fi
 
+	CPPFLAGS+=" -DGLOB_NOSYS=-4"
 	LDFLAGS+=" -landroid-glob -landroid-wordexp"
 }
